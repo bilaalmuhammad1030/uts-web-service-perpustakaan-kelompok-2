@@ -38,7 +38,15 @@ Biarkan terminal tersebut terbuka. Kunjungi:
 - Petugas: **http://127.0.0.1:8000/petugas**
 - Contoh API: **http://127.0.0.1:8000/api/v1/buku**
 
-Email demo: `petugas@perpustakaan.test`. Saat akun pertama kali dibuat, kata sandinya berasal dari **DEMO_PASSWORD** pada `.env`. Jika kata sandi akun sudah diganti, gunakan kata sandi terbaru; nilai DEMO_PASSWORD tidak otomatis ikut berubah. Seeder tidak mengganti kata sandi petugas yang sudah ada. Jangan membagikan `.env`, kata sandi, atau token maupun memasukkannya ke repository, laporan, dan slide.
+### Login petugas
+
+- **Halaman:** http://127.0.0.1:8000/petugas
+- **Email:** `petugas@perpustakaan.test`
+- **Kata sandi akun di komputer Bilal:** sudah diganti; gunakan kata sandi terbaru yang ditetapkan secara lokal. Nilainya tidak dicantumkan di README publik sesuai ketentuan UTS.
+
+**Untuk pemasangan baru:** kata sandi awal berasal dari **DEMO_PASSWORD** pada `.env`. Setelah kata sandi akun diubah, nilai DEMO_PASSWORD tidak otomatis ikut berubah. Seeder tidak mengganti kata sandi petugas yang sudah ada.
+
+Jika browser masih menyimpan sesi atau isian lama, keluar lalu masuk kembali menggunakan kata sandi terbaru. Jangan memasukkan `.env`, kata sandi, token, atau kunci API ke repository, laporan, dan slide.
 
 MariaDB khusus proyek berada di folder induk `.local-mysql`, mendengarkan **127.0.0.1:3307**, dengan database `perpustakaan` dan `perpustakaan_test`. Binary yang dipakai berasal dari `C:/RDMMadrasah/mysql/bin`; data dan pengaturan RDM port 3203 tidak diubah. Script mulai menjalankan instance terpisah ini bila belum aktif, kemudian menjalankan Laravel. Pada pemasangan lokal ini pengguna database adalah root tanpa kata sandi, hanya untuk instance pengembangan yang terikat loopback. Jika memakai server database sendiri, isi kredensial akun database sendiri pada `.env`.
 
