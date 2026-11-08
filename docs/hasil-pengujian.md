@@ -2,6 +2,12 @@
 
 Pemeriksaan lokal pada **8 November 2026, WIB**. Ini hasil dari eksekusi pada komputer Bilal, bukan hasil GitHub Actions. Tidak ada klaim deployment publik atau release GitHub.
 
+## Perbesaran font dan keterbacaan
+
+Font teks utama, input dan label formulir terverifikasi **16 px** melalui computed style browser. Font informasi buku, filter, tombol, tabel dan dialog ikut diperbesar; navigasi ponsel disusun dua baris agar tetap terbaca.
+
+Pemeriksaan pada 8 November 2026 mencakup **18 kombinasi halaman/ukuran layar**: katalog, login dan petugas pada lebar 320, 360, 390, 600, 768 dan 1440 px. Seluruhnya tidak meluber horizontal. Dialog detail, tambah buku, stok dan kategori juga diperiksa; **0 error JavaScript**. Tabel petugas dapat digeser di dalam wadahnya pada layar sempit. Pemeriksaan ini tidak mengubah atau menambah data buku. Screenshot katalog, login dan halaman petugas telah diperbarui.
+
 ## Pembaruan tampilan Ruang Baca
 
 Pemeriksaan antarmuka pada 8 November 2026: **20 alur browser lulus**, **0 error JavaScript**. Pemeriksaan mencakup pagination maju/mundur, filter kategori otomatis, reset, hasil kosong, pencarian, detail, tombol lihat/sembunyikan kata sandi, login/logout, CRUD buku dan kategori, pembaruan stok serta riwayat. Layar 320, 360, 390 dan 768 piksel tidak meluber horizontal pada pemeriksaan ini.
