@@ -26,6 +26,26 @@ async function loadCategories() {
     if (select) select.innerHTML = '<option value="">Semua kategori</option>' + categoryOptions();
 }
 function categoryOptions(selected = '') { return categories.map(c => `<option value="${c.id}" ${String(c.id) === String(selected) ? 'selected' : ''}>${escapeHtml(c.nama)}</option>`).join(''); }
+function bookCover(book) {
+    const themes = ['theme-blue', 'theme-sand', 'theme-clay', 'theme-olive', 'theme-plum', 'theme-forest'];
+    const colorKey = [...book.kode_buku].reduce((sum, character) => sum + character.charCodeAt(0), 0);
+    const theme = themes[colorKey % themes.length];
+    return `<div class="book-cover ${theme}" aria-hidden="true"><span class="cover-kicker">${escapeHtml(book.kategori.nama).toUpperCase()}</span><span class="cover-title">${escapeHtml(book.judul)}</span><span class="cover-author">${escapeHtml(book.penulis)}</span><span class="cover-footer">RUANG BACA</span></div>`;
+}
+function renderFeaturedBook() {
+    const featured = $('#featured-book');
+    if (!featured || featured.dataset.ready || !books.length) return;
+    const book = books.find(item => item.kategori.nama.toLowerCase() === 'novel') || books[0];
+    featured.innerHTML = `<span class="featured-label">DI ANTARA KOLEKSI KAMI</span><div class="featured-stage">${bookCover(book)}</div><div class="featured-info"><span class="eyebrow">${escapeHtml(book.kategori.nama)}</span><h2>${escapeHtml(book.judul)}</h2><p class="featured-author">${escapeHtml(book.penulis)}</p><span class="stock-tag ${book.jumlah_tersedia ? '' : 'empty'}">${book.jumlah_tersedia ? book.jumlah_tersedia + ' tersedia' : 'Stok kosong'}</span><span class="featured-rack">Temukan di rak ${escapeHtml(book.lokasi_rak)}</span><button class="featured-action" data-detail="${book.id}">Kenali buku ini <span aria-hidden="true">↗</span></button></div>`;
+    featured.dataset.ready = 'true';
+}
+function renderStudentBooks(result) {
+    $('#collection-count').textContent = `${result.meta.total} buku ditemukan`;
+    renderFeaturedBook();
+    $('#book-grid').innerHTML = books.length ? books.map(book => `<article class="book-card"><div class="book-visual">${bookCover(book)}</div><div class="book-info"><div class="card-top"><span class="category-tag">${escapeHtml(book.kategori.nama)}</span></div><h3>${escapeHtml(book.judul)}</h3><p class="author">${escapeHtml(book.penulis)}</p><span class="book-code">${escapeHtml(book.kode_buku)}</span></div><div class="card-bottom"><span class="stock-tag ${book.jumlah_tersedia ? '' : 'empty'}">${book.jumlah_tersedia ? book.jumlah_tersedia + ' tersedia' : 'Stok kosong'}</span><span class="rack"><svg class="icon" aria-hidden="true"><use href="#icon-rack"/></svg>Rak ${escapeHtml(book.lokasi_rak)}</span></div><button class="detail-button" data-detail="${book.id}">Lihat detail buku <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button></article>`).join('') : '<p class="empty-state">Buku belum ditemukan. Coba judul, penulis, atau kategori lain.</p>';
+    document.querySelectorAll('[data-detail]').forEach(button => button.onclick = guard(() => detail(button.dataset.detail)));
+}
+
 async function loadBooks() {
     const currentRequest = ++requestNumber;
     status('Memuat koleksi…');
@@ -41,11 +61,7 @@ async function loadBooks() {
     status('');
     $('#page-info').textContent = `Halaman ${result.meta.current_page} dari ${lastPage}`;
     $('#prev').disabled = page <= 1; $('#next').disabled = page >= lastPage;
-    if (admin) renderAdmin(); else {
-        $('#collection-count').textContent = `${result.meta.total} buku dalam koleksi pilihan`;
-        $('#book-grid').innerHTML = books.length ? books.map(b => `<article class="book-card"><div class="card-top"><span class="category-tag">${escapeHtml(b.kategori.nama)}</span><span class="book-code">${escapeHtml(b.kode_buku)}</span></div><h3>${escapeHtml(b.judul)}</h3><p class="author">${escapeHtml(b.penulis)}</p><div class="card-bottom"><span class="stock-tag ${b.jumlah_tersedia ? '' : 'empty'}">${b.jumlah_tersedia ? b.jumlah_tersedia + ' tersedia' : 'Stok kosong'}</span><span class="rack">Rak ${escapeHtml(b.lokasi_rak)}</span></div><button class="detail-button" data-detail="${b.id}">Lihat detail buku <span aria-hidden="true">↗</span></button></article>`).join('') : '<p class="empty-state">Buku belum ditemukan. Coba judul, penulis, atau kategori lain.</p>';
-        document.querySelectorAll('[data-detail]').forEach(b => b.onclick = guard(() => detail(b.dataset.detail)));
-    }
+    if (admin) renderAdmin(); else renderStudentBooks(result);
 }
 $('#prev').onclick = guard(async () => { if (page > 1) {page--; await loadBooks();} });
 $('#next').onclick = guard(async () => { if (page < lastPage) {page++; await loadBooks();} });
@@ -100,6 +116,14 @@ async function categoryForm() {
     },true));
 }
 if (admin) {
+    $('#password-toggle').onclick = () => {
+        const input = $('#login-password');
+        const visible = input.type === 'password';
+        input.type = visible ? 'text' : 'password';
+        $('#password-toggle').textContent = visible ? 'Sembunyikan' : 'Lihat';
+        $('#password-toggle').setAttribute('aria-pressed', String(visible));
+        $('#password-toggle').setAttribute('aria-label', visible ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+    };
     showAuth();
     $('#login-form').onsubmit = guard(async event => {
         const data = (await api('auth/login',{method:'POST',body:JSON.stringify(Object.fromEntries(new FormData(event.target)))})).data;
@@ -111,6 +135,11 @@ if (admin) {
     if (token) guard(loadBooks)();
 } else {
     $('#search-form').onsubmit = guard(async () => {page = 1; await loadBooks();});
+    $('#search-form').addEventListener('change', guard(async event => {
+        if (event.target.tagName !== 'SELECT') return;
+        page = 1;
+        await loadBooks();
+    }));
     $('#search-form').onreset = () => setTimeout(guard(async () => {page=1;await loadBooks();}),0);
     guard(async () => {await loadCategories(); await loadBooks();})();
 }
