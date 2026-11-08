@@ -28,7 +28,7 @@ Fokus pada ketersediaan buku. Peminjaman, pengembalian, denda dan reservasi bera
 | Viryal Arliyani | 23215033 |
 | Septina Asti Nabila | 23215005 |
 
-Program: **Bilal**, dibantu AI. Laporan dan PPT: **Nofia**. [Rencana kontribusi](docs/kontribusi.md).
+Program: **Bilal**, Laporan dan PPT: **Nofia**. [Rencana kontribusi](docs/kontribusi.md).
 
 ## Jalankan aplikasi
 
