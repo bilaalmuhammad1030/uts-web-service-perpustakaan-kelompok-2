@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#214e3f">
+    <meta name="description" content="Cari buku, cek ketersediaan, dan temukan lokasi rak di perpustakaan sekolah.">
+    <title>Ruang Petugas · Ruang Baca</title>
+    <link rel="stylesheet" href="css/perpustakaan.css">
+    <script src="js/perpustakaan.js" defer></script>
+</head>
+<body data-portal="petugas">
+<svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 6.5C9 4.5 5 4.5 2.5 5.5v14C5 18.5 9 18.5 12 20.5c3-2 7-2 9.5-1v-14C19 4.5 15 4.5 12 6.5Zm0 0v14"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="icon-rack" viewBox="0 0 24 24"><path d="M4 4v16M20 4v16M4 17h16M7 7v10m4-12v12m3-10 3 10"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+</svg>
+<a class="skip-link" href="#konten">Langsung ke isi</a>
+<header class="header">
+    <a class="brand" href="katalog.html" aria-label="Ruang Baca, beranda"><span class="brand-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><span>ruang<span class="brand-light">baca</span><small>PERPUSTAKAAN SEKOLAH</small></span></a>
+    <nav aria-label="Navigasi utama">
+        <a href="katalog.html"  >Katalog buku</a>
+        <a href="petugas.html" class="active" aria-current="page">Ruang petugas <span aria-hidden="true">↗</span></a>
+    </nav>
+</header>
+<main id="konten">
+
+    <section class="admin-heading"><div><span class="eyebrow">PENGELOLAAN PERPUSTAKAAN</span><h1>Ruang petugas<span class="heading-dot">.</span></h1><p class="muted">Koleksi tertata, bacaan lebih mudah ditemukan.</p></div><a class="back-link" href="katalog.html">Lihat katalog siswa <span aria-hidden="true">↗</span></a></section>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="login-panel" class="login-panel" aria-label="Login petugas">
+        <div class="login-intro"><span class="eyebrow">RUANG KERJA PETUGAS</span><h2>Semua koleksi,<br><em>lebih tertata.</em></h2><p>Kelola data buku dan pastikan informasi stok selalu sesuai keadaan di rak.</p><div class="login-illustration" aria-hidden="true"><div class="login-spine">CATAT</div><div class="login-spine">RAPIKAN</div><div class="login-spine">TEMUKAN</div></div><small>Akses khusus petugas perpustakaan.</small></div>
+        <form id="login-form"><div><span class="eyebrow">SELAMAT DATANG KEMBALI</span><h2>Masuk ke akun</h2><p class="muted">Gunakan akun petugas untuk melanjutkan.</p></div><label>Email<input name="email" type="email" autocomplete="username" required placeholder="Email petugas"></label><div class="field-group"><label for="login-password">Kata sandi</label><div class="password-field"><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan kata sandi"><button type="button" id="password-toggle" aria-label="Tampilkan kata sandi" aria-pressed="false">Lihat</button></div></div><button class="button login-submit" type="submit">Masuk ke ruang petugas <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button><small class="login-help"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> Siswa dapat melihat koleksi tanpa masuk.</small></form>
+    </section>
+    <section id="admin-panel" hidden>
+        <div class="section-heading"><div><span class="eyebrow">DATA PERPUSTAKAAN</span><h2>Kelola koleksi</h2><p id="greeting" class="muted"></p></div><div class="actions"><button class="button secondary" id="categories-btn">Kelola kategori</button><button class="button" id="add-book">+ Tambah buku</button><button class="button quiet" id="logout">Keluar</button></div></div>
+        <form id="admin-search" class="admin-search" role="search"><label><span class="sr-only">Cari buku</span><input name="q" type="search" placeholder="Cari judul atau penulis" maxlength="200"></label><button class="button secondary">Cari</button></form>
+        <div class="table-wrap"><table><caption class="sr-only">Daftar koleksi perpustakaan</caption><thead><tr><th>Buku / penulis</th><th>Penerbit / tahun</th><th>Kategori</th><th>Rak</th><th>Tersedia / total</th><th>Tindakan</th></tr></thead><tbody id="admin-books"></tbody></table></div>
+        <div class="pagination"><button id="prev" class="button secondary">← Sebelumnya</button><span id="page-info"></span><button id="next" class="button secondary">Berikutnya →</button></div>
+    </section>
+
+</main>
+<footer><a class="footer-brand" href="katalog.html"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> ruang<span>baca</span></a><p>Tempat bertemunya pembaca dan cerita.</p><small>Perpustakaan sekolah <span>·</span> Kelompok 2</small></footer>
+<dialog id="modal" aria-labelledby="modal-title"><div class="modal-heading"><h2 id="modal-title"></h2><button id="close-modal" class="icon-button" aria-label="Tutup dialog">×</button></div><p id="modal-error" class="status error" role="alert"></p><div id="modal-content"></div></dialog>
+</body>
+</html>
