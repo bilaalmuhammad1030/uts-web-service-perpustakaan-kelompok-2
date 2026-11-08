@@ -1,0 +1,1161 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bukti Pengujian Postman — Perpustakaan Kelompok 2</title><style>body{font:15px/1.5 Arial,sans-serif;color:#172b24;max-width:1050px;margin:36px auto;padding:0 24px}h1{font-size:30px}h2{font-size:23px}h3{font-size:16px;margin-bottom:6px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #cbd5cf;padding:9px;text-align:left}th,.badge{background:#e9f4ed}a{color:#215640}article{border-top:3px solid #286149;margin-top:36px;padding-top:16px;break-before:page}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f5f4;padding:12px;font:12px/1.45 Consolas,monospace}code{overflow-wrap:anywhere}.badge{display:inline-block;padding:8px 12px;font-weight:bold}@page{size:A4;margin:14mm}@media print{body{margin:0;padding:0;font-size:11px}pre{font-size:9px}a{color:inherit;text-decoration:none}h1{font-size:24px}h2{font-size:19px}tr{break-inside:avoid}}</style></head><body><h1>Bukti Pengujian Postman — Perpustakaan Kelompok 2</h1><p>Minggu, 08 November 2026 pukul 22.40.03 WIB</p><p><strong>22 skenario lulus · 60 assertions · 0 kegagalan</strong></p><p>Pelaksana: Newman 6.2.1 (runner koleksi Postman).</p><p>Hasil request HTTP nyata melalui Newman, bukan screenshot aplikasi Postman Desktop. Lingkungan: Laravel lokal port 8011, database SQLite uji terpisah, data contoh dari seeder proyek. Akun dan database aplikasi utama tidak diubah. Password dan token disamarkan. Metadata dapat memakai sumber eksternal atau fallback sesuai respons aktual.</p><table><thead><tr><th>No.</th><th>Skenario</th><th>Metode</th><th>HTTP aktual</th><th>Hasil</th></tr></thead><tbody><tr><td>1</td><td><a href="#skenario-1">01 · Login petugas</a></td><td>POST</td><td>200</td><td>LULUS</td></tr><tr><td>2</td><td><a href="#skenario-2">02 · Daftar kategori</a></td><td>GET</td><td>200</td><td>LULUS</td></tr><tr><td>3</td><td><a href="#skenario-3">03 · Buat kategori 201 + Location</a></td><td>POST</td><td>201</td><td>LULUS</td></tr><tr><td>4</td><td><a href="#skenario-4">04 · Detail kategori</a></td><td>GET</td><td>200</td><td>LULUS</td></tr><tr><td>5</td><td><a href="#skenario-5">05 · Edit kategori</a></td><td>PUT</td><td>200</td><td>LULUS</td></tr><tr><td>6</td><td><a href="#skenario-6">06 · Buat buku dan audit awal</a></td><td>POST</td><td>201</td><td>LULUS</td></tr><tr><td>7</td><td><a href="#skenario-7">07 · Daftar, cari, filter, urut, pagination</a></td><td>GET</td><td>200</td><td>LULUS</td></tr><tr><td>8</td><td><a href="#skenario-8">08 · Detail buku</a></td><td>GET</td><td>200</td><td>LULUS</td></tr><tr><td>9</td><td><a href="#skenario-9">09 · Metadata eksternal atau fallback</a></td><td>GET</td><td>200</td><td>LULUS</td></tr><tr><td>10</td><td><a href="#skenario-10">10 · Validasi stok 422</a></td><td>PATCH</td><td>422</td><td>LULUS</td></tr><tr><td>11</td><td><a href="#skenario-11">11 · Data tidak ditemukan 404</a></td><td>GET</td><td>404</td><td>LULUS</td></tr><tr><td>12</td><td><a href="#skenario-12">12 · Kategori dipakai konflik 409</a></td><td>DELETE</td><td>409</td><td>LULUS</td></tr><tr><td>13</td><td><a href="#skenario-13">13 · Edit data deskriptif buku</a></td><td>PUT</td><td>200</td><td>LULUS</td></tr><tr><td>14</td><td><a href="#skenario-14">14 · Transaksi stok berhasil</a></td><td>PATCH</td><td>200</td><td>LULUS</td></tr><tr><td>15</td><td><a href="#skenario-15">15 · Versi lama konflik 409</a></td><td>PATCH</td><td>409</td><td>LULUS</td></tr><tr><td>16</td><td><a href="#skenario-16">16 · Konflik tidak mengubah stok</a></td><td>GET</td><td>200</td><td>LULUS</td></tr><tr><td>17</td><td><a href="#skenario-17">17 · Audit konsisten dengan stok</a></td><td>GET</td><td>200</td><td>LULUS</td></tr><tr><td>18</td><td><a href="#skenario-18">18 · Arsipkan buku demo</a></td><td>DELETE</td><td>204</td><td>LULUS</td></tr><tr><td>19</td><td><a href="#skenario-19">19 · Buku arsip tidak ditampilkan</a></td><td>GET</td><td>404</td><td>LULUS</td></tr><tr><td>20</td><td><a href="#skenario-20">20 · Hapus kategori kosong</a></td><td>DELETE</td><td>204</td><td>LULUS</td></tr><tr><td>21</td><td><a href="#skenario-21">21 · Logout</a></td><td>POST</td><td>204</td><td>LULUS</td></tr><tr><td>22</td><td><a href="#skenario-22">22 · Token tercabut ditolak 401</a></td><td>POST</td><td>401</td><td>LULUS</td></tr></tbody></table><article id="skenario-1"><h2>01 · Login petugas</h2><p class="badge">LULUS · HTTP 200 OK · 691 ms</p><p><strong>POST</strong> <code>http://127.0.0.1:8011/api/v1/auth/login</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;d3df2c92-5604-496c-9d64-e9d5842addc5&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;92&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;email&quot;: &quot;petugas@perpustakaan.test&quot;,
+  &quot;password&quot;: &quot;[DISAMARKAN]&quot;
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;token&quot;: &quot;[DISAMARKAN]&quot;,
+    &quot;token_type&quot;: &quot;[DISAMARKAN]&quot;,
+    &quot;expires_at&quot;: &quot;2026-11-08T23:40:03.000000Z&quot;,
+    &quot;petugas&quot;: {
+      &quot;id&quot;: 1,
+      &quot;nama&quot;: &quot;Petugas Kelompok 2&quot;
+    }
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-2"><h2>02 · Daftar kategori</h2><p class="badge">LULUS · HTTP 200 OK · 169 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/kategori</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;76695dcb-91a7-4d10-b1ca-b31ba3e79799&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: 5,
+      &quot;nama&quot;: &quot;Ensiklopedia&quot;
+    },
+    {
+      &quot;id&quot;: 1,
+      &quot;nama&quot;: &quot;Novel&quot;
+    },
+    {
+      &quot;id&quot;: 4,
+      &quot;nama&quot;: &quot;Pendidikan&quot;
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;nama&quot;: &quot;Pengembangan Diri&quot;
+    },
+    {
+      &quot;id&quot;: 3,
+      &quot;nama&quot;: &quot;Teknologi&quot;
+    }
+  ]
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-3"><h2>03 · Buat kategori 201 + Location</h2><p class="badge">LULUS · HTTP 201 Created · 179 ms</p><p><strong>POST</strong> <code>http://127.0.0.1:8011/api/v1/kategori</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;75fda73e-56f9-4e9e-a274-a7bfe2aee69c&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;42&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;nama&quot;: &quot;Demo Postman 1794152403867&quot;
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 6,
+    &quot;nama&quot;: &quot;Demo Postman 1794152403867&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 201</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-4"><h2>04 · Detail kategori</h2><p class="badge">LULUS · HTTP 200 OK · 132 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/kategori/6</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;635dbccf-4a94-4096-b785-56d3d9ed67ee&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 6,
+    &quot;nama&quot;: &quot;Demo Postman 1794152403867&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-5"><h2>05 · Edit kategori</h2><p class="badge">LULUS · HTTP 200 OK · 257 ms</p><p><strong>PUT</strong> <code>http://127.0.0.1:8011/api/v1/kategori/6</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;658b198f-97f4-4424-bacb-e75694b4f2ba&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;42&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;nama&quot;: &quot;Kategori Uji 1794152403867&quot;
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 6,
+    &quot;nama&quot;: &quot;Kategori Uji 1794152403867&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-6"><h2>06 · Buat buku dan audit awal</h2><p class="badge">LULUS · HTTP 201 Created · 167 ms</p><p><strong>POST</strong> <code>http://127.0.0.1:8011/api/v1/buku</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;b745de89-774d-476c-8576-832525edb3d7&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;261&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+  &quot;kategori_id&quot;: &quot;5&quot;,
+  &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+  &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+  &quot;lokasi_rak&quot;: &quot;DEMO-01&quot;,
+  &quot;jumlah_total&quot;: 10,
+  &quot;jumlah_tersedia&quot;: 7,
+  &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+  &quot;tahun_terbit&quot;: 2020
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 11,
+    &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+    &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+    &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+    &quot;deskripsi&quot;: null,
+    &quot;isbn&quot;: null,
+    &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+    &quot;tahun_terbit&quot;: 2020,
+    &quot;kategori&quot;: {
+      &quot;id&quot;: 5,
+      &quot;nama&quot;: &quot;Ensiklopedia&quot;
+    },
+    &quot;lokasi_rak&quot;: &quot;DEMO-01&quot;,
+    &quot;jumlah_total&quot;: 10,
+    &quot;jumlah_tersedia&quot;: 7,
+    &quot;versi_stok&quot;: 1,
+    &quot;stok_diperbarui_at&quot;: &quot;2026-11-08T15:40:05.000000Z&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 201</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-7"><h2>07 · Daftar, cari, filter, urut, pagination</h2><p class="badge">LULUS · HTTP 200 OK · 99 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/buku?q=1794152403867&amp;kategori_id=5&amp;tersedia=1&amp;sort=judul&amp;direction=asc&amp;per_page=1&amp;page=1</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;f6663a03-ae67-44e2-bca0-92541e06bbf2&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: 11,
+      &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+      &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+      &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+      &quot;deskripsi&quot;: null,
+      &quot;isbn&quot;: null,
+      &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+      &quot;tahun_terbit&quot;: 2020,
+      &quot;kategori&quot;: {
+        &quot;id&quot;: 5,
+        &quot;nama&quot;: &quot;Ensiklopedia&quot;
+      },
+      &quot;lokasi_rak&quot;: &quot;DEMO-01&quot;,
+      &quot;jumlah_total&quot;: 10,
+      &quot;jumlah_tersedia&quot;: 7,
+      &quot;versi_stok&quot;: 1,
+      &quot;stok_diperbarui_at&quot;: &quot;2026-11-08T15:40:05.000000Z&quot;
+    }
+  ],
+  &quot;links&quot;: {
+    &quot;first&quot;: &quot;http://127.0.0.1:8011/api/v1/buku?q=1794152403867&amp;kategori_id=5&amp;tersedia=1&amp;sort=judul&amp;direction=asc&amp;per_page=1&amp;page=1&quot;,
+    &quot;last&quot;: &quot;http://127.0.0.1:8011/api/v1/buku?q=1794152403867&amp;kategori_id=5&amp;tersedia=1&amp;sort=judul&amp;direction=asc&amp;per_page=1&amp;page=1&quot;,
+    &quot;prev&quot;: null,
+    &quot;next&quot;: null
+  },
+  &quot;meta&quot;: {
+    &quot;current_page&quot;: 1,
+    &quot;from&quot;: 1,
+    &quot;last_page&quot;: 1,
+    &quot;links&quot;: [
+      {
+        &quot;url&quot;: null,
+        &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+        &quot;page&quot;: null,
+        &quot;active&quot;: false
+      },
+      {
+        &quot;url&quot;: &quot;http://127.0.0.1:8011/api/v1/buku?q=1794152403867&amp;kategori_id=5&amp;tersedia=1&amp;sort=judul&amp;direction=asc&amp;per_page=1&amp;page=1&quot;,
+        &quot;label&quot;: &quot;1&quot;,
+        &quot;page&quot;: 1,
+        &quot;active&quot;: true
+      },
+      {
+        &quot;url&quot;: null,
+        &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+        &quot;page&quot;: null,
+        &quot;active&quot;: false
+      }
+    ],
+    &quot;path&quot;: &quot;http://127.0.0.1:8011/api/v1/buku&quot;,
+    &quot;per_page&quot;: 1,
+    &quot;to&quot;: 1,
+    &quot;total&quot;: 1
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-8"><h2>08 · Detail buku</h2><p class="badge">LULUS · HTTP 200 OK · 150 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/buku/11</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;2c73a992-fb47-4848-a62d-dbd52655c005&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 11,
+    &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+    &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+    &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+    &quot;deskripsi&quot;: null,
+    &quot;isbn&quot;: null,
+    &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+    &quot;tahun_terbit&quot;: 2020,
+    &quot;kategori&quot;: {
+      &quot;id&quot;: 5,
+      &quot;nama&quot;: &quot;Ensiklopedia&quot;
+    },
+    &quot;lokasi_rak&quot;: &quot;DEMO-01&quot;,
+    &quot;jumlah_total&quot;: 10,
+    &quot;jumlah_tersedia&quot;: 7,
+    &quot;versi_stok&quot;: 1,
+    &quot;stok_diperbarui_at&quot;: &quot;2026-11-08T15:40:05.000000Z&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-9"><h2>09 · Metadata eksternal atau fallback</h2><p class="badge">LULUS · HTTP 200 OK · 1790 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/metadata?q=Laskar%20Pelangi</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;73cd0c97-4722-494a-9192-f3f711844835&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;source&quot;: &quot;openlibrary&quot;,
+    &quot;fallback&quot;: false,
+    &quot;cached&quot;: false,
+    &quot;message&quot;: &quot;Metadata tambahan; ketersediaan tetap berasal dari database sekolah.&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;judul&quot;: &quot;Laskar Pelangi&quot;,
+        &quot;penulis&quot;: &quot;Andrea Hirata&quot;,
+        &quot;tahun&quot;: 2005,
+        &quot;isbn&quot;: &quot;9789793062792&quot;
+      },
+      {
+        &quot;judul&quot;: &quot;The rainbow troops&quot;,
+        &quot;penulis&quot;: &quot;Andrea Hirata&quot;,
+        &quot;tahun&quot;: 2009,
+        &quot;isbn&quot;: &quot;0374709408&quot;
+      },
+      {
+        &quot;judul&quot;: &quot;Laskar pelangi&quot;,
+        &quot;penulis&quot;: &quot;Asrori S. Karni&quot;,
+        &quot;tahun&quot;: 2008,
+        &quot;isbn&quot;: &quot;9791142270&quot;
+      },
+      {
+        &quot;judul&quot;: &quot;Laskar pelangi song book&quot;,
+        &quot;penulis&quot;: &quot;Andrea Hirata&quot;,
+        &quot;tahun&quot;: 2012,
+        &quot;isbn&quot;: &quot;9786028811835&quot;
+      },
+      {
+        &quot;judul&quot;: &quot;Tian hong zhan dui xiao xue =&quot;,
+        &quot;penulis&quot;: &quot;Andrea Hirata&quot;,
+        &quot;tahun&quot;: 2011,
+        &quot;isbn&quot;: &quot;9868652383&quot;
+      }
+    ]
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-10"><h2>10 · Validasi stok 422</h2><p class="badge">LULUS · HTTP 422 Unprocessable Content · 143 ms</p><p><strong>PATCH</strong> <code>http://127.0.0.1:8011/api/v1/buku/11/stok</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;cc322a1f-fd20-45a5-b70e-891ede43a433&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;94&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;jumlah_total&quot;: 2,
+  &quot;jumlah_tersedia&quot;: 3,
+  &quot;versi_stok&quot;: 1,
+  &quot;alasan&quot;: &quot;Tes validasi&quot;
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;VALIDATION_ERROR&quot;,
+    &quot;message&quot;: &quot;Periksa kembali data yang dikirim.&quot;,
+    &quot;details&quot;: {
+      &quot;jumlah_tersedia&quot;: [
+        &quot;Jumlah tersedia harus kurang dari atau sama dengan 2.&quot;
+      ]
+    }
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 422</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-11"><h2>11 · Data tidak ditemukan 404</h2><p class="badge">LULUS · HTTP 404 Not Found · 162 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/buku/999999999</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;35d2e6f2-d97c-48fc-be71-cacdc775ceb3&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;NOT_FOUND&quot;,
+    &quot;message&quot;: &quot;Data atau endpoint tidak ditemukan.&quot;,
+    &quot;details&quot;: {}
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 404</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-12"><h2>12 · Kategori dipakai konflik 409</h2><p class="badge">LULUS · HTTP 409 Conflict · 261 ms</p><p><strong>DELETE</strong> <code>http://127.0.0.1:8011/api/v1/kategori/5</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;8a5dc960-c441-49cb-9b6c-512466272334&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;BUSINESS_CONFLICT&quot;,
+    &quot;message&quot;: &quot;Kategori masih digunakan buku, termasuk buku yang diarsipkan.&quot;,
+    &quot;details&quot;: {}
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 409</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-13"><h2>13 · Edit data deskriptif buku</h2><p class="badge">LULUS · HTTP 200 OK · 134 ms</p><p><strong>PUT</strong> <code>http://127.0.0.1:8011/api/v1/buku/11</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;32a690e2-5b3e-4b51-bd4b-78288ac4b1f7&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;215&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+  &quot;kategori_id&quot;: &quot;5&quot;,
+  &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+  &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+  &quot;lokasi_rak&quot;: &quot;DEMO-02&quot;,
+  &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+  &quot;tahun_terbit&quot;: 2020
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 11,
+    &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+    &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+    &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+    &quot;deskripsi&quot;: null,
+    &quot;isbn&quot;: null,
+    &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+    &quot;tahun_terbit&quot;: 2020,
+    &quot;kategori&quot;: {
+      &quot;id&quot;: 5,
+      &quot;nama&quot;: &quot;Ensiklopedia&quot;
+    },
+    &quot;lokasi_rak&quot;: &quot;DEMO-02&quot;,
+    &quot;jumlah_total&quot;: 10,
+    &quot;jumlah_tersedia&quot;: 7,
+    &quot;versi_stok&quot;: 1,
+    &quot;stok_diperbarui_at&quot;: &quot;2026-11-08T15:40:05.000000Z&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-14"><h2>14 · Transaksi stok berhasil</h2><p class="badge">LULUS · HTTP 200 OK · 150 ms</p><p><strong>PATCH</strong> <code>http://127.0.0.1:8011/api/v1/buku/11/stok</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;cf461612-18d5-49c5-9861-0f2dde4dbe7b&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;106&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;jumlah_total&quot;: 10,
+  &quot;jumlah_tersedia&quot;: 5,
+  &quot;versi_stok&quot;: 1,
+  &quot;alasan&quot;: &quot;Pengecekan koleksi demo&quot;
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 11,
+    &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+    &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+    &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+    &quot;deskripsi&quot;: null,
+    &quot;isbn&quot;: null,
+    &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+    &quot;tahun_terbit&quot;: 2020,
+    &quot;kategori&quot;: {
+      &quot;id&quot;: 5,
+      &quot;nama&quot;: &quot;Ensiklopedia&quot;
+    },
+    &quot;lokasi_rak&quot;: &quot;DEMO-02&quot;,
+    &quot;jumlah_total&quot;: 10,
+    &quot;jumlah_tersedia&quot;: 5,
+    &quot;versi_stok&quot;: 2,
+    &quot;stok_diperbarui_at&quot;: &quot;2026-11-08T15:40:08.000000Z&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-15"><h2>15 · Versi lama konflik 409</h2><p class="badge">LULUS · HTTP 409 Conflict · 166 ms</p><p><strong>PATCH</strong> <code>http://127.0.0.1:8011/api/v1/buku/11/stok</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;2ea84c75-7f11-4d48-a6a7-4539dab6436f&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;102&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;jumlah_total&quot;: 10,
+  &quot;jumlah_tersedia&quot;: 2,
+  &quot;versi_stok&quot;: 1,
+  &quot;alasan&quot;: &quot;Simulasi layar lama&quot;
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;BUSINESS_CONFLICT&quot;,
+    &quot;message&quot;: &quot;Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.&quot;,
+    &quot;details&quot;: {}
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 409</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-16"><h2>16 · Konflik tidak mengubah stok</h2><p class="badge">LULUS · HTTP 200 OK · 736 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/buku/11</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;6a65353c-f489-4b5b-8ca6-455eec03c4f1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: {
+    &quot;id&quot;: 11,
+    &quot;kode_buku&quot;: &quot;PM-1794152403867&quot;,
+    &quot;judul&quot;: &quot;Demo Postman 1794152403867&quot;,
+    &quot;penulis&quot;: &quot;Kelompok 2&quot;,
+    &quot;deskripsi&quot;: null,
+    &quot;isbn&quot;: null,
+    &quot;penerbit&quot;: &quot;Penerbit Kelompok 2&quot;,
+    &quot;tahun_terbit&quot;: 2020,
+    &quot;kategori&quot;: {
+      &quot;id&quot;: 5,
+      &quot;nama&quot;: &quot;Ensiklopedia&quot;
+    },
+    &quot;lokasi_rak&quot;: &quot;DEMO-02&quot;,
+    &quot;jumlah_total&quot;: 10,
+    &quot;jumlah_tersedia&quot;: 5,
+    &quot;versi_stok&quot;: 2,
+    &quot;stok_diperbarui_at&quot;: &quot;2026-11-08T15:40:08.000000Z&quot;
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-17"><h2>17 · Audit konsisten dengan stok</h2><p class="badge">LULUS · HTTP 200 OK · 544 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;6ea278d7-8c05-4473-96ef-6e5a4149c3b2&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: 12,
+      &quot;buku_id&quot;: 11,
+      &quot;petugas&quot;: {
+        &quot;id&quot;: 1,
+        &quot;nama&quot;: &quot;Petugas Kelompok 2&quot;
+      },
+      &quot;total_sebelum&quot;: 10,
+      &quot;tersedia_sebelum&quot;: 7,
+      &quot;total_sesudah&quot;: 10,
+      &quot;tersedia_sesudah&quot;: 5,
+      &quot;versi_stok&quot;: 2,
+      &quot;alasan&quot;: &quot;Pengecekan koleksi demo&quot;,
+      &quot;created_at&quot;: &quot;2026-11-08T15:40:08.000000Z&quot;
+    },
+    {
+      &quot;id&quot;: 11,
+      &quot;buku_id&quot;: 11,
+      &quot;petugas&quot;: {
+        &quot;id&quot;: 1,
+        &quot;nama&quot;: &quot;Petugas Kelompok 2&quot;
+      },
+      &quot;total_sebelum&quot;: 0,
+      &quot;tersedia_sebelum&quot;: 0,
+      &quot;total_sesudah&quot;: 10,
+      &quot;tersedia_sesudah&quot;: 7,
+      &quot;versi_stok&quot;: 1,
+      &quot;alasan&quot;: &quot;Pencatatan buku baru&quot;,
+      &quot;created_at&quot;: &quot;2026-11-08T15:40:05.000000Z&quot;
+    }
+  ],
+  &quot;links&quot;: {
+    &quot;first&quot;: &quot;http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok?page=1&quot;,
+    &quot;last&quot;: &quot;http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok?page=1&quot;,
+    &quot;prev&quot;: null,
+    &quot;next&quot;: null
+  },
+  &quot;meta&quot;: {
+    &quot;current_page&quot;: 1,
+    &quot;from&quot;: 1,
+    &quot;last_page&quot;: 1,
+    &quot;links&quot;: [
+      {
+        &quot;url&quot;: null,
+        &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+        &quot;page&quot;: null,
+        &quot;active&quot;: false
+      },
+      {
+        &quot;url&quot;: &quot;http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok?page=1&quot;,
+        &quot;label&quot;: &quot;1&quot;,
+        &quot;page&quot;: 1,
+        &quot;active&quot;: true
+      },
+      {
+        &quot;url&quot;: null,
+        &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+        &quot;page&quot;: null,
+        &quot;active&quot;: false
+      }
+    ],
+    &quot;path&quot;: &quot;http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok&quot;,
+    &quot;per_page&quot;: 20,
+    &quot;to&quot;: 2,
+    &quot;total&quot;: 2
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 200</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-18"><h2>18 · Arsipkan buku demo</h2><p class="badge">LULUS · HTTP 204 No Content · 179 ms</p><p><strong>DELETE</strong> <code>http://127.0.0.1:8011/api/v1/buku/11</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;9a903fcf-dca6-4b0e-b1e3-69b21919196b&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>(tanpa body)</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 204</li></ul></article><article id="skenario-19"><h2>19 · Buku arsip tidak ditampilkan</h2><p class="badge">LULUS · HTTP 404 Not Found · 288 ms</p><p><strong>GET</strong> <code>http://127.0.0.1:8011/api/v1/buku/11</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;e155de0b-c5ab-41ef-a72f-ce5e5d8df89d&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;NOT_FOUND&quot;,
+    &quot;message&quot;: &quot;Data atau endpoint tidak ditemukan.&quot;,
+    &quot;details&quot;: {}
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 404</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article><article id="skenario-20"><h2>20 · Hapus kategori kosong</h2><p class="badge">LULUS · HTTP 204 No Content · 230 ms</p><p><strong>DELETE</strong> <code>http://127.0.0.1:8011/api/v1/kategori/6</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;fbfbdd18-03d9-44b1-b095-990dfc31a4af&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>(tanpa body)</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 204</li></ul></article><article id="skenario-21"><h2>21 · Logout</h2><p class="badge">LULUS · HTTP 204 No Content · 201 ms</p><p><strong>POST</strong> <code>http://127.0.0.1:8011/api/v1/auth/logout</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;cc3d2a1e-c093-4d12-9569-1ef2bdd044d0&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;0&quot;
+  }
+]</pre><h3>Request body</h3><pre>(tanpa body)</pre><h3>Respons aktual</h3><pre>(tanpa body)</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 204</li></ul></article><article id="skenario-22"><h2>22 · Token tercabut ditolak 401</h2><p class="badge">LULUS · HTTP 401 Unauthorized · 233 ms</p><p><strong>POST</strong> <code>http://127.0.0.1:8011/api/v1/kategori</code></p><h3>Request headers</h3><pre>[
+  {
+    &quot;key&quot;: &quot;Accept&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Type&quot;,
+    &quot;value&quot;: &quot;application/json&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Authorization&quot;,
+    &quot;value&quot;: &quot;[DISAMARKAN]&quot;
+  },
+  {
+    &quot;key&quot;: &quot;User-Agent&quot;,
+    &quot;value&quot;: &quot;PostmanRuntime/7.39.1&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Cache-Control&quot;,
+    &quot;value&quot;: &quot;no-cache&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Postman-Token&quot;,
+    &quot;value&quot;: &quot;15bb58c0-c95a-4993-8985-b8665f13c174&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Host&quot;,
+    &quot;value&quot;: &quot;127.0.0.1:8011&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Accept-Encoding&quot;,
+    &quot;value&quot;: &quot;gzip, deflate, br&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Connection&quot;,
+    &quot;value&quot;: &quot;keep-alive&quot;
+  },
+  {
+    &quot;key&quot;: &quot;Content-Length&quot;,
+    &quot;value&quot;: &quot;34&quot;
+  }
+]</pre><h3>Request body</h3><pre>{
+  &quot;nama&quot;: &quot;Tidak boleh dibuat&quot;
+}</pre><h3>Respons aktual</h3><pre>{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;UNAUTHENTICATED&quot;,
+    &quot;message&quot;: &quot;Silakan login sebagai petugas.&quot;,
+    &quot;details&quot;: {}
+  }
+}</pre><h3>Hasil assertions</h3><ul><li>LULUS — Status 401</li><li>LULUS — Respons JSON</li><li>LULUS — Isi respons sesuai</li></ul></article></body></html>

@@ -2,6 +2,12 @@
 
 Pemeriksaan lokal pada **8 November 2026, WIB**. Ini hasil dari eksekusi pada komputer Bilal, bukan hasil GitHub Actions. Tidak ada klaim deployment publik atau release GitHub.
 
+## Bukti rinci Postman untuk laporan UTS
+
+Pengulangan pada 8 November 2026 pukul 22.40 WIB melalui Newman 6.2.1 menghasilkan **22 request lulus, 60 assertions, 0 kegagalan**. Pengujian ini memakai server Laravel lokal port 8011 dan database SQLite uji terpisah dengan seeder proyek. Akun serta database aplikasi utama tidak diubah; password pada environment lama tidak cocok dengan akun aktif sehingga tidak digunakan untuk hasil akhir ini.
+
+[Ringkasan 22 skenario](postman/bukti-pengujian.md), [bukti PDF](postman/bukti-pengujian.pdf), [rincian HTML](postman/bukti-pengujian.html), dan [hasil JSON](postman/bukti-pengujian.json) memuat request, respons aktual, serta assertions. Password dan token sudah disamarkan. Bukti ini berasal dari eksekusi koleksi Postman melalui Newman, bukan screenshot aplikasi Postman Desktop.
+
 ## Perbesaran font dan keterbacaan
 
 Font teks utama, input dan label formulir terverifikasi **16 px** melalui computed style browser. Font informasi buku, filter, tombol, tabel dan dialog ikut diperbesar; navigasi ponsel disusun dua baris agar tetap terbaca.

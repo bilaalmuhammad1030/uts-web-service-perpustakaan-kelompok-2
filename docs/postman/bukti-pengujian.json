@@ -1,0 +1,1804 @@
+{
+  "title": "Bukti Pengujian Postman — Perpustakaan Kelompok 2",
+  "runner": "Newman 6.2.1 (runner koleksi Postman)",
+  "note": "Hasil request HTTP nyata melalui Newman, bukan screenshot aplikasi Postman Desktop. Lingkungan: Laravel lokal port 8011, database SQLite uji terpisah, data contoh dari seeder proyek. Akun dan database aplikasi utama tidak diubah. Password dan token disamarkan. Metadata dapat memakai sumber eksternal atau fallback sesuai respons aktual.",
+  "started": "2026-11-08T15:40:03.055Z",
+  "completed": "2026-11-08T15:40:12.624Z",
+  "timezone": "Asia/Jakarta",
+  "requests": 22,
+  "assertions": 60,
+  "failedAssertions": 0,
+  "failures": 0,
+  "executions": [
+    {
+      "number": 1,
+      "scenario": "01 · Login petugas",
+      "method": "POST",
+      "url": "http://127.0.0.1:8011/api/v1/auth/login",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "d3df2c92-5604-496c-9d64-e9d5842addc5"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "92"
+        }
+      ],
+      "requestBody": {
+        "email": "petugas@perpustakaan.test",
+        "password": "[DISAMARKAN]"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 691,
+      "responseBody": {
+        "data": {
+          "token": "[DISAMARKAN]",
+          "token_type": "[DISAMARKAN]",
+          "expires_at": "2026-11-08T23:40:03.000000Z",
+          "petugas": {
+            "id": 1,
+            "nama": "Petugas Kelompok 2"
+          }
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 2,
+      "scenario": "02 · Daftar kategori",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/kategori",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "76695dcb-91a7-4d10-b1ca-b31ba3e79799"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 169,
+      "responseBody": {
+        "data": [
+          {
+            "id": 5,
+            "nama": "Ensiklopedia"
+          },
+          {
+            "id": 1,
+            "nama": "Novel"
+          },
+          {
+            "id": 4,
+            "nama": "Pendidikan"
+          },
+          {
+            "id": 2,
+            "nama": "Pengembangan Diri"
+          },
+          {
+            "id": 3,
+            "nama": "Teknologi"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 3,
+      "scenario": "03 · Buat kategori 201 + Location",
+      "method": "POST",
+      "url": "http://127.0.0.1:8011/api/v1/kategori",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "75fda73e-56f9-4e9e-a274-a7bfe2aee69c"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "42"
+        }
+      ],
+      "requestBody": {
+        "nama": "Demo Postman 1794152403867"
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseTimeMs": 179,
+      "responseBody": {
+        "data": {
+          "id": 6,
+          "nama": "Demo Postman 1794152403867"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 4,
+      "scenario": "04 · Detail kategori",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/kategori/6",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "635dbccf-4a94-4096-b785-56d3d9ed67ee"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 132,
+      "responseBody": {
+        "data": {
+          "id": 6,
+          "nama": "Demo Postman 1794152403867"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 5,
+      "scenario": "05 · Edit kategori",
+      "method": "PUT",
+      "url": "http://127.0.0.1:8011/api/v1/kategori/6",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "658b198f-97f4-4424-bacb-e75694b4f2ba"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "42"
+        }
+      ],
+      "requestBody": {
+        "nama": "Kategori Uji 1794152403867"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 257,
+      "responseBody": {
+        "data": {
+          "id": 6,
+          "nama": "Kategori Uji 1794152403867"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 6,
+      "scenario": "06 · Buat buku dan audit awal",
+      "method": "POST",
+      "url": "http://127.0.0.1:8011/api/v1/buku",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "b745de89-774d-476c-8576-832525edb3d7"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "261"
+        }
+      ],
+      "requestBody": {
+        "kode_buku": "PM-1794152403867",
+        "kategori_id": "5",
+        "judul": "Demo Postman 1794152403867",
+        "penulis": "Kelompok 2",
+        "lokasi_rak": "DEMO-01",
+        "jumlah_total": 10,
+        "jumlah_tersedia": 7,
+        "penerbit": "Penerbit Kelompok 2",
+        "tahun_terbit": 2020
+      },
+      "status": 201,
+      "statusText": "Created",
+      "responseTimeMs": 167,
+      "responseBody": {
+        "data": {
+          "id": 11,
+          "kode_buku": "PM-1794152403867",
+          "judul": "Demo Postman 1794152403867",
+          "penulis": "Kelompok 2",
+          "deskripsi": null,
+          "isbn": null,
+          "penerbit": "Penerbit Kelompok 2",
+          "tahun_terbit": 2020,
+          "kategori": {
+            "id": 5,
+            "nama": "Ensiklopedia"
+          },
+          "lokasi_rak": "DEMO-01",
+          "jumlah_total": 10,
+          "jumlah_tersedia": 7,
+          "versi_stok": 1,
+          "stok_diperbarui_at": "2026-11-08T15:40:05.000000Z"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 7,
+      "scenario": "07 · Daftar, cari, filter, urut, pagination",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/buku?q=1794152403867&kategori_id=5&tersedia=1&sort=judul&direction=asc&per_page=1&page=1",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "f6663a03-ae67-44e2-bca0-92541e06bbf2"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 99,
+      "responseBody": {
+        "data": [
+          {
+            "id": 11,
+            "kode_buku": "PM-1794152403867",
+            "judul": "Demo Postman 1794152403867",
+            "penulis": "Kelompok 2",
+            "deskripsi": null,
+            "isbn": null,
+            "penerbit": "Penerbit Kelompok 2",
+            "tahun_terbit": 2020,
+            "kategori": {
+              "id": 5,
+              "nama": "Ensiklopedia"
+            },
+            "lokasi_rak": "DEMO-01",
+            "jumlah_total": 10,
+            "jumlah_tersedia": 7,
+            "versi_stok": 1,
+            "stok_diperbarui_at": "2026-11-08T15:40:05.000000Z"
+          }
+        ],
+        "links": {
+          "first": "http://127.0.0.1:8011/api/v1/buku?q=1794152403867&kategori_id=5&tersedia=1&sort=judul&direction=asc&per_page=1&page=1",
+          "last": "http://127.0.0.1:8011/api/v1/buku?q=1794152403867&kategori_id=5&tersedia=1&sort=judul&direction=asc&per_page=1&page=1",
+          "prev": null,
+          "next": null
+        },
+        "meta": {
+          "current_page": 1,
+          "from": 1,
+          "last_page": 1,
+          "links": [
+            {
+              "url": null,
+              "label": "&laquo; Previous",
+              "page": null,
+              "active": false
+            },
+            {
+              "url": "http://127.0.0.1:8011/api/v1/buku?q=1794152403867&kategori_id=5&tersedia=1&sort=judul&direction=asc&per_page=1&page=1",
+              "label": "1",
+              "page": 1,
+              "active": true
+            },
+            {
+              "url": null,
+              "label": "Next &raquo;",
+              "page": null,
+              "active": false
+            }
+          ],
+          "path": "http://127.0.0.1:8011/api/v1/buku",
+          "per_page": 1,
+          "to": 1,
+          "total": 1
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 8,
+      "scenario": "08 · Detail buku",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "2c73a992-fb47-4848-a62d-dbd52655c005"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 150,
+      "responseBody": {
+        "data": {
+          "id": 11,
+          "kode_buku": "PM-1794152403867",
+          "judul": "Demo Postman 1794152403867",
+          "penulis": "Kelompok 2",
+          "deskripsi": null,
+          "isbn": null,
+          "penerbit": "Penerbit Kelompok 2",
+          "tahun_terbit": 2020,
+          "kategori": {
+            "id": 5,
+            "nama": "Ensiklopedia"
+          },
+          "lokasi_rak": "DEMO-01",
+          "jumlah_total": 10,
+          "jumlah_tersedia": 7,
+          "versi_stok": 1,
+          "stok_diperbarui_at": "2026-11-08T15:40:05.000000Z"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 9,
+      "scenario": "09 · Metadata eksternal atau fallback",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/metadata?q=Laskar%20Pelangi",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "73cd0c97-4722-494a-9192-f3f711844835"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 1790,
+      "responseBody": {
+        "data": {
+          "source": "openlibrary",
+          "fallback": false,
+          "cached": false,
+          "message": "Metadata tambahan; ketersediaan tetap berasal dari database sekolah.",
+          "items": [
+            {
+              "judul": "Laskar Pelangi",
+              "penulis": "Andrea Hirata",
+              "tahun": 2005,
+              "isbn": "9789793062792"
+            },
+            {
+              "judul": "The rainbow troops",
+              "penulis": "Andrea Hirata",
+              "tahun": 2009,
+              "isbn": "0374709408"
+            },
+            {
+              "judul": "Laskar pelangi",
+              "penulis": "Asrori S. Karni",
+              "tahun": 2008,
+              "isbn": "9791142270"
+            },
+            {
+              "judul": "Laskar pelangi song book",
+              "penulis": "Andrea Hirata",
+              "tahun": 2012,
+              "isbn": "9786028811835"
+            },
+            {
+              "judul": "Tian hong zhan dui xiao xue =",
+              "penulis": "Andrea Hirata",
+              "tahun": 2011,
+              "isbn": "9868652383"
+            }
+          ]
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 10,
+      "scenario": "10 · Validasi stok 422",
+      "method": "PATCH",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11/stok",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "cc322a1f-fd20-45a5-b70e-891ede43a433"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "94"
+        }
+      ],
+      "requestBody": {
+        "jumlah_total": 2,
+        "jumlah_tersedia": 3,
+        "versi_stok": 1,
+        "alasan": "Tes validasi"
+      },
+      "status": 422,
+      "statusText": "Unprocessable Content",
+      "responseTimeMs": 143,
+      "responseBody": {
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "Periksa kembali data yang dikirim.",
+          "details": {
+            "jumlah_tersedia": [
+              "Jumlah tersedia harus kurang dari atau sama dengan 2."
+            ]
+          }
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 422",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 11,
+      "scenario": "11 · Data tidak ditemukan 404",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/buku/999999999",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "35d2e6f2-d97c-48fc-be71-cacdc775ceb3"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 404,
+      "statusText": "Not Found",
+      "responseTimeMs": 162,
+      "responseBody": {
+        "error": {
+          "code": "NOT_FOUND",
+          "message": "Data atau endpoint tidak ditemukan.",
+          "details": {}
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 12,
+      "scenario": "12 · Kategori dipakai konflik 409",
+      "method": "DELETE",
+      "url": "http://127.0.0.1:8011/api/v1/kategori/5",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "8a5dc960-c441-49cb-9b6c-512466272334"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 409,
+      "statusText": "Conflict",
+      "responseTimeMs": 261,
+      "responseBody": {
+        "error": {
+          "code": "BUSINESS_CONFLICT",
+          "message": "Kategori masih digunakan buku, termasuk buku yang diarsipkan.",
+          "details": {}
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 13,
+      "scenario": "13 · Edit data deskriptif buku",
+      "method": "PUT",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "32a690e2-5b3e-4b51-bd4b-78288ac4b1f7"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "215"
+        }
+      ],
+      "requestBody": {
+        "kode_buku": "PM-1794152403867",
+        "kategori_id": "5",
+        "judul": "Demo Postman 1794152403867",
+        "penulis": "Kelompok 2",
+        "lokasi_rak": "DEMO-02",
+        "penerbit": "Penerbit Kelompok 2",
+        "tahun_terbit": 2020
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 134,
+      "responseBody": {
+        "data": {
+          "id": 11,
+          "kode_buku": "PM-1794152403867",
+          "judul": "Demo Postman 1794152403867",
+          "penulis": "Kelompok 2",
+          "deskripsi": null,
+          "isbn": null,
+          "penerbit": "Penerbit Kelompok 2",
+          "tahun_terbit": 2020,
+          "kategori": {
+            "id": 5,
+            "nama": "Ensiklopedia"
+          },
+          "lokasi_rak": "DEMO-02",
+          "jumlah_total": 10,
+          "jumlah_tersedia": 7,
+          "versi_stok": 1,
+          "stok_diperbarui_at": "2026-11-08T15:40:05.000000Z"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 14,
+      "scenario": "14 · Transaksi stok berhasil",
+      "method": "PATCH",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11/stok",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "cf461612-18d5-49c5-9861-0f2dde4dbe7b"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "106"
+        }
+      ],
+      "requestBody": {
+        "jumlah_total": 10,
+        "jumlah_tersedia": 5,
+        "versi_stok": 1,
+        "alasan": "Pengecekan koleksi demo"
+      },
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 150,
+      "responseBody": {
+        "data": {
+          "id": 11,
+          "kode_buku": "PM-1794152403867",
+          "judul": "Demo Postman 1794152403867",
+          "penulis": "Kelompok 2",
+          "deskripsi": null,
+          "isbn": null,
+          "penerbit": "Penerbit Kelompok 2",
+          "tahun_terbit": 2020,
+          "kategori": {
+            "id": 5,
+            "nama": "Ensiklopedia"
+          },
+          "lokasi_rak": "DEMO-02",
+          "jumlah_total": 10,
+          "jumlah_tersedia": 5,
+          "versi_stok": 2,
+          "stok_diperbarui_at": "2026-11-08T15:40:08.000000Z"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 15,
+      "scenario": "15 · Versi lama konflik 409",
+      "method": "PATCH",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11/stok",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "2ea84c75-7f11-4d48-a6a7-4539dab6436f"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "102"
+        }
+      ],
+      "requestBody": {
+        "jumlah_total": 10,
+        "jumlah_tersedia": 2,
+        "versi_stok": 1,
+        "alasan": "Simulasi layar lama"
+      },
+      "status": 409,
+      "statusText": "Conflict",
+      "responseTimeMs": 166,
+      "responseBody": {
+        "error": {
+          "code": "BUSINESS_CONFLICT",
+          "message": "Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.",
+          "details": {}
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 16,
+      "scenario": "16 · Konflik tidak mengubah stok",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "6a65353c-f489-4b5b-8ca6-455eec03c4f1"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 736,
+      "responseBody": {
+        "data": {
+          "id": 11,
+          "kode_buku": "PM-1794152403867",
+          "judul": "Demo Postman 1794152403867",
+          "penulis": "Kelompok 2",
+          "deskripsi": null,
+          "isbn": null,
+          "penerbit": "Penerbit Kelompok 2",
+          "tahun_terbit": 2020,
+          "kategori": {
+            "id": 5,
+            "nama": "Ensiklopedia"
+          },
+          "lokasi_rak": "DEMO-02",
+          "jumlah_total": 10,
+          "jumlah_tersedia": 5,
+          "versi_stok": 2,
+          "stok_diperbarui_at": "2026-11-08T15:40:08.000000Z"
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 17,
+      "scenario": "17 · Audit konsisten dengan stok",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "6ea278d7-8c05-4473-96ef-6e5a4149c3b2"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 200,
+      "statusText": "OK",
+      "responseTimeMs": 544,
+      "responseBody": {
+        "data": [
+          {
+            "id": 12,
+            "buku_id": 11,
+            "petugas": {
+              "id": 1,
+              "nama": "Petugas Kelompok 2"
+            },
+            "total_sebelum": 10,
+            "tersedia_sebelum": 7,
+            "total_sesudah": 10,
+            "tersedia_sesudah": 5,
+            "versi_stok": 2,
+            "alasan": "Pengecekan koleksi demo",
+            "created_at": "2026-11-08T15:40:08.000000Z"
+          },
+          {
+            "id": 11,
+            "buku_id": 11,
+            "petugas": {
+              "id": 1,
+              "nama": "Petugas Kelompok 2"
+            },
+            "total_sebelum": 0,
+            "tersedia_sebelum": 0,
+            "total_sesudah": 10,
+            "tersedia_sesudah": 7,
+            "versi_stok": 1,
+            "alasan": "Pencatatan buku baru",
+            "created_at": "2026-11-08T15:40:05.000000Z"
+          }
+        ],
+        "links": {
+          "first": "http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok?page=1",
+          "last": "http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok?page=1",
+          "prev": null,
+          "next": null
+        },
+        "meta": {
+          "current_page": 1,
+          "from": 1,
+          "last_page": 1,
+          "links": [
+            {
+              "url": null,
+              "label": "&laquo; Previous",
+              "page": null,
+              "active": false
+            },
+            {
+              "url": "http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok?page=1",
+              "label": "1",
+              "page": 1,
+              "active": true
+            },
+            {
+              "url": null,
+              "label": "Next &raquo;",
+              "page": null,
+              "active": false
+            }
+          ],
+          "path": "http://127.0.0.1:8011/api/v1/buku/11/riwayat-stok",
+          "per_page": 20,
+          "to": 2,
+          "total": 2
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 18,
+      "scenario": "18 · Arsipkan buku demo",
+      "method": "DELETE",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "9a903fcf-dca6-4b0e-b1e3-69b21919196b"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 204,
+      "statusText": "No Content",
+      "responseTimeMs": 179,
+      "responseBody": null,
+      "assertions": [
+        {
+          "name": "Status 204",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 19,
+      "scenario": "19 · Buku arsip tidak ditampilkan",
+      "method": "GET",
+      "url": "http://127.0.0.1:8011/api/v1/buku/11",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "e155de0b-c5ab-41ef-a72f-ce5e5d8df89d"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 404,
+      "statusText": "Not Found",
+      "responseTimeMs": 288,
+      "responseBody": {
+        "error": {
+          "code": "NOT_FOUND",
+          "message": "Data atau endpoint tidak ditemukan.",
+          "details": {}
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 20,
+      "scenario": "20 · Hapus kategori kosong",
+      "method": "DELETE",
+      "url": "http://127.0.0.1:8011/api/v1/kategori/6",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "fbfbdd18-03d9-44b1-b095-990dfc31a4af"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        }
+      ],
+      "requestBody": null,
+      "status": 204,
+      "statusText": "No Content",
+      "responseTimeMs": 230,
+      "responseBody": null,
+      "assertions": [
+        {
+          "name": "Status 204",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 21,
+      "scenario": "21 · Logout",
+      "method": "POST",
+      "url": "http://127.0.0.1:8011/api/v1/auth/logout",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "cc3d2a1e-c093-4d12-9569-1ef2bdd044d0"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "0"
+        }
+      ],
+      "requestBody": null,
+      "status": 204,
+      "statusText": "No Content",
+      "responseTimeMs": 201,
+      "responseBody": null,
+      "assertions": [
+        {
+          "name": "Status 204",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "number": 22,
+      "scenario": "22 · Token tercabut ditolak 401",
+      "method": "POST",
+      "url": "http://127.0.0.1:8011/api/v1/kategori",
+      "requestHeaders": [
+        {
+          "key": "Accept",
+          "value": "application/json"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Authorization",
+          "value": "[DISAMARKAN]"
+        },
+        {
+          "key": "User-Agent",
+          "value": "PostmanRuntime/7.39.1"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Postman-Token",
+          "value": "15bb58c0-c95a-4993-8985-b8665f13c174"
+        },
+        {
+          "key": "Host",
+          "value": "127.0.0.1:8011"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br"
+        },
+        {
+          "key": "Connection",
+          "value": "keep-alive"
+        },
+        {
+          "key": "Content-Length",
+          "value": "34"
+        }
+      ],
+      "requestBody": {
+        "nama": "Tidak boleh dibuat"
+      },
+      "status": 401,
+      "statusText": "Unauthorized",
+      "responseTimeMs": 233,
+      "responseBody": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "Silakan login sebagai petugas.",
+          "details": {}
+        }
+      },
+      "assertions": [
+        {
+          "name": "Status 401",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Respons JSON",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "Isi respons sesuai",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": true
+    }
+  ]
+}
