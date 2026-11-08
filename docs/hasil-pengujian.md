@@ -4,7 +4,7 @@ Pemeriksaan lokal pada **8 November 2026, WIB**. Ini hasil dari eksekusi pada ko
 
 ## Lingkungan
 
-Windows, PHP 8.5.7, Composer 2.10.1, Git 2.55.0.windows.2, Node.js 24.16.0, Laravel 13.40.0, PHPUnit 12.5.43. Database aplikasi dan pengujian memakai MariaDB 10.4.17 melalui driver Laravel `mysql` pada instance lokal tersendiri `127.0.0.1:3307`. Database RDM pada port 3203 tidak diubah. MySQL 8.4 baru disiapkan dalam workflow CI; belum dijalankan di GitHub.
+Windows, PHP 8.5.7, Composer 2.10.1, Git 2.55.0.windows.2, Node.js 24.16.0, Laravel 13.40.0, PHPUnit 12.5.43. Database aplikasi dan pengujian memakai MariaDB 10.4.17 melalui driver Laravel `mysql` pada instance lokal tersendiri `127.0.0.1:3307`. Database RDM pada port 3203 tidak diubah. MySQL 8.4 sudah dijalankan dalam workflow GitHub; lihat catatan CI di bawah.
 
 ## Ringkasan akhir setelah penyesuaian dokumen kelompok
 
@@ -51,6 +51,14 @@ Pada eksekusi akhir, runner Laravel menghasilkan ringkasan:
 ```
 
 Waktu pengujian merupakan satu hasil eksekusi, dapat berbeda pada percobaan berikutnya. Jangan mengklaim dua suite ini sebagai 58 kasus unik; banyak kasus yang sama dijalankan dengan mesin database berbeda. Suite default memuat 27 tes LibraryApi, dua tes dasar Laravel, dan satu tes konkurensi khusus MySQL yang dilewati. Suite MySQL memuat 27 tes LibraryApi, satu tes halaman dasar, dan satu tes konkurensi.
+
+## Catatan eksekusi GitHub Actions
+
+Kode diunggah ke repository publik setelah persetujuan Bilal. Pada [workflow pertama](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/actions/runs/42480301529), seluruh 29 tes MySQL lulus dengan 169 assertions, termasuk uji dua proses. Namun perintah `php artisan test --configuration=phpunit.mysql.xml --compact` mengembalikan exit code 1 karena peringatan `Option --configuration cannot be used more than once`. Jadi workflow pertama gagal meskipun assertions lulus.
+
+Workflow dan panduan README diperbaiki untuk memanggil runner langsung: `php vendor/bin/phpunit --configuration phpunit.mysql.xml`. Ini menjalankan suite yang sama tanpa argumen konfigurasi ganda dan tanpa menonaktifkan tes atau peringatan. Perintah Artisan pada bagian log lokal di atas dipertahankan sebagai catatan eksekusi sebelumnya. Untuk menjalankan suite MySQL berikutnya, gunakan perintah PHPUnit langsung tersebut. Hasil akhir CI harus dibaca pada tab Actions untuk commit terbaru.
+
+Verifikasi perintah pengganti pada MariaDB lokal: exit code 0, 29 tes lulus, 169 assertions, durasi 13,856 detik pada eksekusi ini. Percobaan awal dari sandbox dihentikan karena akses koneksi lokal tidak berjalan; hasil lulus berasal dari pengulangan dengan akses lingkungan pengguna.
 
 ## Cakupan tes feature
 

@@ -152,7 +152,7 @@ Di komputer ini PHP belum mempunyai CA bundle. Bundle resmi [curl/Mozilla](https
 
 ```powershell
 php artisan test --compact
-php artisan test --configuration=phpunit.mysql.xml --compact
+php vendor/bin/phpunit --configuration phpunit.mysql.xml
 npm.cmd ci --ignore-scripts
 npm.cmd run lint:api
 node --check public/js/perpustakaan.js

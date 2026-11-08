@@ -40,7 +40,7 @@ jobs:
       - run: cp .env.example .env
       - run: php artisan key:generate --no-interaction
       - run: php artisan test --compact
-      - run: php artisan test --configuration=phpunit.mysql.xml --compact
+      - run: php vendor/bin/phpunit --configuration phpunit.mysql.xml
       - run: php vendor/bin/pint --test
       - run: npm ci --ignore-scripts
       - run: npm run lint:api
