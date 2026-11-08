@@ -6,19 +6,29 @@ Proyek UTS Pemrograman Web Service, **Kelompok 2**, kandidat release **v1.1.0**.
 
 Repository kelompok: [bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2). Status pengunggahan dan persiapan release dicatat di [checklist release](docs/release.md).
 
-- **Mochamad Bilal Muadzin — 23215025:** program.
-- **Nofia:** laporan dan PPT berdasarkan program yang sudah dijalankan.
+## Anggota Kelompok 2
+
+| No. | Nama | NIM |
+| --- | --- | --- |
+| 1 | Damiri | 23215020 |
+| 2 | Mochamad Bilal Muadzin | 23215025 |
+| 3 | Nofia Lindawati | 23215034 |
+| 4 | Viryal Arliyani | 23215033 |
+| 5 | Septina Asti Nabila | 23215005 |
+
+Mochamad Bilal Muadzin mengerjakan program dengan bantuan AI. Nofia Lindawati menyusun laporan dan PPT berdasarkan hasil program. Usulan pekerjaan kelima anggota dan alur PR/review dijelaskan pada [rencana kontribusi](docs/kontribusi.md).
+
+Daftar nama ini adalah identitas kelompok. Akses upload memerlukan undangan collaborator ke akun GitHub masing-masing; username empat anggota selain Bilal masih perlu diberikan.
 
 Siswa mencari buku berdasarkan judul/penulis, memfilter kategori dan ketersediaan, melihat detail, rak, jumlah tersedia, dan waktu pembaruan. Petugas login, mengelola kategori/buku, dan mencatat perubahan stok. Peminjaman, pengembalian, denda, dan reservasi berada di luar lingkup.
 
 ## Membuka di komputer Bilal
 
-Proyek baru ada di subfolder `perpustakaan`. Website madrasah lama dan ZIP cadangannya tidak diubah.
+Proyek UTS sudah dipisahkan ke folder Desktop `UTS Perpustakaan Kelompok 2`, terpisah dari website madrasah. Program Laravel berada di subfolder `perpustakaan`, database lokal di `.local-mysql`, dan dokumen di `Hasil UTS Kelompok 2`. Website madrasah lama dan ZIP cadangannya tetap berada di folder lama.
 
-Pada terminal PowerShell VS Code yang masih berada di folder induk, jalankan:
+Buka folder `C:\Users\HP\OneDrive\Desktop\UTS Perpustakaan Kelompok 2\perpustakaan` di VS Code. Pada terminal PowerShell di folder program tersebut, jalankan:
 
 ```powershell
-cd .\perpustakaan
 powershell -ExecutionPolicy Bypass -File .\scripts\mulai.ps1
 ```
 
@@ -32,7 +42,7 @@ Email demo: `petugas@perpustakaan.test`. Kata sandi dibuat acak saat pemasangan:
 
 MariaDB khusus proyek berada di folder induk `.local-mysql`, mendengarkan **127.0.0.1:3307**, dengan database `perpustakaan` dan `perpustakaan_test`. Binary yang dipakai berasal dari `C:/RDMMadrasah/mysql/bin`; data dan pengaturan RDM port 3203 tidak diubah. Script mulai menjalankan instance terpisah ini bila belum aktif, kemudian menjalankan Laravel. Pada pemasangan lokal ini pengguna database adalah root tanpa kata sandi, hanya untuk instance pengembangan yang terikat loopback. Jika memakai server database sendiri, isi kredensial akun database sendiri pada `.env`.
 
-Jika terminal sudah berada di subfolder `perpustakaan`, langsung jalankan perintah kedua. `Ctrl+C` menghentikan server Laravel. Jika port 8000 sedang dipakai, hentikan terminal server lama terlebih dahulu. Laravel tidak dibuka dengan Live Server dan tidak dijalankan dengan klik dua kali file HTML.
+Jika terminal masih berada di folder `UTS Perpustakaan Kelompok 2`, jalankan `cd .\perpustakaan` terlebih dahulu. `Ctrl+C` menghentikan server Laravel. Jika port 8000 sedang dipakai, hentikan terminal server lama terlebih dahulu. Laravel tidak dibuka dengan Live Server dan tidak dijalankan dengan klik dua kali file HTML.
 
 ## Teknologi dan berkas penting
 
