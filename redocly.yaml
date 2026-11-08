@@ -1,0 +1,5 @@
+extends:
+  - recommended
+rules:
+  # GET /kategori hanya membaca daftar tanpa parameter; tidak memiliki error 4xx sendiri.
+  operation-4xx-response: off

@@ -1,0 +1,112 @@
+[
+  {
+    "kode_buku": "BK001",
+    "judul": "Laskar Pelangi",
+    "penulis": "Andrea Hirata",
+    "penerbit": "Bentang Pustaka",
+    "tahun_terbit": 2005,
+    "kategori": "Novel",
+    "jumlah_total": 8,
+    "jumlah_tersedia": 5,
+    "lokasi_rak": "A-01"
+  },
+  {
+    "kode_buku": "BK002",
+    "judul": "Bumi",
+    "penulis": "Tere Liye",
+    "penerbit": "Gramedia Pustaka Utama",
+    "tahun_terbit": 2014,
+    "kategori": "Novel",
+    "jumlah_total": 10,
+    "jumlah_tersedia": 7,
+    "lokasi_rak": "A-02"
+  },
+  {
+    "kode_buku": "BK003",
+    "judul": "Negeri 5 Menara",
+    "penulis": "Ahmad Fuadi",
+    "penerbit": "Gramedia Pustaka Utama",
+    "tahun_terbit": 2009,
+    "kategori": "Novel",
+    "jumlah_total": 7,
+    "jumlah_tersedia": 4,
+    "lokasi_rak": "A-03"
+  },
+  {
+    "kode_buku": "BK004",
+    "judul": "Bumi Manusia",
+    "penulis": "Pramoedya Ananta Toer",
+    "penerbit": "Lentera Dipantara",
+    "tahun_terbit": 1980,
+    "kategori": "Novel",
+    "jumlah_total": 6,
+    "jumlah_tersedia": 3,
+    "lokasi_rak": "A-04"
+  },
+  {
+    "kode_buku": "BK005",
+    "judul": "Atomic Habits",
+    "penulis": "James Clear",
+    "penerbit": "Gramedia Pustaka Utama",
+    "tahun_terbit": 2019,
+    "kategori": "Pengembangan Diri",
+    "jumlah_total": 9,
+    "jumlah_tersedia": 6,
+    "lokasi_rak": "B-01"
+  },
+  {
+    "kode_buku": "BK006",
+    "judul": "Filosofi Teras",
+    "penulis": "Henry Manampiring",
+    "penerbit": "Kompas",
+    "tahun_terbit": 2018,
+    "kategori": "Pengembangan Diri",
+    "jumlah_total": 8,
+    "jumlah_tersedia": 5,
+    "lokasi_rak": "B-02"
+  },
+  {
+    "kode_buku": "BK007",
+    "judul": "Algoritma dan Pemrograman",
+    "penulis": "Rosa A.S. & M. Shalahuddin",
+    "penerbit": "Informatika",
+    "tahun_terbit": 2018,
+    "kategori": "Teknologi",
+    "jumlah_total": 5,
+    "jumlah_tersedia": 3,
+    "lokasi_rak": "C-01"
+  },
+  {
+    "kode_buku": "BK008",
+    "judul": "Basis Data",
+    "penulis": "Fathansyah",
+    "penerbit": "Informatika",
+    "tahun_terbit": 2018,
+    "kategori": "Teknologi",
+    "jumlah_total": 6,
+    "jumlah_tersedia": 4,
+    "lokasi_rak": "C-02"
+  },
+  {
+    "kode_buku": "BK009",
+    "judul": "Matematika Dasar",
+    "penulis": "Erman Suherman",
+    "penerbit": "Erlangga",
+    "tahun_terbit": 2017,
+    "kategori": "Pendidikan",
+    "jumlah_total": 5,
+    "jumlah_tersedia": 2,
+    "lokasi_rak": "D-01"
+  },
+  {
+    "kode_buku": "BK010",
+    "judul": "Ensiklopedia Sains",
+    "penulis": "Tim Edukasi Nusantara",
+    "penerbit": "Bhuana Ilmu Populer",
+    "tahun_terbit": 2020,
+    "kategori": "Ensiklopedia",
+    "jumlah_total": 4,
+    "jumlah_tersedia": 4,
+    "lokasi_rak": "E-01"
+  }
+]

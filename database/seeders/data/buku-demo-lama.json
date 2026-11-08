@@ -1,0 +1,134 @@
+[
+  {
+    "kode_buku": "BK-001",
+    "judul": "Laskar Pelangi",
+    "penulis": "Andrea Hirata",
+    "deskripsi": "Kisah persahabatan dan semangat belajar anak-anak Belitung.",
+    "isbn": null,
+    "lokasi_rak": "A-01",
+    "jumlah_total": 12,
+    "jumlah_tersedia": 8,
+    "kategori": "Sastra"
+  },
+  {
+    "kode_buku": "BK-002",
+    "judul": "Bumi Manusia",
+    "penulis": "Pramoedya Ananta Toer",
+    "deskripsi": "Novel sejarah tentang pendidikan, kemanusiaan, dan perjalanan Minke.",
+    "isbn": null,
+    "lokasi_rak": "A-02",
+    "jumlah_total": 8,
+    "jumlah_tersedia": 3,
+    "kategori": "Sastra"
+  },
+  {
+    "kode_buku": "BK-003",
+    "judul": "Negeri 5 Menara",
+    "penulis": "Ahmad Fuadi",
+    "deskripsi": "Perjuangan para santri meraih mimpi melalui ketekunan.",
+    "isbn": null,
+    "lokasi_rak": "A-01",
+    "jumlah_total": 10,
+    "jumlah_tersedia": 6,
+    "kategori": "Sastra"
+  },
+  {
+    "kode_buku": "BK-004",
+    "judul": "Sang Pemimpi",
+    "penulis": "Andrea Hirata",
+    "deskripsi": "Cerita persahabatan dan cita-cita melanjutkan pendidikan.",
+    "isbn": null,
+    "lokasi_rak": "A-01",
+    "jumlah_total": 7,
+    "jumlah_tersedia": 0,
+    "kategori": "Sastra"
+  },
+  {
+    "kode_buku": "BK-005",
+    "judul": "Matematika untuk SMA Kelas X",
+    "penulis": "Tim Penyusun Sekolah",
+    "deskripsi": "Contoh koleksi pelajaran: aljabar, fungsi, dan geometri.",
+    "isbn": null,
+    "lokasi_rak": "B-01",
+    "jumlah_total": 20,
+    "jumlah_tersedia": 15,
+    "kategori": "Pelajaran"
+  },
+  {
+    "kode_buku": "BK-006",
+    "judul": "Fisika Dasar",
+    "penulis": "Tim Penyusun Sekolah",
+    "deskripsi": "Contoh koleksi pelajaran: gerak, gaya, dan energi.",
+    "isbn": null,
+    "lokasi_rak": "B-02",
+    "jumlah_total": 15,
+    "jumlah_tersedia": 9,
+    "kategori": "Pelajaran"
+  },
+  {
+    "kode_buku": "BK-007",
+    "judul": "Biologi untuk SMA",
+    "penulis": "Tim Penyusun Sekolah",
+    "deskripsi": "Contoh koleksi pelajaran: sel, makhluk hidup, dan ekosistem.",
+    "isbn": null,
+    "lokasi_rak": "B-03",
+    "jumlah_total": 14,
+    "jumlah_tersedia": 12,
+    "kategori": "Pelajaran"
+  },
+  {
+    "kode_buku": "BK-008",
+    "judul": "Dasar Pemrograman Web",
+    "penulis": "Tim Laboratorium Komputer",
+    "deskripsi": "Contoh koleksi teknologi: pengenalan HTML, CSS, dan JavaScript.",
+    "isbn": null,
+    "lokasi_rak": "C-01",
+    "jumlah_total": 10,
+    "jumlah_tersedia": 7,
+    "kategori": "Teknologi"
+  },
+  {
+    "kode_buku": "BK-009",
+    "judul": "Belajar Basis Data",
+    "penulis": "Tim Laboratorium Komputer",
+    "deskripsi": "Contoh koleksi teknologi: relasi tabel dan pengantar SQL.",
+    "isbn": null,
+    "lokasi_rak": "C-02",
+    "jumlah_total": 9,
+    "jumlah_tersedia": 5,
+    "kategori": "Teknologi"
+  },
+  {
+    "kode_buku": "BK-010",
+    "judul": "Atlas Indonesia",
+    "penulis": "Tim Referensi Perpustakaan",
+    "deskripsi": "Contoh koleksi referensi: peta wilayah Indonesia.",
+    "isbn": null,
+    "lokasi_rak": "D-01",
+    "jumlah_total": 5,
+    "jumlah_tersedia": 4,
+    "kategori": "Referensi"
+  },
+  {
+    "kode_buku": "BK-011",
+    "judul": "Sejarah Kebudayaan Islam",
+    "penulis": "Tim Penyusun Madrasah",
+    "deskripsi": "Contoh koleksi keagamaan untuk pembelajaran di madrasah.",
+    "isbn": null,
+    "lokasi_rak": "E-01",
+    "jumlah_total": 16,
+    "jumlah_tersedia": 11,
+    "kategori": "Keagamaan"
+  },
+  {
+    "kode_buku": "BK-012",
+    "judul": "Kamus Bahasa Indonesia",
+    "penulis": "Tim Referensi Perpustakaan",
+    "deskripsi": "Contoh koleksi referensi kosakata bahasa Indonesia.",
+    "isbn": null,
+    "lokasi_rak": "D-02",
+    "jumlah_total": 6,
+    "jumlah_tersedia": 2,
+    "kategori": "Referensi"
+  }
+]

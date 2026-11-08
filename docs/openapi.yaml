@@ -1,0 +1,1730 @@
+openapi: 3.0.3
+info:
+  title: 'Web Service Ketersediaan Buku Perpustakaan — Kelompok 2'
+  version: 1.1.0
+  description: 'Kontrak v1.1.0 untuk API /api/v1. Program: Mochamad Bilal Muadzin (23215025); laporan/PPT: Nofia. Hanya informasi ketersediaan; peminjaman, pengembalian, denda dan reservasi di luar lingkup. Waktu respons ISO-8601 UTC, tampilan WIB.'
+  license:
+    name: MIT
+    url: 'https://opensource.org/license/mit'
+servers:
+  -
+    url: 'http://127.0.0.1:8000/api/v1'
+    description: 'Pengembangan lokal'
+tags:
+  -
+    name: Buku
+    description: 'Koleksi perpustakaan.'
+  -
+    name: Kategori
+    description: 'Pengelompokan koleksi.'
+  -
+    name: Stok
+    description: 'Ketersediaan dan audit stok.'
+  -
+    name: Autentikasi
+    description: 'Akses petugas.'
+  -
+    name: Metadata
+    description: 'Informasi tambahan dari penyedia luar.'
+security: []
+paths:
+  /auth/login:
+    post:
+      operationId: loginPetugas
+      summary: 'Login petugas'
+      tags:
+        - Autentikasi
+      description: 'Token Bearer berlaku 8 jam, disimpan sebagai SHA-256 di database. Satu token aktif per petugas; login ulang mengganti token sebelumnya. Maksimal 5 percobaan/menit per IP.'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: petugas@perpustakaan.test
+              password: isi-kata-sandi-lokal
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    email:
+                      - 'Email wajib diisi.'
+        429:
+          description: 'Terlalu banyak permintaan. Coba lagi sebentar.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: TOO_MANY_REQUESTS
+                  message: 'Terlalu banyak permintaan. Coba lagi sebentar.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  /auth/logout:
+    post:
+      operationId: logoutPetugas
+      summary: 'Cabut token petugas'
+      tags:
+        - Autentikasi
+      description: 'Cabut token petugas'
+      security:
+        -
+          PetugasBearer: []
+      responses:
+        204:
+          description: 'Berhasil, tanpa body.'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  /buku:
+    get:
+      operationId: daftarBuku
+      summary: 'Daftar, cari, filter, urutkan dan halaman buku'
+      tags:
+        - Buku
+      description: 'Daftar, cari, filter, urutkan dan halaman buku'
+      security: []
+      parameters:
+        -
+          in: query
+          name: q
+          schema:
+            type: string
+            maxLength: 200
+          description: 'Cari judul atau penulis, tidak peka kapital pada database MySQL yang dipakai.'
+        -
+          in: query
+          name: kategori_id
+          schema:
+            type: integer
+            minimum: 1
+          description: 'ID kategori yang ada.'
+        -
+          in: query
+          name: tersedia
+          schema:
+            type: integer
+            enum:
+              - 0
+              - 1
+          description: '1: stok > 0; 0: stok kosong.'
+        -
+          in: query
+          name: sort
+          schema:
+            type: string
+            enum:
+              - judul
+              - penulis
+              - jumlah_tersedia
+              - stok_diperbarui_at
+            default: judul
+          description: 'Kolom pengurutan.'
+        -
+          in: query
+          name: direction
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+          description: 'Arah urutan; ID menjadi urutan kedua.'
+        -
+          in: query
+          name: per_page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 6
+          description: 'Jumlah data per halaman.'
+        -
+          in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: 'Nomor halaman.'
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BukuPage'
+              example:
+                data:
+                  -
+                    id: 1
+                    kode_buku: BK001
+                    judul: 'Laskar Pelangi'
+                    penulis: 'Andrea Hirata'
+                    deskripsi: 'Kisah persahabatan dan semangat belajar.'
+                    isbn: null
+                    kategori:
+                      id: 1
+                      nama: Novel
+                    lokasi_rak: A-01
+                    jumlah_total: 8
+                    jumlah_tersedia: 5
+                    versi_stok: 1
+                    stok_diperbarui_at: '2026-11-08T10:00:00.000000Z'
+                    penerbit: 'Penerbit Kelompok 2'
+                    tahun_terbit: 2020
+                links:
+                  first: 'http://127.0.0.1:8000/api/v1/buku?page=1'
+                  last: 'http://127.0.0.1:8000/api/v1/buku?page=1'
+                  prev: null
+                  next: null
+                meta:
+                  current_page: 1
+                  last_page: 1
+                  per_page: 6
+                  total: 1
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    jumlah_tersedia:
+                      - 'Jumlah tersedia harus kurang dari atau sama dengan jumlah_total.'
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+    post:
+      operationId: buatBuku
+      summary: 'Catat buku dan stok awal'
+      tags:
+        - Buku
+      description: 'Kode buku unik termasuk buku arsip. Buku dan riwayat awal disimpan dalam satu transaksi.'
+      security:
+        -
+          PetugasBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BukuCreate'
+            example:
+              kode_buku: DEMO-001
+              kategori_id: 1
+              judul: 'Belajar Web Service'
+              penulis: 'Kelompok 2'
+              lokasi_rak: C-01
+              jumlah_total: 10
+              jumlah_tersedia: 7
+              penerbit: 'Penerbit Kelompok 2'
+              tahun_terbit: 2020
+      responses:
+        201:
+          description: 'Data berhasil dibuat.'
+          headers:
+            Location:
+              description: 'URL detail data baru.'
+              schema:
+                type: string
+                format: uri
+              example: 'http://127.0.0.1:8000/api/v1/buku/13'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BukuResponse'
+              example:
+                data:
+                  id: 13
+                  kode_buku: BK001
+                  judul: 'Laskar Pelangi'
+                  penulis: 'Andrea Hirata'
+                  deskripsi: 'Kisah persahabatan dan semangat belajar.'
+                  isbn: null
+                  kategori:
+                    id: 1
+                    nama: Novel
+                  lokasi_rak: A-01
+                  jumlah_total: 8
+                  jumlah_tersedia: 5
+                  versi_stok: 1
+                  stok_diperbarui_at: '2026-11-08T10:00:00.000000Z'
+                  penerbit: 'Penerbit Kelompok 2'
+                  tahun_terbit: 2020
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        409:
+          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: BUSINESS_CONFLICT
+                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  details: {}
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    jumlah_tersedia:
+                      - 'Jumlah tersedia harus kurang dari atau sama dengan jumlah_total.'
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  '/buku/{buku}':
+    parameters:
+      -
+        in: path
+        name: buku
+        required: true
+        description: 'ID data.'
+        schema:
+          type: integer
+          minimum: 1
+    get:
+      operationId: detailBuku
+      summary: 'Detail dan ketersediaan buku'
+      tags:
+        - Buku
+      description: 'Detail dan ketersediaan buku'
+      security: []
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BukuResponse'
+              example:
+                data:
+                  id: 1
+                  kode_buku: BK001
+                  judul: 'Laskar Pelangi'
+                  penulis: 'Andrea Hirata'
+                  deskripsi: 'Kisah persahabatan dan semangat belajar.'
+                  isbn: null
+                  kategori:
+                    id: 1
+                    nama: Novel
+                  lokasi_rak: A-01
+                  jumlah_total: 8
+                  jumlah_tersedia: 5
+                  versi_stok: 1
+                  stok_diperbarui_at: '2026-11-08T10:00:00.000000Z'
+                  penerbit: 'Penerbit Kelompok 2'
+                  tahun_terbit: 2020
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+    put:
+      operationId: ubahBuku
+      summary: 'Ubah data deskriptif buku'
+      tags:
+        - Buku
+      description: 'Semua field wajib, termasuk penerbit dan tahun_terbit, harus dikirim. Jumlah dan versi stok dilarang; gunakan endpoint stok. Tahun 1901 sampai tahun berjalan (maksimal 2155).'
+      security:
+        -
+          PetugasBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BukuUpdate'
+            example:
+              kode_buku: DEMO-001
+              kategori_id: 1
+              judul: 'Belajar Web Service'
+              penulis: 'Kelompok 2'
+              lokasi_rak: C-01
+              penerbit: 'Penerbit Kelompok 2'
+              tahun_terbit: 2020
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BukuResponse'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        409:
+          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: BUSINESS_CONFLICT
+                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  details: {}
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    jumlah_tersedia:
+                      - 'Jumlah tersedia harus kurang dari atau sama dengan jumlah_total.'
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+    delete:
+      operationId: hapusBuku
+      summary: 'Arsipkan buku dari katalog'
+      tags:
+        - Buku
+      description: 'Soft delete. Riwayat dipertahankan dan kode buku tidak dapat dipakai ulang.'
+      security:
+        -
+          PetugasBearer: []
+      responses:
+        204:
+          description: 'Berhasil, tanpa body.'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        409:
+          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: BUSINESS_CONFLICT
+                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  '/buku/{buku}/stok':
+    parameters:
+      -
+        in: path
+        name: buku
+        required: true
+        description: 'ID data.'
+        schema:
+          type: integer
+          minimum: 1
+    patch:
+      operationId: perbaruiStok
+      summary: 'Perbarui stok secara atomik'
+      tags:
+        - Stok
+      description: 'DB::transaction dengan lockForUpdate, validasi versi, pembaruan buku dan pencatatan audit. Gagal audit membatalkan seluruh perubahan. Deadlock dicoba ulang maksimal 3 kali. Input tidak valid 422; versi lama 409. Kirim nilai absolut, bukan delta.'
+      security:
+        -
+          PetugasBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StokUpdate'
+            example:
+              jumlah_total: 10
+              jumlah_tersedia: 5
+              versi_stok: 1
+              alasan: 'Pengecekan rak'
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BukuResponse'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        409:
+          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: BUSINESS_CONFLICT
+                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  details: {}
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    jumlah_tersedia:
+                      - 'Jumlah tersedia harus kurang dari atau sama dengan jumlah_total.'
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  '/buku/{buku}/riwayat-stok':
+    parameters:
+      -
+        in: path
+        name: buku
+        required: true
+        description: 'ID data.'
+        schema:
+          type: integer
+          minimum: 1
+    get:
+      operationId: riwayatStok
+      summary: 'Riwayat perubahan stok'
+      tags:
+        - Stok
+      description: 'Riwayat perubahan stok'
+      security:
+        -
+          PetugasBearer: []
+      parameters:
+        -
+          in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: '20 catatan per halaman, terbaru terlebih dahulu.'
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiwayatPage'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  /kategori:
+    get:
+      operationId: daftarKategori
+      summary: 'Daftar seluruh kategori'
+      tags:
+        - Kategori
+      description: 'Daftar seluruh kategori'
+      security: []
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KategoriList'
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+    post:
+      operationId: buatKategori
+      summary: 'Tambah kategori'
+      tags:
+        - Kategori
+      description: 'Tambah kategori'
+      security:
+        -
+          PetugasBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KategoriWrite'
+            example:
+              nama: Sejarah
+      responses:
+        201:
+          description: 'Data berhasil dibuat.'
+          headers:
+            Location:
+              description: 'URL detail data baru.'
+              schema:
+                type: string
+                format: uri
+              example: 'http://127.0.0.1:8000/api/v1/kategori/6'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KategoriResponse'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        409:
+          description: 'Kategori masih digunakan buku, termasuk buku yang diarsipkan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: BUSINESS_CONFLICT
+                  message: 'Kategori masih digunakan buku, termasuk buku yang diarsipkan.'
+                  details: {}
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    nama:
+                      - 'Nama kategori sudah digunakan.'
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  '/kategori/{kategori}':
+    parameters:
+      -
+        in: path
+        name: kategori
+        required: true
+        description: 'ID data.'
+        schema:
+          type: integer
+          minimum: 1
+    get:
+      operationId: detailKategori
+      summary: 'Detail kategori'
+      tags:
+        - Kategori
+      description: 'Detail kategori'
+      security: []
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KategoriResponse'
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+    put:
+      operationId: ubahKategori
+      summary: 'Ubah kategori'
+      tags:
+        - Kategori
+      description: 'Ubah kategori'
+      security:
+        -
+          PetugasBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KategoriWrite'
+            example:
+              nama: 'Sejarah Dunia'
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KategoriResponse'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        409:
+          description: 'Kategori masih digunakan buku, termasuk buku yang diarsipkan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: BUSINESS_CONFLICT
+                  message: 'Kategori masih digunakan buku, termasuk buku yang diarsipkan.'
+                  details: {}
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    nama:
+                      - 'Nama kategori sudah digunakan.'
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+    delete:
+      operationId: hapusKategori
+      summary: 'Hapus kategori kosong'
+      tags:
+        - Kategori
+      description: '409 jika kategori dipakai buku aktif maupun arsip; relasi foreign key juga membatasi penghapusan.'
+      security:
+        -
+          PetugasBearer: []
+      responses:
+        204:
+          description: 'Berhasil, tanpa body.'
+        401:
+          description: 'Silakan login sebagai petugas.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: UNAUTHENTICATED
+                  message: 'Silakan login sebagai petugas.'
+                  details: {}
+        404:
+          description: 'Data atau endpoint tidak ditemukan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: 'Data atau endpoint tidak ditemukan.'
+                  details: {}
+        409:
+          description: 'Kategori masih digunakan buku, termasuk buku yang diarsipkan.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: BUSINESS_CONFLICT
+                  message: 'Kategori masih digunakan buku, termasuk buku yang diarsipkan.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+  /metadata:
+    get:
+      operationId: cariMetadata
+      summary: 'Cari metadata tambahan di Open Library'
+      tags:
+        - Metadata
+      description: 'Search API resmi Open Library. Maksimal 5 hasil; timeout 4 detik per usaha, connect timeout 2 detik, maksimal 2 usaha dengan jeda 200 ms. Hasil sukses dicache 3600 detik, kegagalan tidak dicache. Timeout, HTTP error atau format rusak menghasilkan 200 fallback=true dengan items=[]; katalog lokal tetap dapat dicari melalui GET /buku. Maksimal 10 request/menit per IP.'
+      security: []
+      parameters:
+        -
+          in: query
+          name: q
+          schema:
+            type: string
+            example: 'Laskar Pelangi'
+            minLength: 2
+            maxLength: 200
+          description: 'Kata pencarian judul atau penulis.'
+          required: true
+      responses:
+        200:
+          description: 'Permintaan berhasil.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResponse'
+              examples:
+                normal:
+                  summary: 'Penyedia berhasil'
+                  value:
+                    data:
+                      source: openlibrary
+                      fallback: false
+                      cached: false
+                      message: 'Metadata tambahan; ketersediaan tetap berasal dari database sekolah.'
+                      items:
+                        -
+                          judul: 'Laskar Pelangi'
+                          penulis: 'Andrea Hirata'
+                          tahun: 2005
+                          isbn: '9789793062792'
+                fallback:
+                  summary: 'Penyedia gagal; katalog lokal tetap dapat dicari'
+                  value:
+                    data:
+                      source: local
+                      fallback: true
+                      cached: false
+                      message: 'Metadata luar sedang tidak tersedia. Gunakan pencarian koleksi lokal; stok tetap dapat dilihat.'
+                      items: []
+        422:
+          description: 'Periksa kembali data yang dikirim.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: VALIDATION_ERROR
+                  message: 'Periksa kembali data yang dikirim.'
+                  details:
+                    q:
+                      - 'Kata pencarian wajib diisi.'
+        429:
+          description: 'Terlalu banyak permintaan. Coba lagi sebentar.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: TOO_MANY_REQUESTS
+                  message: 'Terlalu banyak permintaan. Coba lagi sebentar.'
+                  details: {}
+        500:
+          description: 'Terjadi gangguan pada server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error:
+                  code: INTERNAL_ERROR
+                  message: 'Terjadi gangguan pada server.'
+                  details: {}
+components:
+  securitySchemes:
+    PetugasBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: 'opaque token'
+  schemas:
+    Kategori:
+      type: object
+      required:
+        - id
+        - nama
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          example: 1
+        nama:
+          type: string
+          example: Sastra
+          maxLength: 100
+    Buku:
+      type: object
+      required:
+        - id
+        - kode_buku
+        - judul
+        - penulis
+        - deskripsi
+        - isbn
+        - kategori
+        - lokasi_rak
+        - jumlah_total
+        - jumlah_tersedia
+        - versi_stok
+        - stok_diperbarui_at
+        - penerbit
+        - tahun_terbit
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          example: 1
+        kode_buku:
+          type: string
+          example: BK001
+          maxLength: 20
+        judul:
+          type: string
+          example: 'Laskar Pelangi'
+          maxLength: 150
+        penulis:
+          type: string
+          example: 'Andrea Hirata'
+          maxLength: 100
+        deskripsi:
+          type: string
+          example: 'Kisah persahabatan dan semangat belajar.'
+          nullable: true
+          maxLength: 5000
+        isbn:
+          type: string
+          example: '9789793062792'
+          nullable: true
+        kategori:
+          $ref: '#/components/schemas/Kategori'
+        lokasi_rak:
+          type: string
+          example: A-01
+          maxLength: 50
+        jumlah_total:
+          type: integer
+          minimum: 0
+          example: 12
+        jumlah_tersedia:
+          type: integer
+          minimum: 0
+          example: 8
+        versi_stok:
+          type: integer
+          minimum: 1
+          example: 1
+        stok_diperbarui_at:
+          type: string
+          example: '2026-11-08T10:00:00.000000Z'
+          format: date-time
+        penerbit:
+          type: string
+          maxLength: 100
+          example: 'Bentang Pustaka'
+          nullable: true
+        tahun_terbit:
+          type: integer
+          minimum: 1901
+          maximum: 2155
+          example: 2005
+          description: 'Pada input wajib tidak melebihi tahun berjalan. Rentang tahun mengikuti tipe YEAR pada rancangan dokumen.'
+          nullable: true
+    Riwayat:
+      type: object
+      required:
+        - id
+        - buku_id
+        - petugas
+        - total_sebelum
+        - tersedia_sebelum
+        - total_sesudah
+        - tersedia_sesudah
+        - versi_stok
+        - alasan
+        - created_at
+      properties:
+        id:
+          type: integer
+          minimum: 0
+          example: 1
+        buku_id:
+          type: integer
+          minimum: 0
+          example: 1
+        petugas:
+          type: object
+          required:
+            - id
+            - nama
+          properties:
+            id:
+              type: integer
+              minimum: 0
+              example: 1
+            nama:
+              type: string
+              example: 'Petugas Kelompok 2'
+        total_sebelum:
+          type: integer
+          minimum: 0
+          example: 10
+        tersedia_sebelum:
+          type: integer
+          minimum: 0
+          example: 7
+        total_sesudah:
+          type: integer
+          minimum: 0
+          example: 10
+        tersedia_sesudah:
+          type: integer
+          minimum: 0
+          example: 5
+        versi_stok:
+          type: integer
+          minimum: 0
+          example: 2
+        alasan:
+          type: string
+          example: 'Pengecekan rak'
+        created_at:
+          type: string
+          example: '2026-11-08T10:00:00.000000Z'
+          format: date-time
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+            - details
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: 'Periksa kembali data yang dikirim.'
+            details:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+              example:
+                jumlah_tersedia:
+                  - 'Jumlah tersedia harus kurang dari atau sama dengan jumlah_total.'
+    BukuCreate:
+      type: object
+      required:
+        - kode_buku
+        - kategori_id
+        - judul
+        - penulis
+        - lokasi_rak
+        - jumlah_total
+        - jumlah_tersedia
+        - penerbit
+        - tahun_terbit
+      properties:
+        kode_buku:
+          type: string
+          example: DEMO-001
+          maxLength: 20
+          pattern: '^[A-Za-z0-9-]+$'
+        kategori_id:
+          type: integer
+          minimum: 1
+          example: 1
+        judul:
+          type: string
+          example: 'Belajar Web Service'
+          maxLength: 150
+        penulis:
+          type: string
+          example: 'Kelompok 2'
+          maxLength: 100
+        deskripsi:
+          type: string
+          example: 'Contoh buku demo.'
+          nullable: true
+          maxLength: 5000
+        isbn:
+          type: string
+          example: '9789793062792'
+          nullable: true
+          pattern: '^(?:[0-9]{13}|[0-9]{9}[0-9X])$'
+        lokasi_rak:
+          type: string
+          example: C-01
+          maxLength: 50
+        jumlah_total:
+          type: integer
+          minimum: 0
+          example: 10
+          maximum: 1000000
+        jumlah_tersedia:
+          type: integer
+          minimum: 0
+          example: 7
+          description: '0 ≤ jumlah_tersedia ≤ jumlah_total.'
+        penerbit:
+          type: string
+          maxLength: 100
+          example: 'Bentang Pustaka'
+        tahun_terbit:
+          type: integer
+          minimum: 1901
+          maximum: 2155
+          example: 2005
+          description: 'Pada input wajib tidak melebihi tahun berjalan. Rentang tahun mengikuti tipe YEAR pada rancangan dokumen.'
+    BukuUpdate:
+      type: object
+      required:
+        - kode_buku
+        - kategori_id
+        - judul
+        - penulis
+        - lokasi_rak
+        - penerbit
+        - tahun_terbit
+      properties:
+        kode_buku:
+          type: string
+          example: DEMO-001
+          maxLength: 20
+          pattern: '^[A-Za-z0-9-]+$'
+        kategori_id:
+          type: integer
+          minimum: 1
+          example: 1
+        judul:
+          type: string
+          example: 'Belajar Web Service'
+          maxLength: 150
+        penulis:
+          type: string
+          example: 'Kelompok 2'
+          maxLength: 100
+        deskripsi:
+          type: string
+          example: 'Contoh buku demo.'
+          nullable: true
+          maxLength: 5000
+        isbn:
+          type: string
+          example: '9789793062792'
+          nullable: true
+          pattern: '^(?:[0-9]{13}|[0-9]{9}[0-9X])$'
+        lokasi_rak:
+          type: string
+          example: C-01
+          maxLength: 50
+        penerbit:
+          type: string
+          maxLength: 100
+          example: 'Bentang Pustaka'
+        tahun_terbit:
+          type: integer
+          minimum: 1901
+          maximum: 2155
+          example: 2005
+          description: 'Pada input wajib tidak melebihi tahun berjalan. Rentang tahun mengikuti tipe YEAR pada rancangan dokumen.'
+    KategoriWrite:
+      type: object
+      required:
+        - nama
+      properties:
+        nama:
+          type: string
+          example: Sejarah
+          maxLength: 100
+    StokUpdate:
+      type: object
+      required:
+        - jumlah_total
+        - jumlah_tersedia
+        - versi_stok
+        - alasan
+      properties:
+        jumlah_total:
+          type: integer
+          minimum: 0
+          example: 10
+          maximum: 1000000
+        jumlah_tersedia:
+          type: integer
+          minimum: 0
+          example: 7
+          description: 'Harus ≤ jumlah_total.'
+        versi_stok:
+          type: integer
+          minimum: 1
+          example: 1
+          description: 'Versi yang dibaca dari GET detail. Versi lama menghasilkan 409.'
+        alasan:
+          type: string
+          example: 'Pengecekan rak'
+          minLength: 3
+          maxLength: 255
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: petugas@perpustakaan.test
+          format: email
+          maxLength: 255
+        password:
+          type: string
+          example: isi-kata-sandi-lokal
+          format: password
+          maxLength: 255
+    LoginResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - token
+            - token_type
+            - expires_at
+            - petugas
+          properties:
+            token:
+              type: string
+              example: token-opaque-dari-server
+            token_type:
+              type: string
+              enum:
+                - Bearer
+            expires_at:
+              type: string
+              example: '2026-11-08T18:00:00.000000Z'
+              format: date-time
+            petugas:
+              type: object
+              required:
+                - id
+                - nama
+              properties:
+                id:
+                  type: integer
+                  minimum: 0
+                  example: 1
+                nama:
+                  type: string
+                  example: 'Petugas Kelompok 2'
+    BukuResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Buku'
+    KategoriResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Kategori'
+    KategoriList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Kategori'
+    BukuPage:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Buku'
+        links:
+          type: object
+          required:
+            - first
+            - last
+            - prev
+            - next
+          properties:
+            first:
+              type: string
+              example: 'http://127.0.0.1:8000/api/v1/buku?page=1'
+              format: uri
+            last:
+              type: string
+              example: 'http://127.0.0.1:8000/api/v1/buku?page=2'
+              format: uri
+            prev:
+              type: string
+              nullable: true
+              format: uri
+            next:
+              type: string
+              nullable: true
+              format: uri
+        meta:
+          type: object
+          required:
+            - current_page
+            - last_page
+            - per_page
+            - total
+          properties:
+            current_page:
+              type: integer
+              minimum: 1
+              example: 1
+            last_page:
+              type: integer
+              minimum: 1
+              example: 2
+            per_page:
+              type: integer
+              minimum: 1
+              example: 6
+            total:
+              type: integer
+              minimum: 0
+              example: 12
+            from:
+              type: integer
+              minimum: 0
+              example: 1
+              nullable: true
+            to:
+              type: integer
+              minimum: 0
+              example: 6
+              nullable: true
+            path:
+              type: string
+              format: uri
+            links:
+              type: array
+              items:
+                type: object
+    RiwayatPage:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Riwayat'
+        links:
+          type: object
+          required:
+            - first
+            - last
+            - prev
+            - next
+          properties:
+            first:
+              type: string
+              example: 'http://127.0.0.1:8000/api/v1/buku?page=1'
+              format: uri
+            last:
+              type: string
+              example: 'http://127.0.0.1:8000/api/v1/buku?page=2'
+              format: uri
+            prev:
+              type: string
+              nullable: true
+              format: uri
+            next:
+              type: string
+              nullable: true
+              format: uri
+        meta:
+          type: object
+          required:
+            - current_page
+            - last_page
+            - per_page
+            - total
+          properties:
+            current_page:
+              type: integer
+              minimum: 1
+              example: 1
+            last_page:
+              type: integer
+              minimum: 1
+              example: 2
+            per_page:
+              type: integer
+              minimum: 1
+              example: 6
+            total:
+              type: integer
+              minimum: 0
+              example: 12
+            from:
+              type: integer
+              minimum: 0
+              example: 1
+              nullable: true
+            to:
+              type: integer
+              minimum: 0
+              example: 6
+              nullable: true
+            path:
+              type: string
+              format: uri
+            links:
+              type: array
+              items:
+                type: object
+    Metadata:
+      type: object
+      required:
+        - source
+        - fallback
+        - cached
+        - message
+        - items
+      properties:
+        source:
+          type: string
+          enum:
+            - openlibrary
+            - local
+        fallback:
+          type: boolean
+        cached:
+          type: boolean
+        message:
+          type: string
+          example: 'Metadata tambahan; ketersediaan tetap berasal dari database sekolah.'
+        items:
+          type: array
+          items:
+            type: object
+            required:
+              - judul
+              - penulis
+              - tahun
+              - isbn
+            properties:
+              judul:
+                type: string
+                example: 'Laskar Pelangi'
+              penulis:
+                type: string
+                example: 'Andrea Hirata'
+              tahun:
+                type: integer
+                minimum: 0
+                example: 2005
+                nullable: true
+              isbn:
+                type: string
+                example: '9789793062792'
+                nullable: true
+    MetadataResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Metadata'

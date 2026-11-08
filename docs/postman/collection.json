@@ -1,0 +1,853 @@
+{
+  "info": {
+    "name": "Kelompok 2 — Perpustakaan v1.1.0",
+    "description": "Jalankan berurutan setelah migrate --seed. Isi password pada environment lokal, bukan collection bersama. Membuat satu buku demo lalu mengarsipkannya; riwayat audit tetap disimpan. Metadata menerima normal atau fallback sesuai kondisi jaringan; normal/gagal deterministik diuji dengan Http::fake di feature tests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 · Login petugas",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "const d=pm.response.json().data; pm.environment.set('token',d.token); pm.environment.set('run_id',Date.now().toString());",
+              "pm.test('Isi respons sesuai', () => { pm.expect(d.token_type).to.eql('Bearer'); pm.expect(d.token).to.be.a('string'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "02 · Daftar kategori",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "const d=pm.response.json().data; pm.environment.set('kategori_buku',d[0].id);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(d.length).to.be.above(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/kategori"
+      }
+    },
+    {
+      "name": "03 · Buat kategori 201 + Location",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.environment.set('kategori_demo',pm.response.json().data.id);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.headers.get('Location')).to.include('/kategori/'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/kategori",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nama\": \"Demo Postman {{run_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "04 · Detail kategori",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().data.nama).to.include(pm.environment.get('run_id')); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/kategori/{{kategori_demo}}"
+      }
+    },
+    {
+      "name": "05 · Edit kategori",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().data.nama).to.include('Kategori Uji'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/kategori/{{kategori_demo}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nama\": \"Kategori Uji {{run_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "06 · Buat buku dan audit awal",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "const d=pm.response.json().data; pm.environment.set('buku_demo',d.id);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(d.versi_stok).to.eql(1); pm.expect(pm.response.headers.get('Location')).to.include('/buku/'+d.id); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/buku",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kode_buku\": \"PM-{{run_id}}\",\n  \"kategori_id\": \"{{kategori_buku}}\",\n  \"judul\": \"Demo Postman {{run_id}}\",\n  \"penulis\": \"Kelompok 2\",\n  \"lokasi_rak\": \"DEMO-01\",\n  \"jumlah_total\": 10,\n  \"jumlah_tersedia\": 7,\n  \"penerbit\": \"Penerbit Kelompok 2\",\n  \"tahun_terbit\": 2020\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "07 · Daftar, cari, filter, urut, pagination",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { const d=pm.response.json(); pm.expect(d.meta.total).to.eql(1); pm.expect(d.data.length).to.eql(1); pm.expect(d.meta.per_page).to.eql(1); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/buku?q={{run_id}}&kategori_id={{kategori_buku}}&tersedia=1&sort=judul&direction=asc&per_page=1&page=1"
+      }
+    },
+    {
+      "name": "08 · Detail buku",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { const d=pm.response.json().data; pm.expect(d.lokasi_rak).to.eql('DEMO-01'); pm.expect(d.stok_diperbarui_at).to.be.a('string'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}"
+      }
+    },
+    {
+      "name": "09 · Metadata eksternal atau fallback",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { const d=pm.response.json().data; pm.expect(d.fallback).to.be.a('boolean'); pm.expect(d.items).to.be.an('array'); pm.expect(['local','openlibrary']).to.include(d.source); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/metadata?q=Laskar%20Pelangi"
+      }
+    },
+    {
+      "name": "10 · Validasi stok 422",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 422', () => pm.response.to.have.status(422));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().error.code).to.eql('VALIDATION_ERROR'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}/stok",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jumlah_total\": 2,\n  \"jumlah_tersedia\": 3,\n  \"versi_stok\": 1,\n  \"alasan\": \"Tes validasi\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "11 · Data tidak ditemukan 404",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().error.code).to.eql('NOT_FOUND'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/buku/999999999"
+      }
+    },
+    {
+      "name": "12 · Kategori dipakai konflik 409",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 409', () => pm.response.to.have.status(409));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().error.code).to.eql('BUSINESS_CONFLICT'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/kategori/{{kategori_buku}}"
+      }
+    },
+    {
+      "name": "13 · Edit data deskriptif buku",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().data.lokasi_rak).to.eql('DEMO-02'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kode_buku\": \"PM-{{run_id}}\",\n  \"kategori_id\": \"{{kategori_buku}}\",\n  \"judul\": \"Demo Postman {{run_id}}\",\n  \"penulis\": \"Kelompok 2\",\n  \"lokasi_rak\": \"DEMO-02\",\n  \"penerbit\": \"Penerbit Kelompok 2\",\n  \"tahun_terbit\": 2020\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "14 · Transaksi stok berhasil",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { const d=pm.response.json().data; pm.expect(d.versi_stok).to.eql(2); pm.expect(d.jumlah_tersedia).to.eql(5); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}/stok",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jumlah_total\": 10,\n  \"jumlah_tersedia\": 5,\n  \"versi_stok\": 1,\n  \"alasan\": \"Pengecekan koleksi demo\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "15 · Versi lama konflik 409",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 409', () => pm.response.to.have.status(409));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().error.code).to.eql('BUSINESS_CONFLICT'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}/stok",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jumlah_total\": 10,\n  \"jumlah_tersedia\": 2,\n  \"versi_stok\": 1,\n  \"alasan\": \"Simulasi layar lama\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "16 · Konflik tidak mengubah stok",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { const d=pm.response.json().data; pm.expect(d.jumlah_tersedia).to.eql(5); pm.expect(d.versi_stok).to.eql(2); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}"
+      }
+    },
+    {
+      "name": "17 · Audit konsisten dengan stok",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { const d=pm.response.json(); pm.expect(d.meta.total).to.eql(2); pm.expect(d.data[0].tersedia_sebelum).to.eql(7); pm.expect(d.data[0].tersedia_sesudah).to.eql(5); pm.expect(d.data[0].versi_stok).to.eql(2); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}/riwayat-stok"
+      }
+    },
+    {
+      "name": "18 · Arsipkan buku demo",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}"
+      }
+    },
+    {
+      "name": "19 · Buku arsip tidak ditampilkan",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().error.code).to.eql('NOT_FOUND'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/buku/{{buku_demo}}"
+      }
+    },
+    {
+      "name": "20 · Hapus kategori kosong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/kategori/{{kategori_demo}}"
+      }
+    },
+    {
+      "name": "21 · Logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/auth/logout"
+      }
+    },
+    {
+      "name": "22 · Token tercabut ditolak 401",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 401', () => pm.response.to.have.status(401));",
+              "pm.test('Respons JSON', () => pm.response.to.be.json);",
+              "pm.test('Isi respons sesuai', () => { pm.expect(pm.response.json().error.code).to.eql('UNAUTHENTICATED'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": "{{base_url}}/kategori",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nama\": \"Tidak boleh dibuat\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

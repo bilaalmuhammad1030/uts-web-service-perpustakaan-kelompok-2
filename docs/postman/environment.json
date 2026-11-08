@@ -1,0 +1,28 @@
+{
+  "name": "Perpustakaan lokal — contoh tanpa rahasia",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api/v1",
+      "enabled": true
+    },
+    {
+      "key": "email",
+      "value": "petugas@perpustakaan.test",
+      "enabled": true
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}
