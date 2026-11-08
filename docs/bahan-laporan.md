@@ -232,8 +232,8 @@ Nofia sebaiknya mencoba dan memilih screenshot sendiri untuk mengonfirmasi hasil
 
 - NIM/nama lengkap Nofia, identitas kampus, dosen, kelas, dan format laporan resmi.
 - Laporan akhir, PPT akhir, screenshot pilihan dan pembahasan dengan bahasa anggota sendiri.
-- Repository GitHub kelompok, invitation collaborator, minimum dua PR digabung per anggota serta satu review per anggota, dengan URL bukti yang asli.
-- Hasil GitHub Actions setelah repository di-push; workflow saat ini baru disiapkan dan hasil lokal tidak membuktikan Actions sudah berjalan.
+- Repository GitHub kelompok sudah berisi kode awal. Undangan collaborator anggota/dosen serta minimum dua PR digabung dan satu review per anggota masih perlu dilengkapi, dengan URL bukti yang asli.
+- GitHub Actions sudah dipicu oleh unggahan awal. Baca hasil sebenarnya pada tab Actions repository; hasil tes lokal tidak menggantikan hasil CI.
 - Tag dan publikasi release v1.1.0 setelah review serta ketentuan kontribusi terpenuhi.
 - Penyesuaian data buku bila akan dipakai pada perpustakaan sebenarnya. Tidak diperlukan untuk demo data contoh dokumen kelompok untuk UTS.
 

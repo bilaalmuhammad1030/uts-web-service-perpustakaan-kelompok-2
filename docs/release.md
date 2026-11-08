@@ -1,10 +1,10 @@
 # Checklist kandidat release v1.1.0
 
-Versi kontrak: OpenAPI 3.0.3, `info.version: 1.1.0`. Route mayor: `/api/v1`. Berkas `VERSION` dan `CHANGELOG.md` sudah disiapkan. Status: kandidat lokal, belum diterbitkan.
+Versi kontrak: OpenAPI 3.0.3, `info.version: 1.1.0`. Route mayor: `/api/v1`. Berkas `VERSION` dan `CHANGELOG.md` sudah disiapkan. Kode sudah diunggah ke GitHub; tag dan release final belum diterbitkan.
 
 ## Sebelum push
 
-Repository publik kelompok sudah dibuat: https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2. Remote `origin` lokal sudah terhubung. Pengunggahan awal disiapkan menggunakan akun Bilal; status Actions harus diperiksa pada hasil eksekusi GitHub yang sebenarnya.
+Repository publik kelompok sudah dibuat: https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2. Remote `origin` lokal sudah terhubung. Commit awal `a9c10ad` sudah diunggah menggunakan akun Bilal setelah persetujuan publikasi. Workflow pertama: https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/actions/runs/42480301529. Periksa juga workflow pada commit terbaru melalui tab Actions.
 
 - Jalankan kedua suite tes dan lint sesuai README. Baca hasil aktual di `hasil-pengujian.md`.
 - Periksa `git status`, lalu pastikan `.env`, `.local`, database dan output tes yang memuat rahasia tidak ikut masuk.

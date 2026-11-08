@@ -39,6 +39,7 @@ Setiap orang memakai akun dan branch sendiri, membuka minimal dua PR, dan member
 
 - Repository GitHub dan remote lokal sudah dibuat.
 - Username empat anggota lain masih diperlukan; belum ada undangan collaborator yang dikirim.
-- Unggahan kode awal belum dilakukan; persetujuan publikasi kode masih diminta secara terpisah.
-- Belum ada PR, review, hasil Actions, tag atau release yang dapat diklaim selesai.
+- Kode awal sudah diunggah dengan persetujuan Bilal melalui commit `a9c10ad`. `.env`, database lokal dan cadangan tidak ikut diunggah.
+- GitHub Actions sudah dipicu oleh unggahan. Periksa hasil sebenarnya pada tab Actions repository.
+- Belum ada PR, review, tag atau release yang dapat diklaim selesai.
 - Persentase kontribusi dan paraf ditentukan kelompok berdasarkan pekerjaan sebenarnya.
