@@ -4,9 +4,27 @@ Anggota: Damiri (23215020), Mochamad Bilal Muadzin (23215025), Nofia Lindawati (
 
 Repository: https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2.
 
-Bilal adalah pemilik repository dengan akun `bilaalmuhammad1030`. Empat anggota lain akan diundang sebagai collaborator dengan akses menulis setelah username GitHub masing-masing diberikan. Undangan harus diterima dari akun anggota sendiri. Akses menulis memungkinkan anggota mengunggah branch dan membuat PR; akses ini belum menjadi bukti kontribusi.
+Bilal adalah pemilik repository dengan akun `bilaalmuhammad1030`. Pemeriksaan akses pada 9 November 2026: Damiri (`Ahmadtekor`) dan Viryal (`viryal280605`) sudah menjadi collaborator. Undangan Septina (`AstiNabila`) serta Nofia (`nofialindawati99-coder`) masih menunggu penerimaan dari akun masing-masing. Akses menulis memungkinkan anggota mengunggah branch dan membuat PR; akses ini belum menjadi bukti kontribusi.
 
-Dokumen ini adalah usulan pekerjaan, bukan bukti kontribusi GitHub. Belum ada PR, review, merge, atau release GitHub yang dibuat oleh asisten.
+Dokumen ini memuat rencana pekerjaan dan status persiapan GitHub. Issue dan draf release belum membuktikan persyaratan PR yang digabung serta review tiap anggota telah terpenuhi.
+
+## Pekerjaan yang sudah dicatat di GitHub
+
+[Milestone UTS - M3 Core API v1.1.0](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/milestone/1) memuat sepuluh issue berikut. Issue adalah rencana; kontribusi baru tercatat setelah pekerjaan dilakukan, PR ditinjau dan digabung.
+
+| Anggota / akun | Issue pertama | Issue kedua |
+| --- | --- | --- |
+| Bilal / bilaalmuhammad1030 | [#1 Panduan demo tunnel](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/1) | [#2 Perlindungan akun lama saat seeding](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/2) |
+| Nofia / nofialindawati99-coder | [#3 Laporan final](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/3) | [#4 PPT dan pembicara](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/4) |
+| Viryal / viryal280605 | [#5 Akses keyboard](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/5) | [#6 Portal pada ponsel](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/6) |
+| Septina / AstiNabila | [#7 Constraint dan data awal](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/7) | [#8 Backup dan restore](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/8) |
+| Damiri / Ahmadtekor | [#9 Postman](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/9) | [#10 Instalasi dari clone](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/issues/10) |
+
+Issue untuk Nofia dan Septina belum diberi assignee karena undangan masih tertunda; pemilik repository dapat menambahkan assignee setelah undangan diterima. Pembagian ini memperinci usulan di bawah, dengan dua tugas Bilal berdasarkan kekurangan yang ditemukan setelah demo online dan perubahan email.
+
+Papan GitHub Projects belum dibuat karena akses API yang tersedia tidak memiliki izin Projects. Pemilik repository dapat membuka tab **Projects → New project → Board**, memberi nama **UTS Kelompok 2 - M3**, lalu menambahkan sepuluh issue dari milestone ke kolom Todo, In Progress, dan Done. Pindahkan issue ke Done setelah PR terkait digabung dan bukti pemeriksaan tersedia.
+
+Draf release `v1.1.0` sudah disiapkan di tab Releases untuk ditinjau pemilik repository. Draf belum merupakan release publik dan belum menggantikan persyaratan tag final. Setelah PR wajib selesai dan Actions lulus pada commit final, tinjau target release, lengkapi catatan dan publikasikan sebelum batas pengumpulan.
 
 ## Usulan dua PR per anggota
 
@@ -38,8 +56,8 @@ Setiap orang memakai akun dan branch sendiri, membuka minimal dua PR, dan member
 ## Status akses dan bukti
 
 - Repository GitHub dan remote lokal sudah dibuat.
-- Username empat anggota lain masih diperlukan; belum ada undangan collaborator yang dikirim.
+- Username empat anggota sudah diketahui. Damiri dan Viryal sudah menjadi collaborator; Septina dan Nofia masih perlu menerima undangan. Akses dosen belum dikonfirmasi.
 - Kode awal sudah diunggah dengan persetujuan Bilal melalui commit `a9c10ad`. `.env`, database lokal dan cadangan tidak ikut diunggah.
 - GitHub Actions sudah dipicu oleh unggahan. Periksa hasil sebenarnya pada tab Actions repository.
-- Belum ada PR, review, tag atau release yang dapat diklaim selesai.
+- Sepuluh issue dan milestone UTS sudah dibuat. Draf release disiapkan; tag/release final, PR anggota dan review masih perlu diselesaikan.
 - Persentase kontribusi dan paraf ditentukan kelompok berdasarkan pekerjaan sebenarnya.
