@@ -13,7 +13,7 @@ Repository publik kelompok sudah dibuat: https://github.com/bilaalmuhammad1030/u
 
 ## Memerlukan akun/akses GitHub anggota
 
-1. Repository sudah dibuat pada akun Bilal dan remote sudah terhubung. Undang anggota serta dosen setelah username mereka diketahui. Belum ada undangan yang dikirim.
+1. Repository sudah dibuat pada akun Bilal dan remote sudah terhubung. Pada 9 November 2026, Damiri (`Ahmadtekor`) serta Viryal (`viryal280605`) sudah menjadi collaborator; undangan Septina (`AstiNabila`) dan Nofia (`nofialindawati99-coder`) masih menunggu penerimaan. Akses dosen perlu dikonfirmasi.
 2. Atur nama/email Git milik sendiri pada komputer masing-masing. Lakukan commit setelah meninjau perubahan. Hubungkan repository memakai URL milik kelompok:
 
 ```powershell
@@ -34,4 +34,4 @@ git push origin v1.1.0
 
 6. Pada GitHub Releases, pilih tag v1.1.0 dan gunakan changelog sebagai dasar catatan rilis. Lampirkan dokumentasi/screenshot yang sudah ditinjau. Pastikan arsip tidak menyertakan `.env`, `.local`, `vendor`, `node_modules` atau database lokal.
 
-Belum ada PR/review anggota, undangan collaborator, tag atau publikasi release. Pengunggahan awal tidak membuktikan persyaratan kontribusi telah terpenuhi.
+[Milestone UTS](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/milestone/1) dan sepuluh issue pekerjaan sudah dibuat. Daftar akun, issue dan status akses ada di `kontribusi.md`. Draf release `v1.1.0` sudah disiapkan di GitHub Releases; tag dan release final belum dipublikasikan. Papan Projects masih perlu dibuat melalui antarmuka GitHub karena izin API Projects belum tersedia. PR/review nyata tiap anggota tetap wajib diselesaikan; pengunggahan awal serta issue tidak membuktikan persyaratan kontribusi telah terpenuhi.
