@@ -18,6 +18,7 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $books = $this->bookService->searchAndPaginateBooks($request->all());
+
         return response()->json($books);
     }
 }
