@@ -1,33 +1,103 @@
-*.log
-.DS_Store
+# ==============================================================================
+# DAFTAR FILE & FOLDER YANG DIABAIKAN OLEH GIT (.gitignore)
+# Web Service Ketersediaan Buku Perpustakaan — Kelompok 2
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. KUNCI RAHASIA, TOKEN & KREDENSIAL (API KEYS, SECRETS & CREDENTIALS)
+# ------------------------------------------------------------------------------
 .env
 .env.backup
 .env.production
 .env.*
 !.env.example
-/.local
-/storage/npm-audit*.json
-/storage/tests-*.xml
-/database/*.sqlite*
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
 /auth.json
+.npmrc.local
+/storage/*.key
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*secret*.json
+*credential*.json
+*api_key*
+*apikey*
+service-account*.json
+google-credentials*.json
+client_secret*.json
+
+# ------------------------------------------------------------------------------
+# 2. FILE INSTRUKSI AI & ASISTEN AGENT
+# ------------------------------------------------------------------------------
+AGENTS.md
+AGENT*
+agent*
+.ai/
+CLAUDE.md
+COPILOT.md
+.cursorrules
+.windsurfrules
+boost.json
+
+# ------------------------------------------------------------------------------
+# 3. SCRIPT LOKAL WINDOWS & BINER PHP/COMPOSER
+# ------------------------------------------------------------------------------
+artisan.bat
+composer.bat
+composer.phar
+*.exe
+*.dll
+
+# ------------------------------------------------------------------------------
+# 4. DOKUMEN OFFICE & ARTIFAK HASIL GENERASI LOKAL
+# ------------------------------------------------------------------------------
+*.docx
+*.xlsx
+*.pptx
+KONTRAK_API_OPENAPI.docx
+docs/KONTRAK_API_OPENAPI.docx
+
+# ------------------------------------------------------------------------------
+# 5. DEPENDENSI PAKET & BUILD ASSETS
+# ------------------------------------------------------------------------------
 /node_modules
+/vendor
 /public/build
-/public/fonts-manifest.dev.json
 /public/hot
 /public/storage
-/storage/*.key
+/public/fonts-manifest.dev.json
+
+# ------------------------------------------------------------------------------
+# 6. LOGS, CACHE & TEMPORARY FILES
+# ------------------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/storage/npm-audit*.json
+/storage/tests-*.xml
 /storage/pail
-/vendor
+.phpunit.result.cache
+/.phpunit.cache
+/database/*.sqlite*
+
+# ------------------------------------------------------------------------------
+# 7. IDE, CODE EDITOR & SISTEM OPERASI
+# ------------------------------------------------------------------------------
+/.vscode
+/.idea
+/.cursor/
+/.codex
+/.nova
+/.zed
+/.windsurf
+/.gemini
+/.local
+.phpactor.json
 _ide_helper.php
 Homestead.json
 Homestead.yaml
+.DS_Store
 Thumbs.db
+desktop.ini

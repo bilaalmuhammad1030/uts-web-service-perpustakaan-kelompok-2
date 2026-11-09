@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Admin;
 use App\Models\Buku;
 use App\Models\Kategori;
-use App\Models\Petugas;
 use App\Models\RiwayatStok;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\ConnectionException;
@@ -18,12 +18,12 @@ class LibraryApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function petugas(): Petugas
+    private function admin(): Admin
     {
-        $petugas = Petugas::factory()->create(['token_hash' => hash('sha256', 'test-token'), 'token_expires_at' => now()->addHour()]);
+        $admin = Admin::factory()->create(['token_hash' => hash('sha256', 'test-token'), 'token_expires_at' => now()->addHour()]);
         $this->withToken('test-token');
 
-        return $petugas;
+        return $admin;
     }
 
     private function payload(): array
@@ -56,7 +56,7 @@ class LibraryApiTest extends TestCase
 
     public function test_pembuatan_buku_201_location_dan_riwayat_awal(): void
     {
-        $this->petugas();
+        $this->admin();
         $response = $this->postJson('/api/v1/buku', $this->payload())->assertCreated();
         $id = $response->json('data.id');
         $response->assertHeader('Location', url('/api/v1/buku/'.$id));
@@ -65,7 +65,7 @@ class LibraryApiTest extends TestCase
 
     public function test_stok_di_atas_total_dan_negatif_menghasilkan_422(): void
     {
-        $this->petugas();
+        $this->admin();
         $payload = $this->payload();
         $this->postJson('/api/v1/buku', [...$payload, 'jumlah_tersedia' => 11])->assertUnprocessable()->assertJsonPath('error.code', 'VALIDATION_ERROR');
         $this->postJson('/api/v1/buku', [...$payload, 'jumlah_tersedia' => -1])->assertUnprocessable();
@@ -74,7 +74,7 @@ class LibraryApiTest extends TestCase
 
     public function test_kode_buku_harus_unik_dan_kategori_harus_ada(): void
     {
-        $this->petugas();
+        $this->admin();
         $buku = Buku::factory()->create();
         $this->postJson('/api/v1/buku', [...$this->payload(), 'kode_buku' => $buku->kode_buku])->assertUnprocessable();
         $this->postJson('/api/v1/buku', [...$this->payload(), 'kategori_id' => 999999])->assertUnprocessable();
@@ -87,37 +87,43 @@ class LibraryApiTest extends TestCase
         }
     }
 
-    public function test_pengelolaan_memerlukan_token_petugas(): void
+    public function test_pengelolaan_memerlukan_token_admin(): void
     {
         $this->postJson('/api/v1/buku', $this->payload())->assertUnauthorized()->assertJsonPath('error.code', 'UNAUTHENTICATED');
     }
 
     public function test_login_logout_dan_token_kedaluwarsa(): void
     {
-        $petugas = Petugas::factory()->create();
-        $this->postJson('/api/v1/auth/login', ['email' => $petugas->email, 'password' => 'salah'])->assertUnauthorized();
-        $token = $this->postJson('/api/v1/auth/login', ['email' => $petugas->email, 'password' => 'KhususTes123!'])->assertOk()->json('data.token');
+        $admin = Admin::factory()->create();
+        $this->postJson('/api/v1/auth/login', ['email' => $admin->email, 'password' => 'salah'])->assertUnauthorized();
+        $token = $this->postJson('/api/v1/auth/login', ['email' => $admin->email, 'password' => 'KhususTes123!'])->assertOk()->json('data.token');
         $this->withToken($token)->postJson('/api/v1/auth/logout')->assertNoContent();
         $this->withToken($token)->postJson('/api/v1/kategori', ['nama' => 'Ditolak'])->assertUnauthorized();
-        $petugas->update(['token_hash' => hash('sha256', 'expired'), 'token_expires_at' => now()->subMinute()]);
+        $admin->update(['token_hash' => hash('sha256', 'expired'), 'token_expires_at' => now()->subMinute()]);
         $this->withToken('expired')->postJson('/api/v1/kategori', ['nama' => 'Ditolak'])->assertUnauthorized();
+
+        // Verifikasi login dengan kombinasi Username Admin dan Password Admin
+        Admin::factory()->create(['nama' => 'Admin', 'email' => 'Admin', 'password' => 'Admin']);
+        $adminRes = $this->postJson('/api/v1/auth/login', ['username' => 'Admin', 'password' => 'Admin'])->assertOk();
+        $this->assertNotEmpty($adminRes->json('data.token'));
+        $this->assertSame('Admin', $adminRes->json('data.admin.nama'));
     }
 
     public function test_perubahan_stok_dan_riwayat_disimpan_bersama(): void
     {
-        $petugas = $this->petugas();
+        $admin = $this->admin();
         $buku = Buku::factory()->create();
         $this->patchJson('/api/v1/buku/'.$buku->id.'/stok', [
             'jumlah_total' => 10, 'jumlah_tersedia' => 4, 'versi_stok' => 1, 'alasan' => 'Pengecekan rak',
         ])->assertOk()->assertJsonPath('data.versi_stok', 2)->assertJsonPath('data.jumlah_tersedia', 4);
-        $this->assertDatabaseHas('riwayat_stok', ['buku_id' => $buku->id, 'petugas_id' => $petugas->id,
+        $this->assertDatabaseHas('riwayat_stok', ['buku_id' => $buku->id, 'admin_id' => $admin->id,
             'tersedia_sebelum' => 7, 'tersedia_sesudah' => 4, 'versi_stok' => 2]);
         $this->getJson('/api/v1/buku/'.$buku->id.'/riwayat-stok')->assertOk()->assertJsonPath('data.0.alasan', 'Pengecekan rak');
     }
 
     public function test_versi_lama_menghasilkan_409_tanpa_mengubah_data(): void
     {
-        $this->petugas();
+        $this->admin();
         $buku = Buku::factory()->create(['versi_stok' => 2]);
         $this->patchJson('/api/v1/buku/'.$buku->id.'/stok', [
             'jumlah_total' => 10, 'jumlah_tersedia' => 2, 'versi_stok' => 1, 'alasan' => 'Data lama',
@@ -128,7 +134,7 @@ class LibraryApiTest extends TestCase
 
     public function test_validasi_stok_422_berbeda_dari_konflik_409(): void
     {
-        $this->petugas();
+        $this->admin();
         $buku = Buku::factory()->create();
         $this->patchJson('/api/v1/buku/'.$buku->id.'/stok', [
             'jumlah_total' => 2, 'jumlah_tersedia' => 3, 'versi_stok' => 1, 'alasan' => 'Tes validasi',
@@ -138,7 +144,7 @@ class LibraryApiTest extends TestCase
 
     public function test_transaksi_rollback_jika_pencatatan_riwayat_gagal(): void
     {
-        $this->petugas();
+        $this->admin();
         $buku = Buku::factory()->create();
         RiwayatStok::creating(function (): void {
             throw new \RuntimeException('Simulasi gagal simpan audit');
@@ -156,7 +162,7 @@ class LibraryApiTest extends TestCase
 
     public function test_pembuatan_buku_juga_rollback_jika_audit_gagal(): void
     {
-        $this->petugas();
+        $this->admin();
         RiwayatStok::creating(function (): void {
             throw new \RuntimeException('Simulasi gagal audit awal');
         });
@@ -170,7 +176,7 @@ class LibraryApiTest extends TestCase
 
     public function test_crud_kategori_dan_konflik_kategori_digunakan(): void
     {
-        $this->petugas();
+        $this->admin();
         $response = $this->postJson('/api/v1/kategori', ['nama' => 'Sejarah'])->assertCreated();
         $id = $response->json('data.id');
         $response->assertHeader('Location', url('/api/v1/kategori/'.$id));
@@ -183,7 +189,7 @@ class LibraryApiTest extends TestCase
 
     public function test_edit_buku_tidak_boleh_melewati_endpoint_stok(): void
     {
-        $this->petugas();
+        $this->admin();
         $buku = Buku::factory()->create();
         $data = ['kode_buku' => $buku->kode_buku, 'kategori_id' => $buku->kategori_id, 'judul' => 'Judul Baru',
             'penulis' => 'Penulis Baru', 'lokasi_rak' => 'Z-01'];
@@ -194,7 +200,7 @@ class LibraryApiTest extends TestCase
 
     public function test_hapus_buku_mengarsipkan_dan_mempertahankan_audit(): void
     {
-        $this->petugas();
+        $this->admin();
         $id = $this->postJson('/api/v1/buku', $this->payload())->json('data.id');
         $this->deleteJson('/api/v1/buku/'.$id)->assertNoContent();
         $this->getJson('/api/v1/buku/'.$id)->assertNotFound();
@@ -238,10 +244,10 @@ class LibraryApiTest extends TestCase
         $this->getJson('/api/v1/metadata?q=Rusak')->assertOk()->assertJsonPath('data.fallback', true);
     }
 
-    public function test_portal_siswa_dan_petugas_dapat_dibuka(): void
+    public function test_portal_siswa_dan_admin_dapat_dibuka(): void
     {
         $this->get('/')->assertOk()->assertSee('Jelajahi koleksi')->assertSee('/js/perpustakaan.js');
-        $this->get('/petugas')->assertOk()->assertSee('Ruang petugas');
+        $this->get('/admin')->assertOk()->assertSee('Ruang admin');
     }
 
     public function test_seeder_memiliki_minimal_sepuluh_buku_dan_idempoten(): void
@@ -251,12 +257,12 @@ class LibraryApiTest extends TestCase
         $this->seed();
         $this->assertDatabaseCount('buku', 10);
         $this->assertDatabaseCount('riwayat_stok', 10);
-        $this->assertDatabaseCount('petugas', 1);
+        $this->assertDatabaseCount('admin', 1);
     }
 
     public function test_penerbit_dan_tahun_dokumen_disimpan_dan_ditampilkan(): void
     {
-        $this->petugas();
+        $this->admin();
         $response = $this->postJson('/api/v1/buku', $this->payload())->assertCreated()
             ->assertJsonPath('data.penerbit', 'Penerbit Uji')->assertJsonPath('data.tahun_terbit', 2020);
         $this->getJson('/api/v1/buku/'.$response->json('data.id'))->assertOk()
@@ -265,7 +271,7 @@ class LibraryApiTest extends TestCase
 
     public function test_validasi_dokumen_menolak_penerbit_kosong_tahun_dan_panjang_tidak_valid(): void
     {
-        $this->petugas();
+        $this->admin();
         $data = $this->payload();
         foreach ([['penerbit' => ''], ['tahun_terbit' => 1800], ['tahun_terbit' => (int) now()->format('Y') + 1],
             ['tahun_terbit' => 'tahun'], ['kode_buku' => str_repeat('A', 21)], ['judul' => str_repeat('A', 151)], ['penulis' => str_repeat('A', 101)]] as $invalid) {
@@ -285,23 +291,23 @@ class LibraryApiTest extends TestCase
             unset($row['kategori']);
             $this->assertDatabaseHas('buku', $row);
         }
-        Buku::where('kode_buku', 'BK001')->firstOrFail()->update(['penerbit' => 'Diubah petugas']);
+        Buku::where('kode_buku', 'BK001')->firstOrFail()->update(['penerbit' => 'Diubah admin']);
         $this->seed();
-        $this->assertDatabaseHas('buku', ['kode_buku' => 'BK001', 'penerbit' => 'Diubah petugas']);
+        $this->assertDatabaseHas('buku', ['kode_buku' => 'BK001', 'penerbit' => 'Diubah admin']);
         $this->assertDatabaseCount('riwayat_stok', 10);
     }
 
     public function test_impor_mengarsipkan_hanya_contoh_lama_yang_belum_diubah(): void
     {
         config(['services.demo.password' => 'SeederHanyaTes123!']);
-        $petugas = $this->petugas();
+        $admin = $this->admin();
         $rows = json_decode(file_get_contents(database_path('seeders/data/buku-demo-lama.json')), true, flags: JSON_THROW_ON_ERROR);
         $legacy = [];
         foreach (array_slice($rows, 0, 2) as $row) {
             $kategori = Kategori::firstOrCreate(['nama' => $row['kategori']]);
             unset($row['kategori']);
             $buku = Buku::factory()->create([...$row, 'kategori_id' => $kategori->id, 'penerbit' => null, 'tahun_terbit' => null]);
-            $buku->riwayatStok()->create(['petugas_id' => $petugas->id, 'total_sebelum' => 0, 'tersedia_sebelum' => 0,
+            $buku->riwayatStok()->create(['admin_id' => $admin->id, 'total_sebelum' => 0, 'tersedia_sebelum' => 0,
                 'total_sesudah' => $buku->jumlah_total, 'tersedia_sesudah' => $buku->jumlah_tersedia, 'versi_stok' => 1, 'alasan' => 'Data awal demo UTS']);
             $legacy[] = $buku;
         }

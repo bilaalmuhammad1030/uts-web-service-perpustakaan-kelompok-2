@@ -18,6 +18,6 @@ if ($usesLocalDatabase) {
     }
 }
 Write-Host 'Buka katalog: http://127.0.0.1:8000'
-Write-Host 'Buka petugas: http://127.0.0.1:8000/petugas'
+Write-Host 'Buka admin: http://127.0.0.1:8000/admin'
 Write-Host 'Tekan Ctrl+C untuk menghentikan server Laravel.'
 php artisan serve --host=127.0.0.1 --port=8000 --no-reload

@@ -47,7 +47,7 @@ class BukuController extends Controller
 
     public function riwayat(Buku $buku): AnonymousResourceCollection
     {
-        return RiwayatStokResource::collection($buku->riwayatStok()->with('petugas')->latest('id')->paginate(20));
+        return RiwayatStokResource::collection($buku->riwayatStok()->with('admin')->latest('id')->paginate(20));
     }
 
     public function destroy(Buku $buku): Response

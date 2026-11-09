@@ -106,6 +106,9 @@ h2 { font: normal 34px/1.25 var(--serif); letter-spacing: -.8px; margin-top: 7px
 .book-cover { --cover: #315849; --cover-ink: #f7eed6; position: relative; isolation: isolate; display: flex; flex-direction: column; width: 88px; height: 132px; overflow: hidden; padding: 10px 9px 8px 13px; color: var(--cover-ink); background: var(--cover); border-radius: 2px 5px 5px 2px; box-shadow: 3px 4px 0 #d5d8cc; }
 .book-cover::before { content: ''; position: absolute; top: 0; left: 5px; width: 1px; height: 100%; background: #ffffff35; z-index: 2; }
 .book-cover::after { content: ''; position: absolute; z-index: -1; width: 110px; height: 110px; right: -57px; bottom: 5px; border: 16px solid currentColor; border-radius: 50%; opacity: .09; }
+.book-cover.has-image { padding: 0; background: transparent; border: none; box-shadow: 2px 4px 10px rgba(0,0,0,0.18); }
+.book-cover.has-image::before, .book-cover.has-image::after { display: none; }
+.book-cover-img { width: 100%; height: 100%; object-fit: cover; border-radius: 3px 6px 6px 3px; display: block; }
 .cover-kicker { font-size: 5px; letter-spacing: 1px; line-height: 1.3; }
 .cover-title { font: normal 10px/1.1 var(--serif); overflow-wrap: anywhere; margin-top: 19px; }
 .cover-author { font-size: 6px; line-height: 1.4; margin-top: 7px; opacity: .85; }

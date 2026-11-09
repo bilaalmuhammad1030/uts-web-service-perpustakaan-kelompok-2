@@ -35,3 +35,4 @@ git push origin v1.1.0
 6. Pada GitHub Releases, pilih tag v1.1.0 dan gunakan changelog sebagai dasar catatan rilis. Lampirkan dokumentasi/screenshot yang sudah ditinjau. Pastikan arsip tidak menyertakan `.env`, `.local`, `vendor`, `node_modules` atau database lokal.
 
 Belum ada PR/review anggota, undangan collaborator, tag atau publikasi release. Pengunggahan awal tidak membuktikan persyaratan kontribusi telah terpenuhi.
+

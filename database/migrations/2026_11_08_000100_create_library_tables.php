@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('nama', 100)->unique();
             $table->timestamps();
         });
-        Schema::create('petugas', function (Blueprint $table): void {
+        Schema::create('admin', function (Blueprint $table): void {
             $table->id();
             $table->string('nama');
             $table->string('email')->unique();
@@ -46,7 +46,7 @@ return new class extends Migration
         Schema::create('riwayat_stok', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('buku_id')->constrained('buku')->restrictOnDelete();
-            $table->foreignId('petugas_id')->constrained('petugas')->restrictOnDelete();
+            $table->foreignId('admin_id')->constrained('admin')->restrictOnDelete();
             $table->unsignedInteger('total_sebelum');
             $table->unsignedInteger('tersedia_sebelum');
             $table->unsignedInteger('total_sesudah');
@@ -62,7 +62,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('riwayat_stok');
         Schema::dropIfExists('buku');
-        Schema::dropIfExists('petugas');
+        Schema::dropIfExists('admin');
         Schema::dropIfExists('kategori');
     }
 };

@@ -7,13 +7,13 @@ use App\Http\Controllers\Api\V1\MetadataController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
-    Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:petugas-login');
+    Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:admin-login');
     Route::get('buku', [BukuController::class, 'index'])->name('buku.index');
     Route::get('buku/{buku}', [BukuController::class, 'show'])->name('buku.show');
     Route::get('kategori', [KategoriController::class, 'index']);
     Route::get('kategori/{kategori}', [KategoriController::class, 'show'])->name('kategori.show');
     Route::get('metadata', MetadataController::class)->middleware('throttle:metadata');
-    Route::middleware('petugas')->group(function (): void {
+    Route::middleware('admin')->group(function (): void {
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::post('buku', [BukuController::class, 'store']);
         Route::put('buku/{buku}', [BukuController::class, 'update']);

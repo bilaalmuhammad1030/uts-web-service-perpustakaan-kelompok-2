@@ -1,7 +1,7 @@
 <?php
 
 use App\Exceptions\BusinessConflict;
-use App\Http\Middleware\AuthenticatePetugas;
+use App\Http\Middleware\AuthenticateAdmin;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
@@ -20,7 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias(['petugas' => AuthenticatePetugas::class]);
+        $middleware->alias([
+            'admin' => AuthenticateAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

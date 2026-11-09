@@ -12,13 +12,13 @@ Pengulangan pada 8 November 2026 pukul 22.40 WIB melalui Newman 6.2.1 menghasilk
 
 Font teks utama, input dan label formulir terverifikasi **16 px** melalui computed style browser. Font informasi buku, filter, tombol, tabel dan dialog ikut diperbesar; navigasi ponsel disusun dua baris agar tetap terbaca.
 
-Pemeriksaan pada 8 November 2026 mencakup **18 kombinasi halaman/ukuran layar**: katalog, login dan petugas pada lebar 320, 360, 390, 600, 768 dan 1440 px. Seluruhnya tidak meluber horizontal. Dialog detail, tambah buku, stok dan kategori juga diperiksa; **0 error JavaScript**. Tabel petugas dapat digeser di dalam wadahnya pada layar sempit. Pemeriksaan ini tidak mengubah atau menambah data buku. Screenshot katalog, login dan halaman petugas telah diperbarui.
+Pemeriksaan pada 8 November 2026 mencakup **18 kombinasi halaman/ukuran layar**: katalog, login dan Admin pada lebar 320, 360, 390, 600, 768 dan 1440 px. Seluruhnya tidak meluber horizontal. Dialog detail, tambah buku, stok dan kategori juga diperiksa; **0 error JavaScript**. Tabel Admin dapat digeser di dalam wadahnya pada layar sempit. Pemeriksaan ini tidak mengubah atau menambah data buku. Screenshot katalog, login dan halaman Admin telah diperbarui.
 
 ## Pembaruan tampilan Ruang Baca
 
 Pemeriksaan antarmuka pada 8 November 2026: **20 alur browser lulus**, **0 error JavaScript**. Pemeriksaan mencakup pagination maju/mundur, filter kategori otomatis, reset, hasil kosong, pencarian, detail, tombol lihat/sembunyikan kata sandi, login/logout, CRUD buku dan kategori, pembaruan stok serta riwayat. Layar 320, 360, 390 dan 768 piksel tidak meluber horizontal pada pemeriksaan ini.
 
-Tes halaman yang terkait juga dijalankan: `php artisan test --filter=portal_siswa_dan_petugas_dapat_dibuka --compact` menghasilkan 1 tes lulus dengan 5 assertions. `node --check public/js/perpustakaan.js`, `git diff --check` dan Pint berhasil. Angka ini adalah pemeriksaan perubahan tampilan, bukan penggantian hasil suite API pada bagian berikutnya.
+Tes halaman yang terkait juga dijalankan: `php artisan test --filter=portal_siswa_dan_Admin_dapat_dibuka --compact` menghasilkan 1 tes lulus dengan 5 assertions. `node --check public/js/perpustakaan.js`, `git diff --check` dan Pint berhasil. Angka ini adalah pemeriksaan perubahan tampilan, bukan penggantian hasil suite API pada bagian berikutnya.
 
 Satu buku demo dibuat untuk pemeriksaan, kemudian diarsipkan; audit tetap disimpan dan sepuluh buku aktif dari dokumen kelompok tidak diubah. Screenshot di `docs/screenshots` diperbarui dari aplikasi nyata. Sampul bergambar tipografi adalah ilustrasi antarmuka berdasarkan judul/penulis API, bukan foto sampul resmi penerbit.
 
@@ -45,7 +45,7 @@ Empat tes tambahan memeriksa penerbit/tahun, validasi dokumen, seluruh contoh da
 | Composer | `composer validate --strict` berhasil |
 | Audit dependency npm akhir | **0 kerentanan** pada dependency yang dipertahankan |
 | API eksternal nyata | Open Library berhasil, `source=openlibrary`, `fallback=false`, 5 item |
-| Halaman dan data awal | Halaman siswa/petugas HTTP 200; 10 buku dokumen tetap aktif setelah demo diarsipkan |
+| Halaman dan data awal | Halaman siswa/Admin HTTP 200; 10 buku dokumen tetap aktif setelah demo diarsipkan |
 | Script mulai ulang | Sudah diuji pada versi awal dengan 12 contoh: script berhasil menjalankan kembali server dan database. Sesudah penyesuaian dokumen, API aktif diverifikasi HTTP 200 dengan 10 buku |
 | Git ignore | `.env`, `.local` termasuk environment/token, CA lokal dan SQLite diabaikan Git |
 
@@ -90,7 +90,7 @@ Verifikasi perintah pengganti pada MariaDB lokal: exit code 0, 29 tes lulus, 169
 4. Stok melebihi total atau negatif ditolak 422.
 5. Kode unik dan kategori harus ada.
 6. Data/endpoint tidak ditemukan 404 dengan JSON seragam.
-7. Pengelolaan memerlukan token petugas, 401.
+7. Pengelolaan memerlukan token Admin, 401.
 8. Login salah, login benar, logout dan token kedaluwarsa.
 9. Stok dan riwayat berhasil disimpan bersama.
 10. Versi lama ditolak 409 tanpa perubahan data.
@@ -104,7 +104,7 @@ Verifikasi perintah pengganti pada MariaDB lokal: exit code 0, 29 tes lulus, 169
 18. Metadata sukses, normalisasi, cache dan parameter permintaan penyedia melalui Http::fake.
 19. 503 dicoba ulang, fallback tidak dicache, permintaan berikutnya dapat berhasil.
 20. Timeout dan format rusak menghasilkan fallback melalui Http::fake.
-21. Halaman siswa dan petugas dapat dibuka.
+21. Halaman siswa dan Admin dapat dibuka.
 22. Seeder berisi 10 buku dokumen dan idempoten.
 23. Seluruh route API dan versi rilis sesuai kontrak OpenAPI.
 24. Penerbit/tahun disimpan dan ditampilkan melalui API.
@@ -132,6 +132,12 @@ Screenshot aktual disertakan pada `docs/screenshots`. Buku demo pengujian diarsi
 
 ## Integrasi eksternal: nyata dan simulasi
 
+### Integrasi Google Books API (9 November 2026)
+- **Status Kredensial:** API Key Google Books resmi (`AIzaSy...`) berhasil dipasangkan pada `.env` dan `config/services.php`.
+- **Pengujian Nyata:** Pemanggilan langsung ke `https://www.googleapis.com/books/v1/volumes?q=Laskar+Pelangi` mengembalikan status HTTP 200 OK, 175 item ditemukan dengan data judul, penulis, penerbit, tahun, ISBN, thumbnail sampul, dan deskripsi lengkap.
+- **Adapter & Cache:** Kelas `App\Adapters\GoogleBooksAdapter` diimplementasikan dengan caching otomatis 1 jam (`metadata:v1:google_books:*`). Panggilan kedua instan dengan status `cached: true`.
+- **Rincian Catatan Pengujian:** Lihat laporan lengkap di [Catatan Pengujian Google Books API](catatan-pengujian-google-books.md).
+
 - **Nyata, sebelum perbaikan:** permintaan melalui API proyek menghasilkan fallback. Diagnosis PHP menunjukkan cURL error 60 (CA belum dikonfigurasi).
 - **Nyata, sesudah perbaikan:** bundle CA resmi curl/Mozilla diunduh dan SHA-256 dicocokkan dengan hash resmi; adapter diberi path CA lokal. `GET /api/v1/metadata?q=Laskar%20Pelangi` berhasil 200, `source=openlibrary`, `fallback=false`, `cached=false`, 5 item. Item pertama Laskar Pelangi, Andrea Hirata, 2005, ISBN 9789793062792. Verifikasi sertifikat tetap aktif.
 - **Simulasi terkontrol:** Http::fake menguji respons sukses/cache, dua 503 dan retry, ConnectionException, format rusak, serta pemulihan setelah kegagalan. Ini bukan bukti bahwa penyedia benar-benar mengalami gangguan tersebut.
@@ -139,3 +145,4 @@ Screenshot aktual disertakan pada `docs/screenshots`. Buku demo pengujian diarsi
 ## Batas pemeriksaan
 
 Kode awal sudah diunggah melalui commit `a9c10ad`. GitHub Actions telah dipicu: [eksekusi pertama](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/actions/runs/42480301529). Hasil eksekusi dan commit terbaru dapat diperiksa pada tab Actions; angka hasil lokal di atas tidak otomatis menjadi angka hasil CI. Tag/release v1.1.0 belum dipublikasikan. Belum ada PR, merge, atau review anggota; anggota perlu membuat kontribusi nyata sesuai `kontribusi.md`. Belum dilakukan uji beban besar, audit keamanan menyeluruh, pemeriksaan aksesibilitas menyeluruh, atau deployment produksi. Aplikasi saat ini ditujukan untuk demo UTS lokal sesuai lingkup yang diminta.
+

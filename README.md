@@ -1,17 +1,19 @@
 # Web Service Ketersediaan Buku Perpustakaan
 
+[![Pemeriksaan proyek v1.1.0](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/bilaalmuhammad1030/uts-web-service-perpustakaan-kelompok-2/actions/workflows/tests.yml)
+
 **UTS Pemrograman Web Service · Kelompok 2**
 
 Laravel · MySQL/MariaDB · REST API v1
 
-Membantu siswa menemukan buku, memeriksa stok, dan mengetahui lokasi rak sebelum datang ke perpustakaan. Petugas mengelola koleksi melalui satu sumber data.
+Membantu siswa menemukan buku, memeriksa stok, dan mengetahui lokasi rak sebelum datang ke perpustakaan. Admin mengelola koleksi melalui satu sumber data.
 
 ![Tampilan katalog perpustakaan](docs/screenshots/katalog-desktop.png)
 
 ## Fitur utama
 
 - **Siswa:** pencarian judul/penulis, filter kategori, detail buku, stok dan lokasi rak.
-- **Petugas:** login, kelola buku/kategori, pembaruan stok dan riwayat perubahan.
+- **Admin:** login, kelola buku/kategori, pembaruan stok dan riwayat perubahan.
 - **API:** 15 endpoint berversi, pagination, validasi dan respons JSON seragam.
 - **Konsistensi:** transaksi, penguncian stok, deteksi konflik dan rollback.
 - **Metadata:** Open Library dengan timeout, retry, cache dan fallback.
@@ -38,9 +40,9 @@ Pada komputer Bilal, buka folder `UTS Perpustakaan Kelompok 2/perpustakaan`, lal
 powershell -ExecutionPolicy Bypass -File .\scripts\mulai.ps1
 ```
 
-[Portal siswa](http://127.0.0.1:8000) · [Login petugas](http://127.0.0.1:8000/petugas) · [API buku](http://127.0.0.1:8000/api/v1/buku)
+[Portal siswa](http://127.0.0.1:8000) · [Login admin](http://127.0.0.1:8000/admin) · [API buku](http://127.0.0.1:8000/api/v1/buku)
 
-Email petugas: `petugas@perpustakaan.test`. Gunakan kata sandi akun terbaru; kredensial tidak dicantumkan di repository.
+Login admin: Username `Admin` · Kata sandi `Admin` (atau email `admin@perpustakaan.test`).
 
 <details>
 <summary><strong>Instalasi di komputer lain</strong></summary>

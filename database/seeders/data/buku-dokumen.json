@@ -8,7 +8,9 @@
     "kategori": "Novel",
     "jumlah_total": 8,
     "jumlah_tersedia": 5,
-    "lokasi_rak": "A-01"
+    "lokasi_rak": "A-01",
+    "gambar_url": "https://books.google.com/books/content?id=hM2tDwAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Kisah inspiratif tentang perjuangan sepuluh anak di Belitung yang dijuluki Laskar Pelangi bersama guru-guru berdedikasi tinggi di SD Muhammadiyah Gantong. Di tengah keterbatasan sarana dan ancaman penutupan sekolah, mereka merajut mimpi-mimpi besar dengan keteguhan hati dan persahabatan yang mengharukan."
   },
   {
     "kode_buku": "BK002",
@@ -19,7 +21,9 @@
     "kategori": "Novel",
     "jumlah_total": 10,
     "jumlah_tersedia": 7,
-    "lokasi_rak": "A-02"
+    "lokasi_rak": "A-02",
+    "gambar_url": "https://books.google.com/books/content?id=Eud3DwAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Mengikuti petualangan Raib, seorang remaja berusia 15 tahun yang memiliki kemampuan istimewa dapat menghilang hanya dengan menutup wajahnya. Bersama dua sahabatnya, Seli dan Ali, petualangan tak terduga membawa mereka menjelajahi rahasia dunia paralel klan Bulan yang penuh misteri dan kekuatan menakjubkan."
   },
   {
     "kode_buku": "BK003",
@@ -30,7 +34,9 @@
     "kategori": "Novel",
     "jumlah_total": 7,
     "jumlah_tersedia": 4,
-    "lokasi_rak": "A-03"
+    "lokasi_rak": "A-03",
+    "gambar_url": "https://books.google.com/books/content?id=fOnHEQAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Perjalanan Alif dan lima sahabatnya dari berbagai pelosok Nusantara yang menimba ilmu di Pondok Madani Jawa Timur. Berpegang teguh pada mantra sakti 'Man Jadda Wajada' (siapa yang bersungguh-sungguh pasti berhasil), mereka merajut cita-cita di bawah bayang-bayang menara masjid untuk menjelajah dunia."
   },
   {
     "kode_buku": "BK004",
@@ -41,7 +47,9 @@
     "kategori": "Novel",
     "jumlah_total": 6,
     "jumlah_tersedia": 3,
-    "lokasi_rak": "A-04"
+    "lokasi_rak": "A-04",
+    "gambar_url": "https://books.google.com/books/content?id=9DA5DwAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Novel sejarah berlatar awal abad ke-20 pada masa kolonial Hindia Belanda yang mengisahkan pergulatan pemikiran Minke, pemuda pribumi terpelajar, serta cintanya pada Annelies Mellema. Di bawah bimbingan Nyai Ontosoroh yang tangguh dan cerdas, Minke berani melawan ketidakadilan sistem hukum kolonial."
   },
   {
     "kode_buku": "BK005",
@@ -52,7 +60,9 @@
     "kategori": "Pengembangan Diri",
     "jumlah_total": 9,
     "jumlah_tersedia": 6,
-    "lokasi_rak": "B-01"
+    "lokasi_rak": "B-01",
+    "gambar_url": "https://books.google.com/books/content?id=1bm0DwAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Panduan praktis tentang bagaimana perubahan-perubahan kecil sebesar 1% setiap hari dapat menghasilkan transformasi hidup yang luar biasa. James Clear memaparkan empat kaidah pembentukan kebiasaan efektif: menjadikannya terlihat, menjadikannya menarik, menjadikannya mudah, dan menjadikannya memuaskan."
   },
   {
     "kode_buku": "BK006",
@@ -63,7 +73,9 @@
     "kategori": "Pengembangan Diri",
     "jumlah_total": 8,
     "jumlah_tersedia": 5,
-    "lokasi_rak": "B-02"
+    "lokasi_rak": "B-02",
+    "gambar_url": "https://books.google.com/books/content?id=1_DezwEACAAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Pengantar filsafat Stoisisme kuno Yunani-Romawi yang disajikan secara jenaka, praktis, dan relevan untuk kehidupan generasi muda masa kini. Buku ini memandu pembaca memisahkan hal-hal yang berada di bawah kendali kita dan yang bukan kendali kita guna meraih ketenangan batin serta mental tangguh bebas cemas."
   },
   {
     "kode_buku": "BK007",
@@ -74,7 +86,9 @@
     "kategori": "Teknologi",
     "jumlah_total": 5,
     "jumlah_tersedia": 3,
-    "lokasi_rak": "C-01"
+    "lokasi_rak": "C-01",
+    "gambar_url": "https://books.google.com/books/content?id=QYnczwEACAAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Buku referensi akademis yang mengupas fondasi logika pemecahan masalah dengan komputer, mulai dari konsep dasar algoritma, notasi flowchart, pseudocode, tipe data, struktur kendali percabangan dan perulangan, hingga implementasi fungsi, array, serta teknik pengurutan dan pencarian data."
   },
   {
     "kode_buku": "BK008",
@@ -85,7 +99,9 @@
     "kategori": "Teknologi",
     "jumlah_total": 6,
     "jumlah_tersedia": 4,
-    "lokasi_rak": "C-02"
+    "lokasi_rak": "C-02",
+    "gambar_url": "https://books.google.com/books/content?id=Ko2sEAAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Buku teks rujukan utama mengenai sistem basis data relasional. Membahas arsitektur basis data, pemodelan konseptual dengan Entity-Relationship Diagram (ERD), aturan aljabar relasional, normalisasi tabel untuk mencegah anomali data, serta sintaks SQL lengkap (DDL dan DML) untuk pengelolaan basis data modern."
   },
   {
     "kode_buku": "BK009",
@@ -96,7 +112,9 @@
     "kategori": "Pendidikan",
     "jumlah_total": 5,
     "jumlah_tersedia": 2,
-    "lokasi_rak": "D-01"
+    "lokasi_rak": "D-01",
+    "gambar_url": "https://books.google.com/books/content?id=mgVMEAAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Buku pegangan komprehensif untuk membangun pemahaman konsep matematika tingkat dasar hingga menengah bagi mahasiswa dan calon pendidik. Mengulas sistem bilangan real, teori himpunan, fungsi dan relasi, logika matematika, serta penerapan strategi penalaran deduktif dalam pemecahan masalah matematika."
   },
   {
     "kode_buku": "BK010",
@@ -107,6 +125,8 @@
     "kategori": "Ensiklopedia",
     "jumlah_total": 4,
     "jumlah_tersedia": 4,
-    "lokasi_rak": "E-01"
+    "lokasi_rak": "E-01",
+    "gambar_url": "https://books.google.com/books/content?id=T99KEAAAQBAJ&printsec=frontcover&img=1&zoom=1",
+    "deskripsi": "Sumber wawasan sains terlengkap yang menyajikan fenomena alam, fisika, kimia, biologi, bumi, dan tata surya secara visual dan mudah dipahami. Dilengkapi dengan penjelasan ilmiah mengenai energi, atmosfer, ekosistem makhluk hidup, serta inovasi teknologi yang membentuk dunia modern."
   }
 ]

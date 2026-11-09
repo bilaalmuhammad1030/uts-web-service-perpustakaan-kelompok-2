@@ -15,16 +15,16 @@ powershell -ExecutionPolicy Bypass -File .\scripts\mulai.ps1
 Biarkan terminal tersebut terbuka. Kunjungi:
 
 - Siswa: **http://127.0.0.1:8000**
-- Petugas: **http://127.0.0.1:8000/petugas**
+- Admin: **http://127.0.0.1:8000/Admin**
 - Contoh API: **http://127.0.0.1:8000/api/v1/buku**
 
-### Login petugas
+### Login Admin
 
-- **Halaman:** http://127.0.0.1:8000/petugas
-- **Email:** `petugas@perpustakaan.test`
+- **Halaman:** http://127.0.0.1:8000/Admin
+- **Email:** `Admin@perpustakaan.test`
 - **Kata sandi akun di komputer Bilal:** sudah diganti; gunakan kata sandi terbaru yang ditetapkan secara lokal. Nilainya tidak dicantumkan di README publik sesuai ketentuan UTS.
 
-**Untuk pemasangan baru:** kata sandi awal berasal dari **DEMO_PASSWORD** pada `.env`. Setelah kata sandi akun diubah, nilai DEMO_PASSWORD tidak otomatis ikut berubah. Seeder tidak mengganti kata sandi petugas yang sudah ada.
+**Untuk pemasangan baru:** kata sandi awal berasal dari **DEMO_PASSWORD** pada `.env`. Setelah kata sandi akun diubah, nilai DEMO_PASSWORD tidak otomatis ikut berubah. Seeder tidak mengganti kata sandi Admin yang sudah ada.
 
 Jika browser masih menyimpan sesi atau isian lama, keluar lalu masuk kembali menggunakan kata sandi terbaru. Jangan memasukkan `.env`, kata sandi, token, atau kunci API ke repository, laporan, dan slide.
 
@@ -83,28 +83,28 @@ php artisan migrate --seed
 php artisan serve --host=127.0.0.1 --port=8000
 ```
 
-Seeder menambahkan 10 buku dokumen, 5 kategori, satu petugas dan audit awal. Judul, penulis, penerbit, tahun, kategori, total dan tersedia mengikuti dokumen kelompok sebagai data contoh tugas. Nomor rak merupakan contoh tambahan. Seeder bisa diulang tanpa menggandakan data; buku yang sudah diedit tidak ditimpa. Jangan gunakan `migrate:fresh` pada database aplikasi yang ingin dipertahankan.
+Seeder menambahkan 10 buku dokumen, 5 kategori, satu Admin dan audit awal. Judul, penulis, penerbit, tahun, kategori, total dan tersedia mengikuti dokumen kelompok sebagai data contoh tugas. Nomor rak merupakan contoh tambahan. Seeder bisa diulang tanpa menggandakan data; buku yang sudah diedit tidak ditimpa. Jangan gunakan `migrate:fresh` pada database aplikasi yang ingin dipertahankan.
 
 ## API dan aturan bisnis
 
-Base URL: `http://127.0.0.1:8000/api/v1`. Versi route adalah `v1`; versi kontrak/release saat ini `1.1.0`. Kirim `Accept: application/json`, dan untuk body JSON kirim `Content-Type: application/json`. Endpoint petugas memerlukan `Authorization: Bearer <token>` dari login.
+Base URL: `http://127.0.0.1:8000/api/v1`. Versi route adalah `v1`; versi kontrak/release saat ini `1.1.0`. Kirim `Accept: application/json`, dan untuk body JSON kirim `Content-Type: application/json`. Endpoint Admin memerlukan `Authorization: Bearer <token>` dari login.
 
 | Metode | Path | Akses | Hasil utama |
 | --- | --- | --- | --- |
 | POST | `/auth/login` | Publik | 200 token, 401 login salah |
-| POST | `/auth/logout` | Petugas | 204, token dicabut |
+| POST | `/auth/logout` | Admin | 204, token dicabut |
 | GET | `/buku` | Publik | 200 daftar/pencarian/filter/halaman |
 | GET | `/buku/{id}` | Publik | 200 detail / 404 |
-| POST | `/buku` | Petugas | 201 dan Location |
-| PUT | `/buku/{id}` | Petugas | 200 edit data deskriptif |
-| DELETE | `/buku/{id}` | Petugas | 204 arsip |
-| PATCH | `/buku/{id}/stok` | Petugas | 200 / 422 / 409 |
-| GET | `/buku/{id}/riwayat-stok` | Petugas | 200, 20 catatan per halaman |
+| POST | `/buku` | Admin | 201 dan Location |
+| PUT | `/buku/{id}` | Admin | 200 edit data deskriptif |
+| DELETE | `/buku/{id}` | Admin | 204 arsip |
+| PATCH | `/buku/{id}/stok` | Admin | 200 / 422 / 409 |
+| GET | `/buku/{id}/riwayat-stok` | Admin | 200, 20 catatan per halaman |
 | GET | `/kategori` | Publik | 200 daftar kategori |
 | GET | `/kategori/{id}` | Publik | 200 detail / 404 |
-| POST | `/kategori` | Petugas | 201 dan Location |
-| PUT | `/kategori/{id}` | Petugas | 200 edit |
-| DELETE | `/kategori/{id}` | Petugas | 204 / 409 jika digunakan |
+| POST | `/kategori` | Admin | 201 dan Location |
+| PUT | `/kategori/{id}` | Admin | 200 edit |
+| DELETE | `/kategori/{id}` | Admin | 204 / 409 jika digunakan |
 | GET | `/metadata?q=...` | Publik | 200 normal atau fallback |
 
 Daftar buku mendukung `q`, `kategori_id`, `tersedia=1` atau `0`, `sort=judul|penulis|jumlah_tersedia|stok_diperbarui_at`, `direction=asc|desc`, `per_page=1..50`, dan `page>=1`. Default 6 data, urutan judul naik. `q` mencari judul atau penulis. Contoh:
@@ -117,7 +117,7 @@ Penerbit dan tahun terbit wajib pada tambah/edit. Kode maksimal 20 karakter, jud
 
 Stok memenuhi `0 ≤ jumlah_tersedia ≤ jumlah_total`, jumlah total maksimal 1.000.000. Input tidak valid, kode/nama yang sudah dipakai, atau kategori tidak ada menghasilkan **422 VALIDATION_ERROR**. Stok dengan versi lama atau kategori yang masih dipakai menghasilkan **409 BUSINESS_CONFLICT**. Race pelanggaran relasi/keunikan pada database juga ditangani 409.
 
-Setiap perubahan stok memakai **DB::transaction**, membaca ulang baris dengan **lockForUpdate**, memeriksa `versi_stok`, memperbarui stok dan menambah audit. Jika audit gagal, perubahan buku ikut rollback. Transaksi dicoba ulang hingga tiga kali untuk deadlock. Nomor versi mencegah petugas menimpa perubahan dari layar lama. Input stok adalah nilai akhir, bukan penambahan/pengurangan.
+Setiap perubahan stok memakai **DB::transaction**, membaca ulang baris dengan **lockForUpdate**, memeriksa `versi_stok`, memperbarui stok dan menambah audit. Jika audit gagal, perubahan buku ikut rollback. Transaksi dicoba ulang hingga tiga kali untuk deadlock. Nomor versi mencegah Admin menimpa perubahan dari layar lama. Input stok adalah nilai akhir, bukan penambahan/pengurangan.
 
 Contoh body stok (gunakan versi dari detail buku terkini):
 
@@ -130,10 +130,10 @@ Contoh body stok (gunakan versi dari detail buku terkini):
 Respons data dibungkus `data`; daftar berhalaman memiliki `links` dan `meta`. Error selalu berbentuk:
 
 ```json
-{"error":{"code":"BUSINESS_CONFLICT","message":"Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.","details":{}}}
+{"error":{"code":"BUSINESS_CONFLICT","message":"Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.","details":{}}}
 ```
 
-Error validasi menyertakan rincian per field. 401 berarti perlu login; 404 data/endpoint tidak ditemukan; 405 metode salah; 429 terlalu banyak permintaan; 500 error server tanpa detail internal. Token di-hash SHA-256, berlaku 8 jam, dan satu token aktif per petugas. Login dibatasi 5/menit/IP dan metadata 10/menit/IP menggunakan limiter terpisah. Waktu API ISO-8601 UTC; tampilan menampilkan WIB.
+Error validasi menyertakan rincian per field. 401 berarti perlu login; 404 data/endpoint tidak ditemukan; 405 metode salah; 429 terlalu banyak permintaan; 500 error server tanpa detail internal. Token di-hash SHA-256, berlaku 8 jam, dan satu token aktif per Admin. Login dibatasi 5/menit/IP dan metadata 10/menit/IP menggunakan limiter terpisah. Waktu API ISO-8601 UTC; tampilan menampilkan WIB.
 
 ## Integrasi Open Library
 
@@ -171,7 +171,7 @@ Collection sudah dijalankan dengan Newman saat verifikasi. Newman kemudian dilep
 Urutan presentasi:
 
 1. Buka katalog, cari Andrea, filter kategori/ketersediaan, pindah halaman, dan buka detail.
-2. Login petugas dan tambah buku. Perlihatkan request Postman yang menghasilkan 201 beserta header Location.
+2. Login Admin dan tambah buku. Perlihatkan request Postman yang menghasilkan 201 beserta header Location.
 3. Tunjukkan validasi stok tersedia melebihi total: 422. Akses ID yang tidak ada: 404.
 4. Ambil versi stok buku, perbarui sekali, lalu kirim ulang versi lama: 409. Lihat stok tetap sama dan audit hanya bertambah untuk perubahan sukses.
 5. Jalankan tes rollback: `php artisan test --filter=transaksi_rollback`.
@@ -187,3 +187,4 @@ Salinan laporan Word dan presentasi sudah disusun di folder induk `Hasil UTS Kel
 ## Memakai dokumen kelompok pada database lama
 
 Penyesuaian pada komputer ini sudah dijalankan. Untuk pemasangan lama lainnya, gunakan `php artisan migrate` kemudian `php artisan buku:gunakan-data-dokumen`. Perintah membuat cadangan, mengarsipkan hanya contoh lama yang belum diubah, dan mengimpor 10 buku dokumen. Akun, kata sandi dan riwayat tetap disimpan. Jangan gunakan `migrate:fresh`. Lihat `docs/acuan-dokumen.md`.
+

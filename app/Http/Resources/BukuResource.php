@@ -11,7 +11,7 @@ class BukuResource extends JsonResource
     {
         return [
             'id' => $this->id, 'kode_buku' => $this->kode_buku, 'judul' => $this->judul,
-            'penulis' => $this->penulis, 'deskripsi' => $this->deskripsi, 'isbn' => $this->isbn,
+            'penulis' => $this->penulis, 'deskripsi' => $this->deskripsi, 'gambar_url' => $this->gambar_url, 'isbn' => $this->isbn,
             'penerbit' => $this->penerbit, 'tahun_terbit' => $this->tahun_terbit,
             'kategori' => new KategoriResource($this->whenLoaded('kategori')),
             'lokasi_rak' => $this->lokasi_rak, 'jumlah_total' => $this->jumlah_total,

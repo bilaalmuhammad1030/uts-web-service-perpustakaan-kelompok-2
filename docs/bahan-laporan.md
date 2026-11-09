@@ -6,18 +6,18 @@ Mochamad Bilal Muadzin, NIM 23215025, mengerjakan program dengan bantuan AI. Nof
 
 ## 1. Latar belakang, tujuan dan batasan
 
-Siswa membutuhkan cara mengetahui apakah buku tersedia dan di rak mana buku disimpan, tanpa harus mengecek satu per satu. Petugas membutuhkan data koleksi dan ketersediaan yang konsisten.
+Siswa membutuhkan cara mengetahui apakah buku tersedia dan di rak mana buku disimpan, tanpa harus mengecek satu per satu. Admin membutuhkan data koleksi dan ketersediaan yang konsisten.
 
-Aplikasi menyediakan pencarian judul/penulis, kategori, penerbit, tahun terbit, lokasi rak, jumlah total/tersedia dan waktu pembaruan. Petugas dapat masuk, mengelola kategori/buku dan mencatat perubahan stok. Peminjaman, pengembalian, denda dan reservasi tidak dibuat karena berada di luar lingkup informasi ketersediaan.
+Aplikasi menyediakan pencarian judul/penulis, kategori, penerbit, tahun terbit, lokasi rak, jumlah total/tersedia dan waktu pembaruan. Admin dapat masuk, mengelola kategori/buku dan mencatat perubahan stok. Peminjaman, pengembalian, denda dan reservasi tidak dibuat karena berada di luar lingkup informasi ketersediaan.
 
-Koleksi awal sekarang berisi 10 buku dari dokumen kelompok, lima kategori dokumen dan satu akun petugas. Judul, penulis, penerbit, tahun, kategori dan jumlah mengikuti dokumen; lokasi rak adalah contoh tambahan. Lihat `acuan-dokumen.md` untuk tabel sumber dan pemetaan nama field. Pada database yang diperbarui, kategori lama tetap disimpan untuk relasi buku arsip.
+Koleksi awal sekarang berisi 10 buku dari dokumen kelompok, lima kategori dokumen dan satu akun Admin. Judul, penulis, penerbit, tahun, kategori dan jumlah mengikuti dokumen; lokasi rak adalah contoh tambahan. Lihat `acuan-dokumen.md` untuk tabel sumber dan pemetaan nama field. Pada database yang diperbarui, kategori lama tetap disimpan untuk relasi buku arsip.
 
 ## 2. Arsitektur program
 
 ```mermaid
 flowchart LR
     S[Portal siswa - Blade dan JavaScript] -->|fetch JSON| R[Route API /api/v1]
-    P[Portal petugas] -->|Bearer token| A[Middleware petugas]
+    P[Portal Admin] -->|Bearer token| A[Middleware Admin]
     A --> R
     R --> F[Form Request]
     F --> C[Controller tipis]
@@ -38,7 +38,7 @@ flowchart LR
 
 Route API berversi memudahkan perubahan kontrak di masa depan. Form Request memvalidasi data sebelum controller. Controller meneruskan permintaan ke service. Service menyimpan aturan bisnis, transaksi dan konsistensi. Model menangani relasi database; API Resource menentukan field yang dikirim ke klien. Semua error API dirender dalam bentuk JSON yang seragam pada `bootstrap/app.php`.
 
-Tampilan tidak mengakses database langsung. Halaman siswa memakai API publik melalui `fetch`; halaman petugas memakai API yang sama dengan token untuk operasi pengelolaan. Tidak ada koleksi buku statis di JavaScript.
+Tampilan tidak mengakses database langsung. Halaman siswa memakai API publik melalui `fetch`; halaman Admin memakai API yang sama dengan token untuk operasi pengelolaan. Tidak ada koleksi buku statis di JavaScript.
 
 ## 3. ERD dan relasi
 
@@ -46,7 +46,7 @@ Tampilan tidak mengakses database langsung. Halaman siswa memakai API publik mel
 erDiagram
     KATEGORI ||--o{ BUKU : mengelompokkan
     BUKU ||--o{ RIWAYAT_STOK : memiliki
-    PETUGAS ||--o{ RIWAYAT_STOK : mencatat
+    Admin ||--o{ RIWAYAT_STOK : mencatat
     KATEGORI {
         bigint id PK
         varchar nama UK
@@ -72,7 +72,7 @@ erDiagram
         timestamp updated_at
         timestamp deleted_at
     }
-    PETUGAS {
+    Admin {
         bigint id PK
         varchar nama
         varchar email UK
@@ -85,7 +85,7 @@ erDiagram
     RIWAYAT_STOK {
         bigint id PK
         bigint buku_id FK
-        bigint petugas_id FK
+        bigint Admin_id FK
         int total_sebelum
         int tersedia_sebelum
         int total_sesudah
@@ -96,9 +96,9 @@ erDiagram
     }
 ```
 
-Nama tabel fisik: `kategori`, `buku`, `petugas`, `riwayat_stok`. Satu kategori memiliki banyak buku. Setiap catatan perubahan stok terkait satu buku dan satu petugas. Foreign key menggunakan pembatasan penghapusan. Pasangan `buku_id, versi_stok` pada riwayat unik. Kode buku dan nama kategori unik. MySQL/MariaDB juga mempunyai CHECK stok tersedia tidak negatif dan tidak melebihi total.
+Nama tabel fisik: `kategori`, `buku`, `Admin`, `riwayat_stok`. Satu kategori memiliki banyak buku. Setiap catatan perubahan stok terkait satu buku dan satu Admin. Foreign key menggunakan pembatasan penghapusan. Pasangan `buku_id, versi_stok` pada riwayat unik. Kode buku dan nama kategori unik. MySQL/MariaDB juga mempunyai CHECK stok tersedia tidak negatif dan tidak melebihi total.
 
-Buku menggunakan soft delete agar audit tetap dapat ditelusuri. Kode buku arsip tetap dicadangkan dan kategori yang dipakai buku arsip tetap dilindungi. Laravel masih memiliki tabel infrastruktur bawaan `users`, `password_reset_tokens`, `sessions`, cache dan jobs dari skeleton. Login aplikasi ini menggunakan `petugas`, bukan tabel `users`. Tabel infrastruktur bukan modul peminjaman.
+Buku menggunakan soft delete agar audit tetap dapat ditelusuri. Kode buku arsip tetap dicadangkan dan kategori yang dipakai buku arsip tetap dilindungi. Laravel masih memiliki tabel infrastruktur bawaan `users`, `password_reset_tokens`, `sessions`, cache dan jobs dari skeleton. Login aplikasi ini menggunakan `Admin`, bukan tabel `users`. Tabel infrastruktur bukan modul peminjaman.
 
 Model dan factory tersedia untuk keempat entitas. Seeder memberi koleksi awal dan riwayat stok awal dalam transaksi. Seeder yang diulang tidak menggandakan data atau menimpa buku yang telah diedit.
 
@@ -109,19 +109,19 @@ Base URL lokal `http://127.0.0.1:8000/api/v1`. Terdapat **15 pasangan metode/pat
 | Metode | Endpoint | Fungsi | Akses |
 | --- | --- | --- | --- |
 | POST | `/auth/login` | Login, token berlaku 8 jam | Publik |
-| POST | `/auth/logout` | Cabut token aktif | Petugas |
+| POST | `/auth/logout` | Cabut token aktif | Admin |
 | GET | `/buku` | Daftar, cari, filter, urutan, pagination | Publik |
 | GET | `/buku/{buku}` | Detail dan ketersediaan | Publik |
-| POST | `/buku` | Buku dan audit awal, 201 + Location | Petugas |
-| PUT | `/buku/{buku}` | Edit data deskriptif | Petugas |
-| DELETE | `/buku/{buku}` | Arsipkan buku, 204 | Petugas |
-| PATCH | `/buku/{buku}/stok` | Perbarui jumlah dan audit | Petugas |
-| GET | `/buku/{buku}/riwayat-stok` | Audit terbaru, 20 per halaman | Petugas |
+| POST | `/buku` | Buku dan audit awal, 201 + Location | Admin |
+| PUT | `/buku/{buku}` | Edit data deskriptif | Admin |
+| DELETE | `/buku/{buku}` | Arsipkan buku, 204 | Admin |
+| PATCH | `/buku/{buku}/stok` | Perbarui jumlah dan audit | Admin |
+| GET | `/buku/{buku}/riwayat-stok` | Audit terbaru, 20 per halaman | Admin |
 | GET | `/kategori` | Daftar kategori | Publik |
 | GET | `/kategori/{kategori}` | Detail kategori | Publik |
-| POST | `/kategori` | Tambah, 201 + Location | Petugas |
-| PUT | `/kategori/{kategori}` | Edit kategori | Petugas |
-| DELETE | `/kategori/{kategori}` | Hapus kategori kosong | Petugas |
+| POST | `/kategori` | Tambah, 201 + Location | Admin |
+| PUT | `/kategori/{kategori}` | Edit kategori | Admin |
+| DELETE | `/kategori/{kategori}` | Hapus kategori kosong | Admin |
 | GET | `/metadata?q=...` | Metadata dari Open Library | Publik |
 
 Parameter daftar buku: `q`, `kategori_id`, `tersedia`, `sort`, `direction`, `per_page`, `page`. Pencarian memeriksa judul atau penulis. Pengurutan dibatasi pada kolom yang diizinkan; nama kolom tidak diterima bebas dari pengguna. Respons berhalaman memiliki `data`, `links`, `meta`. Portal menggunakan data ini untuk tombol halaman.
@@ -135,13 +135,13 @@ Versi `/v1` adalah versi mayor route. `info.version: 1.1.0` adalah versi kontrak
 3. Mengubah stok wajib mengirim versi yang dibaca dari detail serta alasan perubahan.
 4. `PUT /buku/{id}` tidak dapat mengubah jumlah atau versi stok; perubahan jumlah melalui endpoint stok.
 5. Kategori yang dipakai buku aktif/arsip tidak boleh dihapus. Buku diarsipkan, bukan dihapus permanen.
-6. Password di-hash, token hanya dikirim saat login dan disimpan sebagai hash SHA-256 pada database. Login baru mengganti token lama; logout mencabut token. Satu token aktif per petugas.
+6. Password di-hash, token hanya dikirim saat login dan disimpan sebagai hash SHA-256 pada database. Login baru mengganti token lama; logout mencabut token. Satu token aktif per Admin.
 
 Urutan pembaruan stok:
 
 ```mermaid
 sequenceDiagram
-    participant P as Petugas
+    participant P as Admin
     participant S as BukuService
     participant DB as MySQL/MariaDB
     P->>S: PATCH stok + versi + alasan
@@ -166,7 +166,7 @@ sequenceDiagram
 
 Penguncian baris menahan penulis kedua sampai transaksi pertama selesai. Versi kemudian diperiksa ulang; penulis dengan versi lama mendapat 409. DB::transaction mencoba ulang deadlock sampai tiga kali. Riwayat dan stok tidak dapat berhasil sebagian. Uji dua proses memakai dua koneksi pada database tes MariaDB, bukan hanya dua request berurutan.
 
-**422** berarti data input tidak valid, misalnya tersedia 11 dari total 10. **409** berarti input dapat valid secara bentuk, tetapi bertentangan dengan keadaan bisnis saat ini, misalnya versi stok lama atau kategori masih dipakai. **404** berarti data/endpoint tidak ditemukan. **201** menunjukkan penciptaan data berhasil dan mempunyai Location. **401** akses petugas belum sah. **204** operasi berhasil tanpa body.
+**422** berarti data input tidak valid, misalnya tersedia 11 dari total 10. **409** berarti input dapat valid secara bentuk, tetapi bertentangan dengan keadaan bisnis saat ini, misalnya versi stok lama atau kategori masih dipakai. **404** berarti data/endpoint tidak ditemukan. **201** menunjukkan penciptaan data berhasil dan mempunyai Location. **401** akses Admin belum sah. **204** operasi berhasil tanpa body.
 
 ## 6. Integrasi layanan luar
 
@@ -201,7 +201,7 @@ Gambar pemeriksaan browser sudah tersedia di `docs/screenshots/`. Gambar itu has
 - `katalog-desktop.png`: katalog desktop.
 - `katalog-ponsel.png`: tampilan ponsel.
 - `detail-buku.png`: detail, rak, kategori, stok dan waktu.
-- `petugas-desktop.png`: pengelolaan koleksi sesudah login.
+- `Admin-desktop.png`: pengelolaan koleksi sesudah login.
 - `riwayat-stok.png`: jejak sebelum/sesudah stok.
 
 Nofia sebaiknya mencoba dan memilih screenshot sendiri untuk mengonfirmasi hasil:
@@ -209,7 +209,7 @@ Nofia sebaiknya mencoba dan memilih screenshot sendiri untuk mengonfirmasi hasil
 1. Jalankan aplikasi sesuai README. Buka katalog, tampilkan daftar, hasil pencarian, filter dan halaman kedua. Gunakan `Win+Shift+S`, simpan PNG dan beri keterangan fungsi.
 2. Buka detail satu buku; ambil gambar kategori, lokasi rak, jumlah dan waktu pembaruan.
 3. Di browser tekan F12, buka tab Network, lalu muat ulang katalog. Pilih request `/api/v1/buku`; ambil gambar response JSON untuk membuktikan portal membaca API.
-4. Login petugas. Jangan menampilkan password, isi `.env`, token, atau header Authorization pada gambar. Ambil tabel buku, formulir stok dan riwayat setelah memperbarui satu buku demo.
+4. Login Admin. Jangan menampilkan password, isi `.env`, token, atau header Authorization pada gambar. Ambil tabel buku, formulir stok dan riwayat setelah memperbarui satu buku demo.
 5. Di Postman ambil gambar 201 beserta Location, daftar/filter/pagination 200, 422, 404 dan 409. Tutup bagian token dan environment rahasia.
 6. Untuk transaksi, ambil hasil tes rollback dan hasil dua proses pada suite MySQL. Jelaskan bahwa rollback dibuat dengan kegagalan audit di tes, bukan lewat tombol pengguna.
 7. Ambil hasil metadata normal dari API dan hasil simulasi gagal dari tes. Beri label yang membedakan hasil nyata dan simulasi.
@@ -242,3 +242,4 @@ Usulan pembagian kontribusi nyata ada pada `kontribusi.md`. Repository kelompok 
 ## Penyesuaian dokumen kelompok
 
 Penerbit dan tahun terbit telah ditambahkan pada model, migration, API, Form Request, factory, formulir dan detail siswa. Validasi panjang mengikuti dokumen; tahun wajib 1901 sampai tahun berjalan. Seeder memakai BK001–BK010. Persediaan dan audit tetap memakai transaksi, penguncian baris dan versi. Hapus tetap memerlukan konfirmasi dan menggunakan arsip agar riwayat tidak hilang. Nama `stok`/`tersedia` dalam dokumen dipetakan ke `jumlah_total`/`jumlah_tersedia`. Cadangan data lama dibuat dan data yang sudah diedit dilindungi. Lihat `acuan-dokumen.md` untuk keputusan lengkap.
+

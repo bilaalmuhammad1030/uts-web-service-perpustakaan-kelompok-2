@@ -43,3 +43,4 @@ Setiap orang memakai akun dan branch sendiri, membuka minimal dua PR, dan member
 - GitHub Actions sudah dipicu oleh unggahan. Periksa hasil sebenarnya pada tab Actions repository.
 - Belum ada PR, review, tag atau release yang dapat diklaim selesai.
 - Persentase kontribusi dan paraf ditentukan kelompok berdasarkan pekerjaan sebenarnya.
+

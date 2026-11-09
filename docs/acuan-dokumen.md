@@ -34,16 +34,17 @@ Penulis juga mengikuti dokumen. Dokumen tidak memberikan nomor rak tiap buku; ra
 | `stok_akhir` | total_sesudah / tersedia_sesudah; keduanya disimpan agar tidak ambigu |
 | `waktu_update` | `riwayat_stok.created_at` dan `buku.stok_diperbarui_at` |
 
-Nama fisik Laravel dipertahankan supaya API dan relasi yang sudah berjalan tetap konsisten. Empat tabel tetap mengikuti ERD pengembangan dokumen serta persyaratan awal dosen. Riwayat menyimpan nilai sebelum dan sesudah, identitas petugas, alasan, dan versi.
+Nama fisik Laravel dipertahankan supaya API dan relasi yang sudah berjalan tetap konsisten. Empat tabel tetap mengikuti ERD pengembangan dokumen serta persyaratan awal dosen. Riwayat menyimpan nilai sebelum dan sesudah, identitas Admin, alasan, dan versi.
 
-Tambah/edit buku memuat penerbit dan tahun. Detail siswa dan tabel petugas menampilkan keduanya. Pada edit buku, jumlah tetap diperbarui melalui tombol **Stok** agar transaksi dan pemeriksaan versi tidak dilewati. Konfirmasi hapus tetap muncul. Hapus menggunakan arsip (soft delete) sehingga catatan audit tidak hilang.
+Tambah/edit buku memuat penerbit dan tahun. Detail siswa dan tabel Admin menampilkan keduanya. Pada edit buku, jumlah tetap diperbarui melalui tombol **Stok** agar transaksi dan pemeriksaan versi tidak dilewati. Konfirmasi hapus tetap muncul. Hapus menggunakan arsip (soft delete) sehingga catatan audit tidak hilang.
 
 ## Pembaruan data lokal yang sudah dilakukan
 
-Migration tambahan telah dijalankan tanpa mengosongkan database. Perintah `php artisan buku:gunakan-data-dokumen` telah membuat cadangan JSON di `.local/sebelum-impor-dokumen-20261108-112946-nnNTBb.json`, lalu mengarsipkan 12 contoh lama yang cocok dengan seluruh data awal dan belum pernah diubah. Sepuluh buku dokumen menjadi katalog aktif. Riwayat stok lama, kategori lama yang masih direferensikan arsip, akun petugas dan kata sandi tetap disimpan. Karena kategori lama dipertahankan, jumlah kategori pada database yang diperbarui bisa lebih dari lima; pemasangan baru mempunyai lima kategori dokumen.
+Migration tambahan telah dijalankan tanpa mengosongkan database. Perintah `php artisan buku:gunakan-data-dokumen` telah membuat cadangan JSON di `.local/sebelum-impor-dokumen-20261108-112946-nnNTBb.json`, lalu mengarsipkan 12 contoh lama yang cocok dengan seluruh data awal dan belum pernah diubah. Sepuluh buku dokumen menjadi katalog aktif. Riwayat stok lama, kategori lama yang masih direferensikan arsip, akun Admin dan kata sandi tetap disimpan. Karena kategori lama dipertahankan, jumlah kategori pada database yang diperbarui bisa lebih dari lima; pemasangan baru mempunyai lima kategori dokumen.
 
-Perintah impor dapat diulang dengan aman. Kode dokumen yang sudah ada atau sudah diarsipkan tidak ditimpa/dihidupkan kembali. Contoh lama yang sudah diedit dipertahankan; catatan lain milik pengguna tidak dihapus. Cadangan lokal tidak masuk Git dan tidak berisi password maupun token petugas.
+Perintah impor dapat diulang dengan aman. Kode dokumen yang sudah ada atau sudah diarsipkan tidak ditimpa/dihidupkan kembali. Contoh lama yang sudah diedit dipertahankan; catatan lain milik pengguna tidak dihapus. Cadangan lokal tidak masuk Git dan tidak berisi password maupun token Admin.
 
 Seeder pemasangan baru langsung memakai 10 buku dokumen. Untuk database lama, jalankan migration kemudian perintah impor tersebut; jangan menjalankan `migrate:fresh` pada data aplikasi.
 
 Kontrak OpenAPI, collection Postman, factory, pengujian dan bahan laporan telah disesuaikan. Hasil akhir tercatat di `hasil-pengujian.md`.
+

@@ -11,7 +11,7 @@ class RiwayatStokResource extends JsonResource
     {
         return [
             'id' => $this->id, 'buku_id' => $this->buku_id,
-            'petugas' => ['id' => $this->petugas->id, 'nama' => $this->petugas->nama],
+            'admin' => ['id' => $this->admin->id, 'nama' => $this->admin->nama],
             'total_sebelum' => $this->total_sebelum, 'tersedia_sebelum' => $this->tersedia_sebelum,
             'total_sesudah' => $this->total_sesudah, 'tersedia_sesudah' => $this->tersedia_sesudah,
             'versi_stok' => $this->versi_stok, 'alasan' => $this->alasan,

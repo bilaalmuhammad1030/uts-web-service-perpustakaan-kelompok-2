@@ -16,6 +16,7 @@ class BukuRequest extends ApiRequest
             'penerbit' => ['required', 'string', 'max:100'],
             'tahun_terbit' => ['required', 'integer', 'min:1901', 'max:'.min(2155, (int) now()->format('Y'))],
             'deskripsi' => ['nullable', 'string', 'max:5000'],
+            'gambar_url' => ['nullable', 'string', 'max:2048'],
             'isbn' => ['nullable', 'regex:/^(?:[0-9]{13}|[0-9]{9}[0-9X])$/'],
             'lokasi_rak' => ['required', 'string', 'max:50'],
         ];

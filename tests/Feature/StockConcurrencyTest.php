@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Admin;
 use App\Models\Buku;
-use App\Models\Petugas;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
@@ -26,7 +26,7 @@ class StockConcurrencyTest extends TestCase
     public function test_dua_proses_bersamaan_hanya_satu_berhasil(): void
     {
         $buku = Buku::factory()->create();
-        $petugas = Petugas::factory()->create();
+        $admin = Admin::factory()->create();
         $connection = config('database.connections.mysql');
         $environment = [
             'APP_ENV' => 'testing', 'DB_CONNECTION' => 'mysql', 'DB_HOST' => $connection['host'],
@@ -37,7 +37,7 @@ class StockConcurrencyTest extends TestCase
         $startAt = microtime(true) + 2;
         $processes = [];
         foreach ([3, 5] as $tersedia) {
-            $process = new Process([PHP_BINARY, base_path('tests/Fixtures/stock-worker.php'), (string) $buku->id, (string) $petugas->id, (string) $tersedia, (string) $startAt], base_path(), $environment, timeout: 20);
+            $process = new Process([PHP_BINARY, base_path('tests/Fixtures/stock-worker.php'), (string) $buku->id, (string) $admin->id, (string) $tersedia, (string) $startAt], base_path(), $environment, timeout: 20);
             $process->start();
             $processes[] = $process;
         }

@@ -22,7 +22,7 @@ tags:
     description: 'Ketersediaan dan audit stok.'
   -
     name: Autentikasi
-    description: 'Akses petugas.'
+    description: 'Akses Admin.'
   -
     name: Metadata
     description: 'Informasi tambahan dari penyedia luar.'
@@ -30,11 +30,11 @@ security: []
 paths:
   /auth/login:
     post:
-      operationId: loginPetugas
-      summary: 'Login petugas'
+      operationId: loginAdmin
+      summary: 'Login Admin'
       tags:
         - Autentikasi
-      description: 'Token Bearer berlaku 8 jam, disimpan sebagai SHA-256 di database. Satu token aktif per petugas; login ulang mengganti token sebelumnya. Maksimal 5 percobaan/menit per IP.'
+      description: 'Token Bearer berlaku 8 jam, disimpan sebagai SHA-256 di database. Satu token aktif per Admin; login ulang mengganti token sebelumnya. Maksimal 5 percobaan/menit per IP.'
       security: []
       requestBody:
         required: true
@@ -43,7 +43,7 @@ paths:
             schema:
               $ref: '#/components/schemas/LoginRequest'
             example:
-              email: petugas@perpustakaan.test
+              email: Admin@perpustakaan.test
               password: isi-kata-sandi-lokal
       responses:
         200:
@@ -53,7 +53,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -61,7 +61,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         422:
           description: 'Periksa kembali data yang dikirim.'
@@ -100,19 +100,19 @@ paths:
                   details: {}
   /auth/logout:
     post:
-      operationId: logoutPetugas
-      summary: 'Cabut token petugas'
+      operationId: logoutAdmin
+      summary: 'Cabut token Admin'
       tags:
         - Autentikasi
-      description: 'Cabut token petugas'
+      description: 'Cabut token Admin'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       responses:
         204:
           description: 'Berhasil, tanpa body.'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -120,7 +120,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         500:
           description: 'Terjadi gangguan pada server.'
@@ -272,7 +272,7 @@ paths:
       description: 'Kode buku unik termasuk buku arsip. Buku dan riwayat awal disimpan dalam satu transaksi.'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       requestBody:
         required: true
         content:
@@ -322,7 +322,7 @@ paths:
                   penerbit: 'Penerbit Kelompok 2'
                   tahun_terbit: 2020
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -330,10 +330,10 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         409:
-          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          description: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
           content:
             application/json:
               schema:
@@ -341,7 +341,7 @@ paths:
               example:
                 error:
                   code: BUSINESS_CONFLICT
-                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  message: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
                   details: {}
         422:
           description: 'Periksa kembali data yang dikirim.'
@@ -439,7 +439,7 @@ paths:
       description: 'Semua field wajib, termasuk penerbit dan tahun_terbit, harus dikirim. Jumlah dan versi stok dilarang; gunakan endpoint stok. Tahun 1901 sampai tahun berjalan (maksimal 2155).'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       requestBody:
         required: true
         content:
@@ -462,7 +462,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BukuResponse'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -470,7 +470,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         404:
           description: 'Data atau endpoint tidak ditemukan.'
@@ -484,7 +484,7 @@ paths:
                   message: 'Data atau endpoint tidak ditemukan.'
                   details: {}
         409:
-          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          description: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
           content:
             application/json:
               schema:
@@ -492,7 +492,7 @@ paths:
               example:
                 error:
                   code: BUSINESS_CONFLICT
-                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  message: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
                   details: {}
         422:
           description: 'Periksa kembali data yang dikirim.'
@@ -526,12 +526,12 @@ paths:
       description: 'Soft delete. Riwayat dipertahankan dan kode buku tidak dapat dipakai ulang.'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       responses:
         204:
           description: 'Berhasil, tanpa body.'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -539,7 +539,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         404:
           description: 'Data atau endpoint tidak ditemukan.'
@@ -553,7 +553,7 @@ paths:
                   message: 'Data atau endpoint tidak ditemukan.'
                   details: {}
         409:
-          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          description: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
           content:
             application/json:
               schema:
@@ -561,7 +561,7 @@ paths:
               example:
                 error:
                   code: BUSINESS_CONFLICT
-                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  message: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
                   details: {}
         500:
           description: 'Terjadi gangguan pada server.'
@@ -592,7 +592,7 @@ paths:
       description: 'DB::transaction dengan lockForUpdate, validasi versi, pembaruan buku dan pencatatan audit. Gagal audit membatalkan seluruh perubahan. Deadlock dicoba ulang maksimal 3 kali. Input tidak valid 422; versi lama 409. Kirim nilai absolut, bukan delta.'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       requestBody:
         required: true
         content:
@@ -612,7 +612,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BukuResponse'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -620,7 +620,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         404:
           description: 'Data atau endpoint tidak ditemukan.'
@@ -634,7 +634,7 @@ paths:
                   message: 'Data atau endpoint tidak ditemukan.'
                   details: {}
         409:
-          description: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+          description: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
           content:
             application/json:
               schema:
@@ -642,7 +642,7 @@ paths:
               example:
                 error:
                   code: BUSINESS_CONFLICT
-                  message: 'Stok sudah diubah petugas lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
+                  message: 'Stok sudah diubah Admin lain. Muat ulang detail buku dan kirim versi_stok terbaru.'
                   details: {}
         422:
           description: 'Periksa kembali data yang dikirim.'
@@ -686,7 +686,7 @@ paths:
       description: 'Riwayat perubahan stok'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       parameters:
         -
           in: query
@@ -704,7 +704,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RiwayatPage'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -712,7 +712,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         404:
           description: 'Data atau endpoint tidak ditemukan.'
@@ -770,7 +770,7 @@ paths:
       description: 'Tambah kategori'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       requestBody:
         required: true
         content:
@@ -794,7 +794,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/KategoriResponse'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -802,7 +802,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         409:
           description: 'Kategori masih digunakan buku, termasuk buku yang diarsipkan.'
@@ -893,7 +893,7 @@ paths:
       description: 'Ubah kategori'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       requestBody:
         required: true
         content:
@@ -910,7 +910,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/KategoriResponse'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -918,7 +918,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         404:
           description: 'Data atau endpoint tidak ditemukan.'
@@ -974,12 +974,12 @@ paths:
       description: '409 jika kategori dipakai buku aktif maupun arsip; relasi foreign key juga membatasi penghapusan.'
       security:
         -
-          PetugasBearer: []
+          AdminBearer: []
       responses:
         204:
           description: 'Berhasil, tanpa body.'
         401:
-          description: 'Silakan login sebagai petugas.'
+          description: 'Silakan login sebagai Admin.'
           content:
             application/json:
               schema:
@@ -987,7 +987,7 @@ paths:
               example:
                 error:
                   code: UNAUTHENTICATED
-                  message: 'Silakan login sebagai petugas.'
+                  message: 'Silakan login sebagai Admin.'
                   details: {}
         404:
           description: 'Data atau endpoint tidak ditemukan.'
@@ -1109,7 +1109,7 @@ paths:
                   details: {}
 components:
   securitySchemes:
-    PetugasBearer:
+    AdminBearer:
       type: http
       scheme: bearer
       bearerFormat: 'opaque token'
@@ -1210,7 +1210,7 @@ components:
       required:
         - id
         - buku_id
-        - petugas
+        - Admin
         - total_sebelum
         - tersedia_sebelum
         - total_sesudah
@@ -1227,7 +1227,7 @@ components:
           type: integer
           minimum: 0
           example: 1
-        petugas:
+        Admin:
           type: object
           required:
             - id
@@ -1239,7 +1239,7 @@ components:
               example: 1
             nama:
               type: string
-              example: 'Petugas Kelompok 2'
+              example: 'Admin Kelompok 2'
         total_sebelum:
           type: integer
           minimum: 0
@@ -1455,7 +1455,7 @@ components:
       properties:
         email:
           type: string
-          example: petugas@perpustakaan.test
+          example: Admin@perpustakaan.test
           format: email
           maxLength: 255
         password:
@@ -1474,7 +1474,7 @@ components:
             - token
             - token_type
             - expires_at
-            - petugas
+            - Admin
           properties:
             token:
               type: string
@@ -1487,7 +1487,7 @@ components:
               type: string
               example: '2026-11-08T18:00:00.000000Z'
               format: date-time
-            petugas:
+            Admin:
               type: object
               required:
                 - id
@@ -1499,7 +1499,7 @@ components:
                   example: 1
                 nama:
                   type: string
-                  example: 'Petugas Kelompok 2'
+                  example: 'Admin Kelompok 2'
     BukuResponse:
       type: object
       required:
@@ -1728,3 +1728,5 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/Metadata'
+
+

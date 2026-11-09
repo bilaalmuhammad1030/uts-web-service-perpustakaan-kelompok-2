@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#214e3f">
     <meta name="description" content="Cari buku, cek ketersediaan, dan temukan lokasi rak di perpustakaan sekolah.">
-    <title>{{ $portal === 'petugas' ? 'Ruang Petugas' : 'Katalog Buku' }} · Ruang Baca</title>
+    <title>{{ $portal === 'admin' ? 'Ruang Admin' : 'Katalog Buku' }} · Ruang Baca</title>
     <link rel="stylesheet" href="{{ asset('css/perpustakaan.css') }}?v={{ filemtime(public_path('css/perpustakaan.css')) }}">
     <script src="{{ asset('js/perpustakaan.js') }}?v={{ filemtime(public_path('js/perpustakaan.js')) }}" defer></script>
 </head>
@@ -22,7 +22,7 @@
     <a class="brand" href="{{ route('katalog') }}" aria-label="Ruang Baca, beranda"><span class="brand-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><span>ruang<span class="brand-light">baca</span><small>PERPUSTAKAAN SEKOLAH</small></span></a>
     <nav aria-label="Navigasi utama">
         <a href="{{ route('katalog') }}" @class(['active' => $portal === 'siswa']) @if ($portal === 'siswa') aria-current="page" @endif>Katalog buku</a>
-        <a href="{{ route('petugas') }}" @class(['active' => $portal === 'petugas']) @if ($portal === 'petugas') aria-current="page" @endif>Ruang petugas <span aria-hidden="true">↗</span></a>
+        <a href="{{ route('admin') }}" @class(['active' => $portal === 'admin']) @if ($portal === 'admin') aria-current="page" @endif> Admin <span aria-hidden="true">↗</span></a>
     </nav>
 </header>
 <main id="konten">
@@ -33,7 +33,7 @@
             <h1 id="hero-title">Cari buku.<br><em>Temukan hal baru.</em></h1>
             <p>Bacaan untuk tugas, rasa ingin tahu, atau sekadar<br class="desktop"> teman di waktu luang. Cek stoknya, temukan raknya.</p>
             <a class="button hero-button" href="#koleksi">Jelajahi koleksi <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
-            <div class="hero-note"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg> Ketersediaan diperbarui oleh petugas</div>
+            <div class="hero-note"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg> Ketersediaan diperbarui oleh admin</div>
         </div>
         <div id="featured-book" class="featured-book" aria-label="Salah satu buku dalam koleksi"><div class="featured-loading">Menyiapkan bacaan…</div></div>
     </section>
@@ -47,13 +47,13 @@
         <div id="book-grid" class="book-grid" aria-live="polite"></div>
         <div class="pagination"><button id="prev" class="button secondary">← Sebelumnya</button><span id="page-info"></span><button id="next" class="button secondary">Berikutnya →</button></div>
     </section>
-    <aside class="info-banner"><span class="info-icon"><svg class="icon" aria-hidden="true"><use href="#icon-rack"/></svg></span><div><strong>Sudah ketemu bukunya?</strong><p>Catat lokasi rak, lalu kunjungi perpustakaan. Stok mengikuti pembaruan terakhir petugas.</p></div><span class="info-ending" aria-hidden="true">Sampai jumpa<br><em>di antara rak buku.</em></span></aside>
+    <aside class="info-banner"><span class="info-icon"><svg class="icon" aria-hidden="true"><use href="#icon-rack"/></svg></span><div><strong>Sudah ketemu bukunya?</strong><p>Catat lokasi rak, lalu kunjungi perpustakaan. Stok mengikuti pembaruan terakhir admin.</p></div><span class="info-ending" aria-hidden="true">Sampai jumpa<br><em>di antara rak buku.</em></span></aside>
 @else
-    <section class="admin-heading"><div><span class="eyebrow">PENGELOLAAN PERPUSTAKAAN</span><h1>Ruang petugas<span class="heading-dot">.</span></h1><p class="muted">Koleksi tertata, bacaan lebih mudah ditemukan.</p></div><a class="back-link" href="{{ route('katalog') }}">Lihat katalog siswa <span aria-hidden="true">↗</span></a></section>
+    <section class="admin-heading"><div><span class="eyebrow">PENGELOLAAN PERPUSTAKAAN</span><h1>Ruang admin<span class="heading-dot">.</span></h1><p class="muted">Koleksi tertata, bacaan lebih mudah ditemukan.</p></div><a class="back-link" href="{{ route('katalog') }}">Lihat katalog siswa <span aria-hidden="true">↗</span></a></section>
     <p id="status" class="status" role="status" aria-live="polite"></p>
-    <section id="login-panel" class="login-panel" aria-label="Login petugas">
-        <div class="login-intro"><span class="eyebrow">RUANG KERJA PETUGAS</span><h2>Semua koleksi,<br><em>lebih tertata.</em></h2><p>Kelola data buku dan pastikan informasi stok selalu sesuai keadaan di rak.</p><div class="login-illustration" aria-hidden="true"><div class="login-spine">CATAT</div><div class="login-spine">RAPIKAN</div><div class="login-spine">TEMUKAN</div></div><small>Akses khusus petugas perpustakaan.</small></div>
-        <form id="login-form"><div><span class="eyebrow">SELAMAT DATANG KEMBALI</span><h2>Masuk ke akun</h2><p class="muted">Gunakan akun petugas untuk melanjutkan.</p></div><label>Email<input name="email" type="email" autocomplete="username" required placeholder="Email petugas"></label><div class="field-group"><label for="login-password">Kata sandi</label><div class="password-field"><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan kata sandi"><button type="button" id="password-toggle" aria-label="Tampilkan kata sandi" aria-pressed="false">Lihat</button></div></div><button class="button login-submit" type="submit">Masuk ke ruang petugas <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button><small class="login-help"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> Siswa dapat melihat koleksi tanpa masuk.</small></form>
+    <section id="login-panel" class="login-panel" aria-label="Login admin">
+        <div class="login-intro"><span class="eyebrow">RUANG KERJA ADMIN</span><h2>Semua koleksi,<br><em>lebih tertata.</em></h2><p>Kelola data buku dan pastikan informasi stok selalu sesuai keadaan di rak.</p><div class="login-illustration" aria-hidden="true"><div class="login-spine">CATAT</div><div class="login-spine">RAPIKAN</div><div class="login-spine">TEMUKAN</div></div><small>Akses khusus admin perpustakaan.</small></div>
+        <form id="login-form"><div><span class="eyebrow">SELAMAT DATANG KEMBALI</span><h2>Masuk ke akun</h2><p class="muted">Gunakan akun admin untuk melanjutkan.</p></div><label>Username<input name="username" type="text" autocomplete="username" required placeholder="Username admin"></label><div class="field-group"><label for="login-password">Kata sandi</label><div class="password-field"><input id="login-password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan kata sandi"><button type="button" id="password-toggle" aria-label="Tampilkan kata sandi" aria-pressed="false">Lihat</button></div></div><button class="button login-submit" type="submit">Masuk ke ruang admin <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button><small class="login-help"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> Siswa dapat melihat koleksi tanpa masuk.</small></form>
     </section>
     <section id="admin-panel" hidden>
         <div class="section-heading"><div><span class="eyebrow">DATA PERPUSTAKAAN</span><h2>Kelola koleksi</h2><p id="greeting" class="muted"></p></div><div class="actions"><button class="button secondary" id="categories-btn">Kelola kategori</button><button class="button" id="add-book">+ Tambah buku</button><button class="button quiet" id="logout">Keluar</button></div></div>

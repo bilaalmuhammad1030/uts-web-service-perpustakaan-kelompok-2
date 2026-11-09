@@ -14,15 +14,15 @@ class RiwayatStok extends Model
 
     public const UPDATED_AT = null;
 
-    protected $fillable = ['buku_id', 'petugas_id', 'total_sebelum', 'tersedia_sebelum', 'total_sesudah', 'tersedia_sesudah', 'versi_stok', 'alasan'];
+    protected $fillable = ['buku_id', 'admin_id', 'total_sebelum', 'tersedia_sebelum', 'total_sesudah', 'tersedia_sesudah', 'versi_stok', 'alasan'];
 
     public function buku(): BelongsTo
     {
         return $this->belongsTo(Buku::class)->withTrashed();
     }
 
-    public function petugas(): BelongsTo
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(Petugas::class);
+        return $this->belongsTo(Admin::class);
     }
 }

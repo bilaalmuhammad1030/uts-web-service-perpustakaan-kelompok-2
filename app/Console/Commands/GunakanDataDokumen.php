@@ -62,7 +62,7 @@ class GunakanDataDokumen extends Command
             $this->info('Cadangan data sebelumnya: '.$backupPath);
         }
         $this->info('Contoh lama diarsipkan: '.$result['archived'].'; data lama yang telah diubah dipertahankan: '.$result['preserved'].'; buku aktif: '.$result['active']);
-        $this->info('Kode dokumen yang sudah ada/diarsipkan tidak ditimpa. Riwayat dan akun petugas tetap disimpan.');
+        $this->info('Kode dokumen yang sudah ada/diarsipkan tidak ditimpa. Riwayat dan akun admin tetap disimpan.');
 
         return self::SUCCESS;
     }

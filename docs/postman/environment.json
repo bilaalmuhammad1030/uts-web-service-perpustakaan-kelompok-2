@@ -8,7 +8,7 @@
     },
     {
       "key": "email",
-      "value": "petugas@perpustakaan.test",
+      "value": "Admin@perpustakaan.test",
       "enabled": true
     },
     {
@@ -26,3 +26,4 @@
   ],
   "_postman_variable_scope": "environment"
 }
+

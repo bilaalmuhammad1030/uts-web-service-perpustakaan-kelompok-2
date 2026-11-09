@@ -1,8 +1,8 @@
 <?php
 
 use App\Exceptions\BusinessConflict;
+use App\Models\Admin;
 use App\Models\Buku;
-use App\Models\Petugas;
 use App\Services\BukuService;
 use Illuminate\Contracts\Console\Kernel;
 
@@ -19,7 +19,7 @@ if ($delay > 0) {
 try {
     $app->make(BukuService::class)->stok(Buku::findOrFail($argv[1]), [
         'jumlah_total' => 10, 'jumlah_tersedia' => (int) $argv[3], 'versi_stok' => 1, 'alasan' => 'Uji dua proses bersamaan',
-    ], Petugas::findOrFail($argv[2]));
+    ], Admin::findOrFail($argv[2]));
     echo 'success';
 } catch (BusinessConflict) {
     echo 'conflict';

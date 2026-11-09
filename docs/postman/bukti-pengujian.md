@@ -17,7 +17,7 @@ Hasil request HTTP nyata melalui Newman, bukan screenshot aplikasi Postman Deskt
 
 | No. | Skenario | Metode | HTTP aktual | Assertions | Hasil |
 | --- | --- | --- | --- | --- | --- |
-| 1 | 01 · Login petugas | POST | 200 | 3 | LULUS |
+| 1 | 01 · Login Admin | POST | 200 | 3 | LULUS |
 | 2 | 02 · Daftar kategori | GET | 200 | 3 | LULUS |
 | 3 | 03 · Buat kategori 201 + Location | POST | 201 | 3 | LULUS |
 | 4 | 04 · Detail kategori | GET | 200 | 3 | LULUS |
@@ -44,9 +44,10 @@ Hasil request HTTP nyata melalui Newman, bukan screenshot aplikasi Postman Deskt
 
 1. Jalankan Laravel dan database proyek.
 2. Impor collection.json dan environment.json, lalu pilih environment tersebut.
-3. Isi password akun petugas pada environment lokal. Jangan unggah password atau token.
+3. Isi password akun Admin pada environment lokal. Jangan unggah password atau token.
 4. Sesuaikan base_url (bawaan http://127.0.0.1:8000/api/v1).
 5. Jalankan seluruh collection secara berurutan menggunakan Collection Runner.
 6. Jika dosen mensyaratkan screenshot aplikasi Postman, ambil screenshot Runner dan minimal 10 request yang menampilkan URL, request, respons, serta Test Results. Dokumen ini menyertakan bukti eksekusi Newman dan tidak mengaku sebagai screenshot Postman Desktop.
 
 Pengulangan membuat buku dan kategori demo; buku demo kemudian diarsipkan, kategori demo dihapus, dan token dicabut pada akhir collection. Sepuluh buku utama tidak diedit oleh collection.
+

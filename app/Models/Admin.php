@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Petugas extends Authenticatable
+class Admin extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'petugas';
+    protected $table = 'admin';
 
     protected $fillable = ['nama', 'email', 'password', 'token_hash', 'token_expires_at'];
 
