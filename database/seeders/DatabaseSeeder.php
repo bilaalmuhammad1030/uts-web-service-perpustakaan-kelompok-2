@@ -13,8 +13,8 @@ class DatabaseSeeder extends Seeder
         $password = config('services.demo.password') ?: 'Admin';
         DB::transaction(function () use ($password): void {
             Admin::firstOrCreate(
-                ['email' => 'Admin'],
-                ['nama' => 'Admin', 'password' => $password]
+                ['email' => 'adminperpustakaan@gmail.com'],
+                ['nama' => 'Admin Perpustakaan', 'password' => $password]
             );
             $this->call(DokumenBukuSeeder::class);
         });

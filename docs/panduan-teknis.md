@@ -20,8 +20,8 @@ Biarkan terminal tersebut terbuka. Kunjungi:
 
 ### Login Admin
 
-- **Halaman:** http://127.0.0.1:8000/Admin
-- **Email:** `Admin@perpustakaan.test`
+- **Halaman:** http://127.0.0.1:8000/admin (atau /petugas)
+- **Email:** `adminperpustakaan@gmail.com`
 - **Kata sandi akun di komputer Bilal:** sudah diganti; gunakan kata sandi terbaru yang ditetapkan secara lokal. Nilainya tidak dicantumkan di README publik sesuai ketentuan UTS.
 
 **Untuk pemasangan baru:** kata sandi awal berasal dari **DEMO_PASSWORD** pada `.env`. Setelah kata sandi akun diubah, nilai DEMO_PASSWORD tidak otomatis ikut berubah. Seeder tidak mengganti kata sandi Admin yang sudah ada.

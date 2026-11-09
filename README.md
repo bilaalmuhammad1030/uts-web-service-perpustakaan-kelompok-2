@@ -10,6 +10,16 @@ Membantu siswa menemukan buku, memeriksa stok, dan mengetahui lokasi rak sebelum
 
 ![Tampilan katalog perpustakaan](docs/screenshots/katalog-desktop.png)
 
+## Demo online untuk presentasi
+
+**[Buka Demo Website](https://match-simpsons-referred-mother.trycloudflare.com)**
+
+[Katalog siswa](https://match-simpsons-referred-mother.trycloudflare.com) · [Login petugas](https://match-simpsons-referred-mother.trycloudflare.com/petugas) · [API buku](https://match-simpsons-referred-mother.trycloudflare.com/api/v1/buku)
+
+Anggota kelompok dapat membuka link di atas dari browser tanpa memasang aplikasi. Link bersifat publik; fitur petugas tetap memerlukan login. Kata sandi dibagikan secara pribadi, bukan di GitHub.
+
+Link sementara ini hanya aktif selama komputer penyaji, server Laravel, koneksi internet, dan Cloudflare Tunnel tetap berjalan. Jika tunnel dijalankan ulang, alamat dapat berubah; perbarui link di bagian ini sebelum presentasi berikutnya.
+
 ## Fitur utama
 
 - **Siswa:** pencarian judul/penulis, filter kategori, detail buku, stok dan lokasi rak.
@@ -42,7 +52,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\mulai.ps1
 
 [Portal siswa](http://127.0.0.1:8000) · [Login admin](http://127.0.0.1:8000/admin) · [API buku](http://127.0.0.1:8000/api/v1/buku)
 
-Login admin: Username `Admin` · Kata sandi `Admin` (atau email `admin@perpustakaan.test`).
+Login admin: Email `adminperpustakaan@gmail.com` (atau username `Admin`). Gunakan kata sandi akun terbaru.
 
 <details>
 <summary><strong>Instalasi di komputer lain</strong></summary>
