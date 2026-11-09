@@ -8,6 +8,16 @@ Membantu siswa menemukan buku, memeriksa stok, dan mengetahui lokasi rak sebelum
 
 ![Tampilan katalog perpustakaan](docs/screenshots/katalog-desktop.png)
 
+## Demo online untuk presentasi
+
+**[Buka Demo Website](https://match-simpsons-referred-mother.trycloudflare.com)**
+
+[Katalog siswa](https://match-simpsons-referred-mother.trycloudflare.com) · [Login petugas](https://match-simpsons-referred-mother.trycloudflare.com/petugas) · [API buku](https://match-simpsons-referred-mother.trycloudflare.com/api/v1/buku)
+
+Anggota kelompok dapat membuka link di atas dari browser tanpa memasang aplikasi. Link bersifat publik; fitur petugas tetap memerlukan login. Kata sandi dibagikan secara pribadi, bukan di GitHub.
+
+Link sementara ini hanya aktif selama komputer penyaji, server Laravel, koneksi internet, dan Cloudflare Tunnel tetap berjalan. Jika tunnel dijalankan ulang, alamat dapat berubah; perbarui link di bagian ini sebelum presentasi berikutnya.
+
 ## Fitur utama
 
 - **Siswa:** pencarian judul/penulis, filter kategori, detail buku, stok dan lokasi rak.
