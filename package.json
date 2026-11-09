@@ -5,7 +5,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "lint:api": "redocly lint docs/openapi.yaml"
+        "lint:api": "redocly lint docs/openapi.yaml",
+        "docs:update": "php scripts/update-docs.php"
     },
     "devDependencies": {
         "@redocly/cli": "^2.76.0",

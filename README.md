@@ -40,7 +40,7 @@ Fokus pada ketersediaan buku. Peminjaman, pengembalian, denda dan reservasi bera
 | Viryal Arliyani | 23215033 |
 | Septina Asti Nabila | 23215005 |
 
-Program: **Bilal**, Laporan dan PPT: **Nofia**. [Rencana kontribusi](docs/kontribusi.md).
+ [Rencana kontribusi](docs/kontribusi.md).
 
 ## Jalankan aplikasi
 
@@ -78,19 +78,62 @@ Seeder menyediakan 10 contoh buku. Kata sandi awal berasal dari `DEMO_PASSWORD`;
 
 </details>
 
-## Uji dan demo
+## Jalankan Aplikasi Secara Lokal
+
+Pada komputer lokal, buka folder proyek dan jalankan perintah:
 
 ```powershell
-php artisan test --compact
-php vendor/bin/phpunit --configuration phpunit.mysql.xml
-npm ci --ignore-scripts
-npm run lint:api
+powershell -ExecutionPolicy Bypass -File .\scripts\mulai.ps1
 ```
 
-Suite MySQL memakai database `perpustakaan_test`. [Hasil pengujian aktual](docs/hasil-pengujian.md).
+Aplikasi otomatis berjalan di **`http://127.0.0.1:8000`**.
 
-**Alur demo:** cari/filter buku → tambah buku **201 + Location** → validasi **422** → data tidak ditemukan **404** → konflik stok **409** → audit/rollback → metadata normal dan fallback.
+<details>
+<summary><strong>Panduan Instalasi di Komputer Lain</strong></summary>
 
-## Dokumentasi
+Siapkan PHP 8.4/8.5, Composer, MySQL/MariaDB, dan Node.js 24 untuk linting API.
 
-[OpenAPI](docs/openapi.yaml) · [Postman](docs/postman/collection.json) · [Panduan teknis](docs/panduan-teknis.md) · [Bahan laporan](docs/bahan-laporan.md) · [Checklist release v1.1.0](docs/release.md)
+```powershell
+composer install --no-interaction
+if (!(Test-Path .env)) {
+    Copy-Item .env.example .env
+    php artisan key:generate
+}
+```
+
+Buat basis data `perpustakaan` dan `perpustakaan_test`. Atur `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, serta `DEMO_PASSWORD` pada file `.env`.
+
+```powershell
+php artisan migrate --seed
+php artisan serve
+```
+
+Seeder otomatis menyediakan 10 data buku lengkap dengan sampul dan kategori. [Panduan teknis lengkap](docs/panduan-teknis.md#instalasi-di-komputer-lain).
+
+</details>
+
+## Uji Otomatis & Verifikasi Kualitas
+
+```powershell
+# Jalankan suite pengujian otomatis PHPUnit
+php artisan test --compact
+php vendor/bin/phpunit --configuration phpunit.mysql.xml
+
+# Linting kode dan spesifikasi OpenAPI
+npm ci --ignore-scripts
+npm run lint:api
+node --check public/js/perpustakaan.js
+```
+
+- **Hasil Uji PHPUnit:** `PASSING` (30 tests, 164 assertions pada SQLite; 29 tests, 169 assertions pada MySQL).
+- **Hasil Uji Newman / Postman:** `PASSING` (22 skenario lulus, 60 assertions, 0 failures). [Bukti Pengujian Aktual](docs/hasil-pengujian.md).
+- **Hasil Linting Kontrak API:** `0 errors, 0 warnings` (Lolos validasi OpenAPI 3.0.3).
+
+## Dokumentasi Proyek
+
+- [Spesifikasi Kontrak OpenAPI (YAML)](docs/openapi.yaml)
+- [Dokumen Kontrak API Word (.docx)](docs/KONTRAK_API_OPENAPI.docx) / [Root .docx](KONTRAK_API_OPENAPI.docx)
+- [Koleksi Postman & Bukti Pengujian](docs/postman/collection.json)
+- [Panduan Teknis Instalasi & Konfigurasi](docs/panduan-teknis.md)
+- [Bahan Laporan & Presentasi](docs/bahan-laporan.md)
+- [Checklist Release Versi 1.1.0](docs/release.md)

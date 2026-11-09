@@ -17,7 +17,12 @@ class DokumenBukuSeeder extends Seeder
         DB::transaction(function () use ($rows): void {
             $admin = Admin::query()->whereIn('email', ['adminperpustakaan@gmail.com', 'Admin', 'admin@perpustakaan.test'])->first() ?? Admin::firstOrFail();
             foreach ($rows as $row) {
-                if (Buku::withTrashed()->where('kode_buku', $row['kode_buku'])->exists()) {
+                $existing = Buku::withTrashed()->where('kode_buku', $row['kode_buku'])->first();
+                if ($existing) {
+                    if (isset($row['gambar_url']) && $existing->gambar_url !== $row['gambar_url']) {
+                        $existing->update(['gambar_url' => $row['gambar_url']]);
+                    }
+
                     continue;
                 }
                 $kategori = Kategori::firstOrCreate(['nama' => $row['kategori']]);

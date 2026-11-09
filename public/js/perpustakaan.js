@@ -32,13 +32,17 @@ async function loadCategories() {
 }
 function categoryOptions(selected = '') { return categories.map(c => `<option value="${c.id}" ${String(c.id) === String(selected) ? 'selected' : ''}>${escapeHtml(c.nama)}</option>`).join(''); }
 function bookCover(book) {
-    if (book.gambar_url) {
-        return `<div class="book-cover has-image"><img src="${escapeHtml(book.gambar_url)}" alt="${escapeHtml(book.judul)}" class="book-cover-img" loading="lazy" onerror="this.parentElement.className='book-cover theme-sand'; this.remove();"></div>`;
-    }
     const themes = ['theme-blue', 'theme-sand', 'theme-clay', 'theme-olive', 'theme-plum', 'theme-forest'];
     const colorKey = [...book.kode_buku].reduce((sum, character) => sum + character.charCodeAt(0), 0);
     const theme = themes[colorKey % themes.length];
-    return `<div class="book-cover ${theme}" aria-hidden="true"><span class="cover-kicker">${escapeHtml(book.kategori.nama).toUpperCase()}</span><span class="cover-title">${escapeHtml(book.judul)}</span><span class="cover-author">${escapeHtml(book.penulis)}</span><span class="cover-footer">RUANG BACA</span></div>`;
+    const categoryName = escapeHtml(book.kategori?.nama || '').toUpperCase();
+    const title = escapeHtml(book.judul);
+    const author = escapeHtml(book.penulis);
+    const fallback = `<span class="cover-kicker">${categoryName}</span><span class="cover-title">${title}</span><span class="cover-author">${author}</span><span class="cover-footer">RUANG BACA</span>`;
+    if (book.gambar_url) {
+        return `<div class="book-cover has-image ${theme}"><img src="${escapeHtml(book.gambar_url)}" alt="${title}" class="book-cover-img" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.classList.remove('has-image'); this.remove();">${fallback}</div>`;
+    }
+    return `<div class="book-cover ${theme}" aria-hidden="true">${fallback}</div>`;
 }
 function renderFeaturedBook() {
     const featured = $('#featured-book');
@@ -75,7 +79,7 @@ $('#prev').onclick = guard(async () => { if (page > 1) {page--; await loadBooks(
 $('#next').onclick = guard(async () => { if (page < lastPage) {page++; await loadBooks();} });
 async function detail(id) {
     const b = (await api('buku/' + id)).data;
-    const coverHtml = b.gambar_url ? `<div style="text-align:center; margin-bottom:18px;"><img src="${escapeHtml(b.gambar_url)}" alt="${escapeHtml(b.judul)}" style="max-height:220px; border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.2);" loading="lazy"></div>` : '';
+    const coverHtml = b.gambar_url ? `<div style="text-align:center; margin-bottom:18px;"><img src="${escapeHtml(b.gambar_url)}" alt="${escapeHtml(b.judul)}" style="max-height:220px; max-width:100%; object-fit:contain; border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.2);" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.remove();"></div>` : '';
     modal(b.judul, `${coverHtml}<p class="muted">${escapeHtml(b.penulis)} · ${escapeHtml(b.kode_buku)}</p><dl class="detail-meta"><div><dt>Kategori</dt><dd>${escapeHtml(b.kategori.nama)}</dd></div><div><dt>Lokasi rak</dt><dd>${escapeHtml(b.lokasi_rak)}</dd></div><div><dt>Ketersediaan</dt><dd>${b.jumlah_tersedia} dari ${b.jumlah_total} eksemplar</dd></div><div><dt>Pembaruan stok</dt><dd>${time(b.stok_diperbarui_at)}</dd></div><div><dt>Penerbit</dt><dd>${escapeHtml(b.penerbit || "Belum dicatat")}</dd></div><div><dt>Tahun terbit</dt><dd>${escapeHtml(b.tahun_terbit || "Belum dicatat")}</dd></div><div><dt>ISBN</dt><dd>${escapeHtml(b.isbn || 'Belum dicatat')}</dd></div></dl><p class="detail-description">${escapeHtml(b.deskripsi || 'Deskripsi belum tersedia.')}</p><button id="metadata-btn" class="button secondary" style="margin-top:22px">Lihat buku terkait di Google Book</button><div id="metadata-results" aria-live="polite"></div>`);
     $('#metadata-btn').onclick = guard(async () => {
         $('#metadata-results').textContent = 'Memuat buku terkait dari Google Book…';

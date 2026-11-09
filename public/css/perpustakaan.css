@@ -24,7 +24,7 @@ h1, h2, h3, p { margin: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 .skip-link { position: fixed; left: 20px; top: -100px; z-index: 20; padding: 12px 20px; background: var(--green); color: #fff; border-radius: 8px; }
 .skip-link:focus { top: 10px; }
-.header { width: calc(100% - 80px); max-width: 1160px; margin: auto; padding: 22px 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.header { position: sticky; top: 0; z-index: 100; width: 100%; background: rgba(247, 247, 242, 0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px max(20px, calc((100% - 1160px) / 2)); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); box-shadow: 0 2px 10px rgba(35, 62, 51, 0.04); }
 .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 26px; font-weight: 750; letter-spacing: -1.2px; line-height: 1.1; }
 .brand-light { font-weight: 400; }
 .brand-icon { display: grid; place-items: center; width: 44px; height: 44px; background: var(--green); color: #fff; border-radius: 12px 12px 12px 3px; }
@@ -106,9 +106,39 @@ h2 { font: normal 34px/1.25 var(--serif); letter-spacing: -.8px; margin-top: 7px
 .book-cover { --cover: #315849; --cover-ink: #f7eed6; position: relative; isolation: isolate; display: flex; flex-direction: column; width: 88px; height: 132px; overflow: hidden; padding: 10px 9px 8px 13px; color: var(--cover-ink); background: var(--cover); border-radius: 2px 5px 5px 2px; box-shadow: 3px 4px 0 #d5d8cc; }
 .book-cover::before { content: ''; position: absolute; top: 0; left: 5px; width: 1px; height: 100%; background: #ffffff35; z-index: 2; }
 .book-cover::after { content: ''; position: absolute; z-index: -1; width: 110px; height: 110px; right: -57px; bottom: 5px; border: 16px solid currentColor; border-radius: 50%; opacity: .09; }
-.book-cover.has-image { padding: 0; background: transparent; border: none; box-shadow: 2px 4px 10px rgba(0,0,0,0.18); }
-.book-cover.has-image::before, .book-cover.has-image::after { display: none; }
-.book-cover-img { width: 100%; height: 100%; object-fit: cover; border-radius: 3px 6px 6px 3px; display: block; }
+.book-cover.has-image,
+.featured-stage .book-cover.has-image,
+.featured-stage > .book-cover.has-image {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    overflow: hidden;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.18);
+}
+.book-cover.has-image::before,
+.book-cover.has-image::after,
+.featured-stage .book-cover.has-image::before,
+.featured-stage .book-cover.has-image::after,
+.featured-stage > .book-cover.has-image::before,
+.featured-stage > .book-cover.has-image::after {
+    display: none !important;
+    content: none !important;
+}
+.book-cover-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: inherit;
+    display: block;
+    z-index: 3;
+}
+.featured-stage > .book-cover.has-image {
+    box-shadow: 6px 12px 20px rgba(44, 64, 54, 0.32);
+    border-radius: 4px 8px 8px 4px;
+}
 .cover-kicker { font-size: 5px; letter-spacing: 1px; line-height: 1.3; }
 .cover-title { font: normal 10px/1.1 var(--serif); overflow-wrap: anywhere; margin-top: 19px; }
 .cover-author { font-size: 6px; line-height: 1.4; margin-top: 7px; opacity: .85; }
@@ -118,12 +148,12 @@ h2 { font: normal 34px/1.25 var(--serif); letter-spacing: -.8px; margin-top: 7px
 .theme-olive { --cover: #777a48; --cover-ink: #fff4da; }
 .theme-sand { --cover: #d7c39b; --cover-ink: #374936; }
 .theme-plum { --cover: #775665; --cover-ink: #fff1dc; }
-.featured-stage .book-cover { padding: 18px 16px 13px 22px; }
+.featured-stage .book-cover:not(.has-image) { padding: 18px 16px 13px 22px; }
 .featured-stage .cover-kicker { font-size: 8px; letter-spacing: 1.4px; }
 .featured-stage .cover-title { font-size: 25px; margin-top: 35px; }
 .featured-stage .cover-author { font-size: 9px; margin-top: 12px; }
 .featured-stage .cover-footer { font-size: 7px; letter-spacing: 1.5px; }
-.featured-stage .book-cover::after { width: 170px; height: 170px; border-width: 26px; right: -85px; bottom: 8px; }
+.featured-stage .book-cover:not(.has-image)::after { width: 170px; height: 170px; border-width: 26px; right: -85px; bottom: 8px; }
 .pagination { display: flex; justify-content: center; align-items: center; gap: 24px; margin: 28px 0 8px; font-size: 14px; color: var(--muted); }
 .pagination .button { padding: 8px 13px; font-size: 14px; min-height: 38px; }
 .empty-state { grid-column: 1/-1; padding: 52px 20px; text-align: center; border: 1px dashed #c8d2c0; border-radius: 10px; color: var(--muted); background: white; }
@@ -208,7 +238,8 @@ dialog::backdrop { background: #18382e77; backdrop-filter: blur(4px); }
     .info-ending { display: none; }
 }
 @media (max-width: 760px) {
-    .header, footer { width: calc(100% - 40px); }
+    .header { width: 100%; padding: 14px 20px; }
+    footer { width: calc(100% - 40px); }
     .hero { grid-template-columns: 1fr; padding: 35px 0; gap: 30px; }
     .hero h1 { font-size: 54px; }
     .hero-copy > p { font-size: 16px; }
@@ -238,7 +269,7 @@ dialog::backdrop { background: #18382e77; backdrop-filter: blur(4px); }
 }
 @media (max-width: 540px) {
     body { font-size: 16px; }
-    .header { padding: 17px 0; gap: 14px; flex-wrap: wrap; }
+    .header { width: 100%; padding: 12px 16px; gap: 12px; flex-wrap: wrap; }
     .brand { font-size: 22px; gap: 8px; }
     .brand-icon { width: 36px; height: 39px; border-radius: 9px 9px 9px 3px; }
     .brand-icon .icon { width: 22px; height: 22px; }
@@ -254,7 +285,8 @@ dialog::backdrop { background: #18382e77; backdrop-filter: blur(4px); }
     .featured-book { display: none; padding: 36px 19px 19px; grid-template-columns: 128px minmax(0,1fr); gap: 21px; min-height: 251px; border-radius: 12px; }
     .featured-label { font-size: 12px; left: 22px; top: 14px; }
     .featured-stage { padding-left: 3px; }
-    .featured-stage > .book-cover { width: 117px; height: 179px; padding: 16px 12px 12px 17px; }
+    .featured-stage > .book-cover { width: 117px; height: 179px; }
+    .featured-stage > .book-cover:not(.has-image) { padding: 16px 12px 12px 17px; }
     .featured-stage .cover-title { font-size: 21px; margin-top: 25px; }
     .featured-stage .cover-author { font-size: 8px; }
     .featured-stage .cover-kicker { font-size: 7px; }
