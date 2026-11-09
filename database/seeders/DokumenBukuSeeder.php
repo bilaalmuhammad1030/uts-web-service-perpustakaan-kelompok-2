@@ -15,7 +15,7 @@ class DokumenBukuSeeder extends Seeder
     {
         $rows = json_decode(file_get_contents(database_path('seeders/data/buku-dokumen.json')), true, flags: JSON_THROW_ON_ERROR);
         DB::transaction(function () use ($rows): void {
-            $petugas = Petugas::where('email', 'petugas@perpustakaan.test')->firstOrFail();
+            $petugas = Petugas::where('email', 'adminperpustakaan@gmail.com')->firstOrFail();
             foreach ($rows as $row) {
                 if (Buku::withTrashed()->where('kode_buku', $row['kode_buku'])->exists()) {
                     continue;

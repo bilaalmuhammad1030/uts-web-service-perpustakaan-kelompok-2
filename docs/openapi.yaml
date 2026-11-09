@@ -43,7 +43,7 @@ paths:
             schema:
               $ref: '#/components/schemas/LoginRequest'
             example:
-              email: petugas@perpustakaan.test
+              email: adminperpustakaan@gmail.com
               password: isi-kata-sandi-lokal
       responses:
         200:
@@ -1455,7 +1455,7 @@ components:
       properties:
         email:
           type: string
-          example: petugas@perpustakaan.test
+          example: adminperpustakaan@gmail.com
           format: email
           maxLength: 255
         password:

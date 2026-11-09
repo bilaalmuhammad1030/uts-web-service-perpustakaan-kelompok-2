@@ -50,7 +50,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\mulai.ps1
 
 [Portal siswa](http://127.0.0.1:8000) · [Login petugas](http://127.0.0.1:8000/petugas) · [API buku](http://127.0.0.1:8000/api/v1/buku)
 
-Email petugas: `petugas@perpustakaan.test`. Gunakan kata sandi akun terbaru; kredensial tidak dicantumkan di repository.
+Email petugas: `adminperpustakaan@gmail.com`. Gunakan kata sandi akun terbaru; kredensial tidak dicantumkan di repository.
 
 <details>
 <summary><strong>Instalasi di komputer lain</strong></summary>
